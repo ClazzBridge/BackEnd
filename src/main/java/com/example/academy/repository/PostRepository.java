@@ -1,4 +1,4 @@
-package com.example.academy.service;
+package com.example.academy.repository;
 
 import com.example.academy.domain.PostList;
 import org.springframework.data.jpa.repository.JpaRepository;
