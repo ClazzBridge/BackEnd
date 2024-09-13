@@ -5,14 +5,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateQuestionDTO {
+public class AnswerCreateDTO {
 
   private String content;
-  private Long id;
+  private Long userId;
 
-  public CreateQuestionDTO(String content, Long id) {
+  public AnswerCreateDTO(String content, Long userId) {
     this.content = content;
-    this.id = id;
+    this.userId = userId;
   }
 
 }

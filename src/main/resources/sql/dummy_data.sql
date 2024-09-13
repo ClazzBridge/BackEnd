@@ -14,7 +14,7 @@ CREATE TABLE User (
 CREATE TABLE Question (
     id int AUTO_INCREMENT PRIMARY KEY,               -- 질문 고유 식별자 (Primary Key)
     author_id INT,                                   -- 작성자 ID
-    content VARCHAR(100) NOT NULL,                     -- 질문 제목
+    content TEXT NOT NULL,                     -- 질문 제목
     create_date DATETIME DEFAULT CURRENT_TIMESTAMP,  -- 질문 기재 시간
     answer_complete BOOLEAN,                         -- 답변 완료 여부
     recommend BOOLEAN                                -- 강사님의 질문 추천 여부
@@ -25,7 +25,7 @@ CREATE TABLE Answer (
     id INT AUTO_INCREMENT PRIMARY KEY,               -- 답변 고유 식별자 (Primary Key)
     question_id INT,                                 -- 질문 ID
     teacher_id INT,                                  -- 작성자 ID
-    content TEXT,                                    -- 답변 내용
+    content TEXT NOT NULL,                                    -- 답변 내용
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,   -- 답변 작성 시각
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- 답변 수정 시각
 );
