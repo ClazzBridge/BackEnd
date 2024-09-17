@@ -8,56 +8,47 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.factory.annotation.Value;
 
 @Entity
-@Table(name = "User")
+@Table(name = "Seat")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Seat {
 
+
+  @NotNull
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotNull
-  @Column(nullable = false)
-  private String name;
-
-  @NotNull
-  @Column(unique = true)
-  private String email;
-
-  @Column(unique = true)
-  @NotNull
-  private String phone;
-
-  @Column(nullable = false)
-  @CreationTimestamp
-  @NotNull
-  private Date registrationDate;
-
-  @Column(nullable = false)
-  @NotNull
-  private String userType;
-
-  @Column(nullable = false)
-  @NotNull
-  @JoinColumn(name = "profile_image_id")
   @ManyToOne
-  private ProfileImage profileImage;
+  @JoinColumn(name = "classroom_id")
+  private ClassRoom classRoom;
 
+  @NotNull
+  @Column(nullable = false)
+  private String seatNumber;
 
-  private String experience;
+  @NotNull
+  @Column(nullable = false)
+  private boolean seatPresence = true;
+
+  @NotNull
+  @Column(nullable = false)
+  private boolean isOccupied = false;
+
+  @OneToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 }

@@ -12,20 +12,17 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(name = "User")
+@Table(name = "Course")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Course {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,31 +30,26 @@ public class User {
 
   @NotNull
   @Column(nullable = false)
-  private String name;
+  private String title;
 
   @NotNull
-  @Column(unique = true)
-  private String email;
-
-  @Column(unique = true)
-  @NotNull
-  private String phone;
-
   @Column(nullable = false)
-  @CreationTimestamp
-  @NotNull
-  private Date registrationDate;
+  private String description;
 
-  @Column(nullable = false)
   @NotNull
-  private String userType;
+  @Column(nullable = false)
+  private Date startDate;
 
-  @Column(nullable = false)
   @NotNull
-  @JoinColumn(name = "profile_image_id")
+  @Column(nullable = false)
+  private Date endDate;
+
   @ManyToOne
-  private ProfileImage profileImage;
+  @JoinColumn(name = "TEACHER_id")
+  private User teacher;
 
+  @ManyToOne
+  @JoinColumn(name = "classroom_id")
+  private ClassRoom classRoom;
 
-  private String experience;
 }
