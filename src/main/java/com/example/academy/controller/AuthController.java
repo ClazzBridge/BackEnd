@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth") // 이 컨트롤러의 모든 요청 URL은 "/auth"로 시작합니다.
+@RequestMapping("/api/auth") // 이 컨트롤러의 모든 요청 URL은 "/auth"로 시작합니다.
 public class AuthController {
 
   @Autowired
