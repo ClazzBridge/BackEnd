@@ -64,6 +64,7 @@ CREATE TABLE Student_Course (
     enrollment_date DATE                             -- 수강 등록 날짜
 );
 
+
 -- User 테이블에 profile_image_id에 대한 외래 키 추가
 ALTER TABLE User
 ADD CONSTRAINT fk_profile_image
@@ -89,7 +90,6 @@ ADD CONSTRAINT fk_student
 FOREIGN KEY (student_id) REFERENCES User(id) ON DELETE CASCADE,
 ADD CONSTRAINT fk_course
 FOREIGN KEY (course_id) REFERENCES Course(id);
-
 
 -- Profile_image 더미 데이터 삽입 (고유번호 포함)
 INSERT INTO Profile_image (id, picture_url)

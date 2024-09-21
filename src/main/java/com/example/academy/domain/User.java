@@ -20,6 +20,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.usertype.UserType;
+
 
 @Entity
 @Table(name = "User")
@@ -57,7 +59,7 @@ public class User {
   @Column(nullable = false)
   @NotNull
   @Enumerated(value = EnumType.STRING)
-  private String userType;
+  private UserType userType;
 
   @NotNull
   @JoinColumn(name = "profile_image_id")
@@ -65,4 +67,11 @@ public class User {
   private ProfileImage profileImage;
 
   private String experience;
+
+  public enum UserType {
+    ADMIN, STUDENT, TEACHER;
+  }
+
 }
+
+
