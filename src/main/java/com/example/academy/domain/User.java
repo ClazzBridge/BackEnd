@@ -3,6 +3,8 @@ package com.example.academy.domain;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,6 +41,10 @@ public class User {
   @Column(unique = true)
   private String email;
 
+  @NotNull
+  @Column(unique = true)
+  private String github;
+
   @Column(unique = true)
   @NotNull
   private String phone;
@@ -50,14 +56,13 @@ public class User {
 
   @Column(nullable = false)
   @NotNull
+  @Enumerated(value = EnumType.STRING)
   private String userType;
 
-  @Column(nullable = false)
   @NotNull
   @JoinColumn(name = "profile_image_id")
   @ManyToOne
   private ProfileImage profileImage;
-
 
   private String experience;
 }

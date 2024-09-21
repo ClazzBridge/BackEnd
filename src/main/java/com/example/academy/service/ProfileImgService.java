@@ -33,7 +33,7 @@ public class ProfileImgService {
   }
 
   public void deleteProfileImage(Long id) {
-    profileImgRepository.findById(id);
+    profileImgRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 ID의 프로필 이미지를 찾을 수 없습니다. " + id));
+    profileImgRepository.deleteById(id);
   }
-
 }
