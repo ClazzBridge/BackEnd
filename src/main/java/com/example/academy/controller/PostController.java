@@ -1,14 +1,15 @@
 package com.example.academy.controller;
 
 
-import com.example.academy.domain.PostList;
+import com.example.academy.dto.PostDTO;
 import com.example.academy.service.PostService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/api/post")
 public class PostController {
 
     private final PostService postService;
@@ -17,11 +18,17 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping
-    public List<PostList> getPostList() {
 
-        List<PostList> postList = postService.getAll();
-        System.out.println(postList);
-        return postList;
+    @GetMapping("")
+    public ResponseEntity<List<PostDTO>> findAllPosts() {
+        List<PostDTO> postDTOs = postService.findAllPosts();
+        return ResponseEntity.ok().body(postDTOs);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDTO> findById(@PathVariable("id") Long id) {
+        PostDTO postDTO = postService.findById(id);
+        return ResponseEntity.ok().body(postDTO);
+    }
+
 }

@@ -1,28 +1,32 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.PostList;
+import com.example.academy.domain.Post;
+import com.example.academy.dto.PostDTO;
+import com.example.academy.mapper.PostMapper;
 import com.example.academy.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PostService {
-    @Autowired
+
     private final PostRepository postRepository;
+    private final PostMapper postMapper;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, PostMapper postMapper) {
         this.postRepository = postRepository;
+        this.postMapper = postMapper;
     }
 
-    public Optional<PostList> getPostListByPostId(Long postId) {
-        return postRepository.findById(postId);
-
+    public PostDTO findById(Long id) {
+        Post post = postRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("해당 게시글이 없습니다."));
+        return postMapper.toDto(post);
     }
 
-    public List<PostList> getAll(){
-        return postRepository.findAll();
+    public List<PostDTO> findAllPosts() {
+        List<Post> posts = postRepository.findAll();
+        return postMapper.toDtoList(posts);
     }
 }
