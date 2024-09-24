@@ -4,8 +4,13 @@ import com.example.academy.domain.Question;
 import com.example.academy.dto.QuestionCreateDTO;
 import com.example.academy.dto.QuestionUpdateDTO;
 import com.example.academy.service.QestionService;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,10 +20,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/question")
+@RequestMapping("/api/questions")
 public class QuestionController {
 
   private QestionService questionService;
@@ -55,14 +61,28 @@ public class QuestionController {
    */
 
   //Question CRUD
-  @GetMapping("/")
+  @GetMapping("/all")
   public ResponseEntity<List<Question>> getAllQuestions() {
     List<Question> listQuestion = questionService.getAllQuestions();
     return ResponseEntity.ok(listQuestion);
   }
 
+  @GetMapping("/view")
+  public ResponseEntity<?> getQuestions(@RequestParam("page") int page) {
+    Pageable pageable = PageRequest.of(page - 1, 10);  // 페이지 당 10개의 질문을 가져오기 위해 Pageable 설정
+
+    Page<Question> questionsPage = questionService.getPageQuestions(pageable);
+
+    // 질문 목록과 총 페이지 수를 담는 응답 데이터를 구성
+    Map<String, Object> response = new HashMap<>();
+    response.put("questions", questionsPage.getContent());  // 현재 페이지의 질문 목록
+    response.put("totalPages", questionsPage.getTotalPages());  // 총 페이지 수
+
+    return ResponseEntity.ok(response);  // 응답을 반환
+  }
+
   @GetMapping("/{id}")
-  public ResponseEntity<Question> getQuestionById(@PathVariable Long id) {
+  public ResponseEntity<Question> getQuestionById(@PathVariable("id") Long id) {
     Question question = questionService.getQuestionById(id);
     return ResponseEntity.ok(question);
   }
@@ -74,26 +94,26 @@ public class QuestionController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Question> updateQuestion(@PathVariable Long id,
+  public ResponseEntity<Question> updateQuestion(@PathVariable("id") Long id,
       @RequestBody QuestionUpdateDTO questionUpdateDTO) {
     Question updateQuestion = questionService.updateQuestion(id, questionUpdateDTO);
     return ResponseEntity.ok(updateQuestion);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteQuestion(@PathVariable Long id) {
+  public ResponseEntity<Void> deleteQuestion(@PathVariable("id") Long id) {
     questionService.deleteQuestion(id);
     return ResponseEntity.noContent().build();
   }
 
   @PutMapping("/{id}/complete")
-  public ResponseEntity<Question> toggleQuestionComplete(@PathVariable Long id) {
+  public ResponseEntity<Question> toggleQuestionComplete(@PathVariable("id") Long id) {
     Question question = questionService.completeQuestion(id);
     return ResponseEntity.ok(question);
   }
 
   @PutMapping("/{id}/recommend")
-  public ResponseEntity<Question> toggleQuestionRecommend(@PathVariable Long id) {
+  public ResponseEntity<Question> toggleQuestionRecommend(@PathVariable("id") Long id) {
     Question question = questionService.recommendQuestion(id);
     return ResponseEntity.ok(question);
   }

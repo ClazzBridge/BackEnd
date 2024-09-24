@@ -6,6 +6,8 @@ import com.example.academy.dto.QuestionUpdateDTO;
 import com.example.academy.repository.QuestionRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,16 +50,19 @@ public class QestionService {
 
   public Question completeQuestion(Long id) {
     Question existingQuestion = questionRepository.findById(id).orElseThrow();
-    existingQuestion.setAnswerComplete(!existingQuestion.isAnswerComplete());
+    existingQuestion.setSolved(!existingQuestion.isSolved());
 
     return questionRepository.save(existingQuestion);
   }
 
   public Question recommendQuestion(Long id) {
     Question existingQuestion = questionRepository.findById(id).orElseThrow();
-    existingQuestion.setRecommend(!existingQuestion.isRecommend());
+    existingQuestion.setRecommended(!existingQuestion.isRecommended());
 
     return questionRepository.save(existingQuestion);
   }
 
+  public Page<Question> getPageQuestions(Pageable pageable) {
+    return questionRepository.findAll(pageable);  // 질문 목록을 페이지네이션으로 조회
+  }
 }

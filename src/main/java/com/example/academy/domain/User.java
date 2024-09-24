@@ -6,6 +6,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,7 +14,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
+
+enum UserType {
+  STUDENT,
+  TEACHER,
+  MANAGER;
+}
 
 @Entity // JPA에서 엔티티 클래스임을 나타냄. DB 테이블과 매핑되는 객체임을 의미.
 @Table // 이 엔티티가 데이터베이스의 테이블과 매핑됨을 나타냄. 테이블의 이름 등을 설정할 수 있음.
@@ -26,7 +32,8 @@ public class User {
   @NotNull // 해당 필드가 null이면 안 된다는 제약 조건을 명시.
   @Size(min = 0) // 해당 필드의 크기나 길이에 대한 제약을 설정. min = 0은 음수가 될 수 없음을 의미.
   @Id // 해당 필드가 테이블의 기본 키임을 나타냄.
-  @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본 키 값을 자동 생성하는 전략을 설정. IDENTITY 전략은 DB에서 자동으로 키 값을 생성.
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  // 기본 키 값을 자동 생성하는 전략을 설정. IDENTITY 전략은 DB에서 자동으로 키 값을 생성.
   @Column(nullable = false) // 이 필드가 DB에서 null 값을 가질 수 없음을 명시.
   private Long id;
 
@@ -37,5 +44,5 @@ public class User {
   @NotNull
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
-  private String userType;
+  private UserType userType;
 }

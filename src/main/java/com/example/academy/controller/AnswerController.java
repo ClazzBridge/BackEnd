@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/answer")
+@RequestMapping("/api/answers")
 public class AnswerController {
 
   private AnswerService answerService;
@@ -48,26 +48,33 @@ public class AnswerController {
    */
 
   // Answer CRUD
-  @GetMapping("/answer")
+  @GetMapping("")
   public ResponseEntity<List<Answer>> getAllAnswer() {
     List<Answer> listAnswer = answerService.getAllAnswer();
     return ResponseEntity.ok(listAnswer);
   }
 
-  @PostMapping("/answer")
+  // 특정 질문의 답변 목록을 반환하는 API
+  @GetMapping("/{id}")
+  public ResponseEntity<List<Answer>> getAnswersByQuestionId(@PathVariable Long id) {
+    List<Answer> answers = answerService.getAnswersByQuestionId(id);
+    return ResponseEntity.ok(answers);  // 답변 목록을 응답으로 반환
+  }
+
+  @PostMapping("")
   public ResponseEntity<Answer> createAnswer(@RequestBody AnswerCreateDTO answerCreateDTO) {
     Answer newAnswer = answerService.createAnswer(answerCreateDTO);
     return ResponseEntity.status(HttpStatus.CREATED).body(newAnswer);
   }
 
-  @PutMapping("/answer/{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<Answer> updateQuestion(@PathVariable Long id,
       @RequestBody AnswerUpdateDTO answerUpdateDTO) {
     Answer updateAnswer = answerService.updateAnswer(id, answerUpdateDTO);
     return ResponseEntity.ok(updateAnswer);
   }
 
-  @DeleteMapping("/answer/{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteAnswer(@PathVariable Long id) {
     answerService.deleteAnswer(id);
     return ResponseEntity.noContent().build();

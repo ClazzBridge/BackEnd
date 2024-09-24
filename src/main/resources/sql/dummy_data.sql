@@ -16,8 +16,8 @@ CREATE TABLE Question (
     author_id INT,                                   -- 작성자 ID
     content TEXT NOT NULL,                     -- 질문 제목
     create_date DATETIME DEFAULT CURRENT_TIMESTAMP,  -- 질문 기재 시간
-    answer_complete BOOLEAN,                         -- 답변 완료 여부
-    recommend BOOLEAN                                -- 강사님의 질문 추천 여부
+    is_solved BOOLEAN DEFAULT FALSE,                 -- 답변 완료 여부
+    is_recommended BOOLEAN DEFAULT FALSE                 -- 강사님의 질문 추천 여부
 );
 
 -- Answer (답변) 테이블 생성
@@ -27,7 +27,7 @@ CREATE TABLE Answer (
     teacher_id INT,                                  -- 작성자 ID
     content TEXT NOT NULL,                                    -- 답변 내용
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,   -- 답변 작성 시각
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- 답변 수정 시각
+    updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP -- 답변 수정 시각
 );
 
 -- Answer 테이블에 question_id와 user_id에 대한 외래 키 추가
