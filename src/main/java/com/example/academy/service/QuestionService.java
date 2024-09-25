@@ -2,6 +2,7 @@ package com.example.academy.service;
 
 import com.example.academy.domain.Question;
 import com.example.academy.dto.QuestionCreateDTO;
+import com.example.academy.dto.QuestionReadDTO;
 import com.example.academy.dto.QuestionUpdateDTO;
 import com.example.academy.repository.QuestionRepository;
 import java.util.List;
@@ -11,17 +12,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class QestionService {
+public class QuestionService {
 
   private QuestionRepository questionRepository;
 
   @Autowired
-  public QestionService(QuestionRepository questionRepository) {
+  public QuestionService(QuestionRepository questionRepository) {
     this.questionRepository = questionRepository;
   }
 
-  public List<Question> getAllQuestions() {
-    return questionRepository.findAll();
+  public List<QuestionReadDTO> getAllQuestions() {
+    return questionRepository.findAllQuestionReadDTOs();
   }
 
   public Question getQuestionById(Long id) {
@@ -62,7 +63,7 @@ public class QestionService {
     return questionRepository.save(existingQuestion);
   }
 
-  public Page<Question> getPageQuestions(Pageable pageable) {
-    return questionRepository.findAll(pageable);  // 질문 목록을 페이지네이션으로 조회
+  public Page<QuestionReadDTO> getPageQuestions(Pageable pageable) {
+    return questionRepository.findAllQuestionReadDTOs(pageable);  // 질문 목록을 페이지네이션으로 조회
   }
 }

@@ -1,6 +1,6 @@
 package com.example.academy.domain;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,8 +26,8 @@ public class Question {
   @NotNull // 해당 필드가 null이면 안 된다는 제약 조건을 명시.
   @Size(min = 0) // 해당 필드의 크기나 길이에 대한 제약을 설정. min = 0은 음수가 될 수 없음을 의미.
   @Id // 해당 필드가 테이블의 기본 키임을 나타냄.
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   // 기본 키 값을 자동 생성하는 전략을 설정. IDENTITY 전략은 DB에서 자동으로 키 값을 생성.
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false) // 이 필드가 DB에서 null 값을 가질 수 없음을 명시.
   private Long id;
 
@@ -37,7 +37,7 @@ public class Question {
   private String content;
 
   @CreationTimestamp
-  private Timestamp createDate;
+  private Date createDate;
 
   @Column(nullable = false) // 이 필드가 DB에서 null 값을 가질 수 없음을 명시.
   private boolean isSolved = false;

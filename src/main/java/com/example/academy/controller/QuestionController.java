@@ -2,8 +2,9 @@ package com.example.academy.controller;
 
 import com.example.academy.domain.Question;
 import com.example.academy.dto.QuestionCreateDTO;
+import com.example.academy.dto.QuestionReadDTO;
 import com.example.academy.dto.QuestionUpdateDTO;
-import com.example.academy.service.QestionService;
+import com.example.academy.service.QuestionService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +28,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/questions")
 public class QuestionController {
 
-  private QestionService questionService;
+  private QuestionService questionService;
 
   @Autowired
-  public QuestionController(QestionService questionService) {
+  public QuestionController(QuestionService questionService) {
     this.questionService = questionService;
   }
 
@@ -62,16 +63,16 @@ public class QuestionController {
 
   //Question CRUD
   @GetMapping("/all")
-  public ResponseEntity<List<Question>> getAllQuestions() {
-    List<Question> listQuestion = questionService.getAllQuestions();
+  public ResponseEntity<List<QuestionReadDTO>> getAllQuestions() {
+    List<QuestionReadDTO> listQuestion = questionService.getAllQuestions();
     return ResponseEntity.ok(listQuestion);
   }
 
-  @GetMapping("/view")
-  public ResponseEntity<?> getQuestions(@RequestParam("page") int page) {
+  @GetMapping("")
+  public ResponseEntity<Map<String, Object>> getQuestions(@RequestParam("page") int page) {
     Pageable pageable = PageRequest.of(page - 1, 10);  // 페이지 당 10개의 질문을 가져오기 위해 Pageable 설정
 
-    Page<Question> questionsPage = questionService.getPageQuestions(pageable);
+    Page<QuestionReadDTO> questionsPage = questionService.getPageQuestions(pageable);
 
     // 질문 목록과 총 페이지 수를 담는 응답 데이터를 구성
     Map<String, Object> response = new HashMap<>();
@@ -109,7 +110,7 @@ public class QuestionController {
   @PutMapping("/{id}/complete")
   public ResponseEntity<Question> toggleQuestionComplete(@PathVariable("id") Long id) {
     Question question = questionService.completeQuestion(id);
-    return ResponseEntity.ok(question);
+    return ResponseEntity.status(HttpStatus.OK).body(question);
   }
 
   @PutMapping("/{id}/recommend")
