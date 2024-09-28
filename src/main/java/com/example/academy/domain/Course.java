@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +45,7 @@ public class Course {
 
   @ManyToOne
   @JoinColumn(name = "TEACHER_id")
-  private User teacher;
+  private UserList teacher;
 
   @ManyToOne
   @JoinColumn(name = "classroom_id")

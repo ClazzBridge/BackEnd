@@ -8,15 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.mapping.ToOne;
 
 @Entity
 @Table(name = "Student_Course")
@@ -33,7 +30,7 @@ public class StudentCourse {
 
   @ManyToOne
   @JoinColumn(name = "student_id")
-  private User student;
+  private UserList student;
 
   @ManyToOne
   @JoinColumn(name = "course_id")
@@ -42,7 +39,5 @@ public class StudentCourse {
   @CreationTimestamp
   @Column(nullable = false)
   private Date enrollmentDate;
-
-
 
 }

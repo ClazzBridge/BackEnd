@@ -11,25 +11,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.usertype.UserType;
 
 
 @Entity
-@Table(name = "User")
+@Table(name = "User_list")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserList {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,20 +38,28 @@ public class User {
   private String name;
 
   @NotNull
-  @Column(unique = true)
-  private String email;
+  @Column(nullable = false,  unique = true)
+  private String userId;
+
+  @NotNull
+  @Column(nullable = false)
+  private String password;
 
   @NotNull
   @Column(unique = true)
-  private String github;
+  private String email;
 
   @Column(unique = true)
+  private String gitUrl;
+
+  @Column(unique = true, length = 15)
   @NotNull
   private String phone;
 
   @Column(nullable = false)
   @CreationTimestamp
   @NotNull
+  @Temporal(TemporalType.DATE)
   private Date registrationDate;
 
   @Column(nullable = false)
@@ -68,8 +74,10 @@ public class User {
 
   private String experience;
 
+  private String bio;
+
   public enum UserType {
-    ADMIN, STUDENT, TEACHER;
+    ROLE_ADMIN, STUDENT, TEACHER;
   }
 
 }

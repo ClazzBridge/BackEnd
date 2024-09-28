@@ -1,7 +1,7 @@
 package com.example.academy.controller;
 
-import com.example.academy.domain.User;
-import com.example.academy.service.UserService;
+import com.example.academy.domain.UserList;
+import com.example.academy.service.UserListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/users")
-public class UserController {
+public class UserListController {
 
-  private UserService userService;
+  private UserListService userListService;
 
 
   @Autowired
-  public UserController(UserService userService) {
-    this.userService = userService;
+  public UserListController(UserListService userListService) {
+    this.userListService = userListService;
   }
 
   // 프로필 이미지 조회 / 변경 / 삭제 ㅇ
@@ -27,8 +27,8 @@ public class UserController {
 
 // 유저 정보 출력
   @GetMapping("/{id}")
-  public ResponseEntity<User> getUserById(@PathVariable Long id) {
-    User user = userService.getUserById(id);
-    return ResponseEntity.ok(user);
+  public ResponseEntity<UserList> getUserById(@PathVariable Long id) {
+    UserList userList = userListService.getUserById(id);
+    return ResponseEntity.ok(userList);
   }
 }

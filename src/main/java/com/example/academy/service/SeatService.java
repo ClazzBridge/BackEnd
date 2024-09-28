@@ -1,12 +1,8 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.ProfileImage;
 import com.example.academy.domain.Seat;
-import com.example.academy.domain.User;
-import com.example.academy.dto.ProfileImgDTO;
 import com.example.academy.dto.SeatDTO;
 import com.example.academy.repository.SeatRepository;
-import com.example.academy.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +36,12 @@ public class SeatService {
     existingSeat.setSeatNumber(seatDTO.getSeatNumber());
 
     return seatRepository.save(existingSeat);
+  }
+
+  public void deleteSeat(Long id) {
+    Seat deleteSeat = seatRepository.findById(id).orElseThrow(() ->
+        new IllegalArgumentException("Seat not found with id: " + id));
+    seatRepository.delete(deleteSeat);
   }
 
 

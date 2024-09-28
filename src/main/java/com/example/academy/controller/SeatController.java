@@ -1,17 +1,21 @@
 package com.example.academy.controller;
 
 import com.example.academy.domain.Seat;
+import com.example.academy.domain.UserList;
 import com.example.academy.dto.SeatDTO;
 import com.example.academy.service.SeatService;
+import com.example.academy.service.UserListService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,14 +23,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/seat")
 public class SeatController {
 
-  private SeatService seatService;
+  private final SeatService seatService;
+  private final UserListService userListService; // UserService 주입 필요
 
   @Autowired
-  public SeatController(SeatService seatService) {
+  public SeatController(SeatService seatService, UserListService userListService) {
     this.seatService = seatService;
+    this.userListService = userListService; // UserService 초기화
   }
 
+  @GetMapping
+  public ResponseEntity<List<Seat>> getSeats(@RequestHeader("User-Email") String userEmail) {
+    // 더미 데이터를 활용해 사용자를 'kwon@example.com'로 고정
+    UserList currentUserList = userListService.findByEmail("kwon@example.com"); // '권준성' 사용자를 불러옴
 
+    List<Seat> seats = seatService.getAllSeat();
+
+    // 좌석마다 본인 여부를 확인
+    for (Seat seat : seats) {
+      if (seat.getUser() != null && seat.getUser().getEmail().equals(currentUserList.getEmail())) {
+        seat.setSelf(true); // 본인일 경우 true 설정
+      } else {
+        seat.setSelf(false);
+      }
+    }
+
+    return ResponseEntity.ok(seats);
+  }
 
   //좌석
 
@@ -46,5 +69,11 @@ public class SeatController {
   public ResponseEntity<Seat> createSeat(@RequestBody SeatDTO seatDTO) {
     Seat newSeat = seatService.createSeat(seatDTO);
     return ResponseEntity.status(HttpStatus.CREATED).body(newSeat);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteSeat(@PathVariable Long id) {
+    seatService.deleteSeat(id);
+    return ResponseEntity.noContent().build();
   }
 }
