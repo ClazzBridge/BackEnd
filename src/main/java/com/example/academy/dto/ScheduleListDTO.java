@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
-public class ScheduleAddDTO {
+public class ScheduleListDTO {
+
+  private Long id; // 스케쥴 고유 식별자
 
   private String classroomName; // 강의실 명
 

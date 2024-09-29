@@ -14,7 +14,7 @@ public class Schedule {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id; // 강의실 일정 고유 식별자
+  private Long id; // 스케쥴 고유 식별자
 
   @Column(name = "classroom_id", nullable = false)
   private Long classroomId; // 강의실 ID
