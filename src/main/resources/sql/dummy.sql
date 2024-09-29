@@ -150,7 +150,7 @@ VALUES
 (21, 1, '21', TRUE, TRUE, 21),
 (22, 1, '22', TRUE, TRUE, 22),
 (23, 1, '23', TRUE, TRUE, 23),
-(24, 1, '24', FALSE, FALSE, 24 ),
+(24, 1, '24', FALSE, FALSE, null),
 (25, 1, '25', TRUE, TRUE, 25);
 
 
