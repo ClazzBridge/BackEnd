@@ -16,7 +16,8 @@ public class PostMapper {
             post.getContent(),
             post.getAuthor().getName(),
             post.getBoard().getBoardType().getDescription(),
-            post.getClassroom().getName()
+            post.getClassroom().getName(),
+            post.getCreatedAt()
         );
     }
 

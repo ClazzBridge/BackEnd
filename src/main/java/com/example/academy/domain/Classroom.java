@@ -21,5 +21,4 @@ public class Classroom {
 
     private boolean isOccupied;
 
-    // Getters and Setters
 }

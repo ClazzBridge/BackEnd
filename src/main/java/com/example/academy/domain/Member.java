@@ -44,7 +44,5 @@ public class Member {
     private String gitUrl;
     private String bio;
 
-    // Getters and Setters
-
 
 }

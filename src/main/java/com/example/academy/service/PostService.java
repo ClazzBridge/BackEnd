@@ -4,6 +4,7 @@ import com.example.academy.domain.Post;
 import com.example.academy.dto.PostDTO;
 import com.example.academy.mapper.PostMapper;
 import com.example.academy.repository.PostRepository;
+import java.util.Comparator;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,25 @@ public class PostService {
 
     public List<PostDTO> findAllPosts() {
         List<Post> posts = postRepository.findAll();
+        return postMapper.toDtoList(posts).stream()
+            .sorted(Comparator.comparing(PostDTO::getId).reversed()).toList();
+    }
+
+    public List<PostDTO> findAllFreePosts() {
+        List<Post> posts = postRepository.findAll()
+            .stream()
+            .filter(post -> post.getBoard().getBoardType().getDescription().equals("자유게시판"))
+            .toList();
+
+        return postMapper.toDtoList(posts);
+    }
+
+    public List<PostDTO> findAllNotificationPosts() {
+        List<Post> posts = postRepository.findAll()
+            .stream()
+            .filter(post -> post.getBoard().getBoardType().getDescription().equals("공지사항"))
+            .toList();
+
         return postMapper.toDtoList(posts);
     }
 }

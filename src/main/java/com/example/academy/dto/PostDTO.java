@@ -1,5 +1,13 @@
 package com.example.academy.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+
+
+@Getter
+@Setter
 public class PostDTO {
 
     private Long id;
@@ -9,66 +17,22 @@ public class PostDTO {
     private String boardType;
     private String classroomName;
 
-    // 생성자 및 getter, setter
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date createdAt;
 
     public PostDTO() {
     }
 
     public PostDTO(Long id, String title, String content, String authorName, String boardType,
-        String classroomName) {
+        String classroomName, Date createdAt) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.authorName = authorName;
         this.boardType = boardType;
         this.classroomName = classroomName;
+        this.createdAt = createdAt;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
-    }
-
-    public String getBoardType() {
-        return boardType;
-    }
-
-    public void setBoardType(String boardType) {
-        this.boardType = boardType;
-    }
-
-    public String getClassroomName() {
-        return classroomName;
-    }
-
-    public void setClassroomName(String classroomName) {
-        this.classroomName = classroomName;
-    }
 }
