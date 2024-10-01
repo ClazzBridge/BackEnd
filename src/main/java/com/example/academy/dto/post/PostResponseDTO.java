@@ -1,4 +1,4 @@
-package com.example.academy.dto;
+package com.example.academy.dto.post;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PostDTO {
+public class PostResponseDTO {
 
     private Long id;
     private String title;
@@ -20,10 +20,11 @@ public class PostDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
 
-    public PostDTO() {
+    public PostResponseDTO() {
     }
 
-    public PostDTO(Long id, String title, String content, String authorName, String boardType,
+    public PostResponseDTO(Long id, String title, String content, String authorName,
+        String boardType,
         String classroomName, Date createdAt) {
         this.id = id;
         this.title = title;

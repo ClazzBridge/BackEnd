@@ -18,4 +18,5 @@ public class ProfileImage {
     public String getPictureUrl() {
         return pictureUrl;
     }
+    
 }

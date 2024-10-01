@@ -1,13 +1,14 @@
 package com.example.academy.domain;
 
+import com.example.academy.common.BaseTimeEntity;
 import javax.persistence.*;
-import java.util.Date;
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
 @Getter
 @Table(name = "post")
-public class Post {
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +32,39 @@ public class Post {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    public Post() {
+    }
 
-    // Getters and Setters
+    @Builder
+    public Post(Long id, Board board, Classroom classroom, Member author, String title,
+        String content) {
+        this.id = id;
+        this.board = board;
+        this.classroom = classroom;
+        this.author = author;
+        this.title = title;
+        this.content = content;
+    }
+
+    @Builder
+    public Post(Board board, Classroom classroom, Member author, String title,
+        String content) {
+        this.board = board;
+        this.classroom = classroom;
+        this.author = author;
+        this.title = title;
+        this.content = content;
+    }
+
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 
 
 }
