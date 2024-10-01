@@ -32,7 +32,7 @@ public class ScheduleController {
           .body(scheduleList); // 데이터가 없으면 204 No Content
     }
 
-    return ResponseEntity.ok(scheduleList); // 데이터가 있으면 200 OK
+    return ResponseEntity.status(HttpStatus.OK).body(scheduleList); // 데이터가 있으면 200 OK
   }
 
   @GetMapping("/{id}")
@@ -41,7 +41,7 @@ public class ScheduleController {
 
     if (scheduleAddDTOOptional.isPresent()) {
       // 값이 있을 때는 200 OK와 함께 ScheduleAddDTO 반환
-      return ResponseEntity.ok(scheduleAddDTOOptional.get());
+      return ResponseEntity.status(HttpStatus.OK).body(scheduleAddDTOOptional.get());
     } else {
       // 값이 없을 때는 404 Not Found 반환
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -50,13 +50,14 @@ public class ScheduleController {
 
 
   @PostMapping("/add")
-  public String addSchedule(@RequestBody ScheduleAddDTO addDTO) {
+  public ResponseEntity<ScheduleAddDTO> addSchedule(@RequestBody ScheduleAddDTO addDTO) {
     scheduleService.addSchedule(addDTO);
-    return "ok";
-  }
+    return ResponseEntity.status(HttpStatus.OK).body(null);
+  }// return 값 ResponseE
 
   @PostMapping("/update")
   public String updateSchedule(@RequestBody ScheduleListDTO updateDTO) {
+    System.out.println("업데이트");
     scheduleService.updateSchedule(updateDTO);
     return "ok";
   }
@@ -70,6 +71,4 @@ public class ScheduleController {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: 일정 삭제 실패"); // 실패 시 404 응답
     }
   }
-
-
 }

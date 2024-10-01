@@ -2,6 +2,7 @@ package com.example.academy.jwt;
 
 import com.example.academy.domain.Member;
 import com.example.academy.dto.CustomUserDetails;
+import com.example.academy.type.MemberType;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -57,7 +58,7 @@ public class JwtFilter extends OncePerRequestFilter {
     Member member = new Member();
     member.setId(userId);
     member.setPassword("temppassword");  // 실제 비밀번호는 사용되지 않고 임시 비밀번호로 설정
-    member.setRole(Member.UserType.valueOf(role));
+    member.setMemberType(MemberType.valueOf(role.toUpperCase()));
 
     // 7. CustomUserDetails 객체 생성, 이 객체는 Spring Security에서 사용하는 사용자 정보 객체
     CustomUserDetails customUserDetails = new CustomUserDetails(member);

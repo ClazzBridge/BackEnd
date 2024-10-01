@@ -1,69 +1,48 @@
 package com.example.academy.domain;
 
-import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import com.example.academy.type.MemberType;
+import javax.persistence.*;
+import java.util.Date;
+import lombok.Data;
 
-
+@Data
 @Entity
-@Getter
-@Setter
+@Table(name = "member")
 public class Member {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;  // 자동 증가 ID
+  private Long id;
 
-  @Column(length = 100, unique = true)
-  private String userName;  // 사용자 계정 ID
+  @Column(unique = true, nullable = false)
+  private String memberId; //로그인용 아이디
 
-  @Column(length = 100)
-  private String password;  // 사용자 계정 비밀번호
+  @Column(nullable = false)
+  private String password;
 
-  @Column(length = 100)
-  private String name;  // 사용자 이름
+  @Column(nullable = false)
+  private String name;
 
-  @Column(unique = true)
-  private String email;  // 이메일 (고유)
+  @Column(unique = true, nullable = false)
+  private String email;
 
-  @Column(unique = true)
-  private String phone;  // 전화번호 (고유)
+  @Column(unique = true, nullable = false)
+  private String phone;
 
-  @Column(unique = true)
-  private String gitUrl;
-
-  @Column(columnDefinition = "TEXT")
-  private String bio;
-
-  @Column(name = "registration_date")
-  private LocalDate registrationDate;  // 가입 날짜
+  @Temporal(TemporalType.DATE)
+  private Date registrationDate;
 
   @Enumerated(EnumType.STRING)
-  @Column(length = 50)
-  private UserType role;  // 사용자 유형 (ENUM)
+  @Column(nullable = false)
+  private MemberType memberType;
 
+  @ManyToOne
+  @JoinColumn(name = "profile_image_id", nullable = false)
+  private ProfileImage profileImage;
 
-  @Column(name = "profile_image_id")
-  private int profileImageId;  // 프로필 사진 ID
-
-  @Column(columnDefinition = "TEXT")
-  private String experience;  // 강사 경력 정보 (optional)
-
-  public Member() {
-  }
-
-  public enum UserType {
-    ROLE_ADMIN,
-    ROLE_USER,
-    ROLE_STUDENT // 정의가 되어 있어야 합니다.
-  }
+  private String experience;
+  private String gitUrl;
+  private String bio;
 
 
 }

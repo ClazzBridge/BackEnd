@@ -81,7 +81,7 @@ public class JwtUtil {
 
     Long userId = getUserId(refreshToken);
     String role = getRole(refreshToken);
-    return createJWT(userId, role, 60 * 60 * 200L); // 720초
+    return createJWT(userId, role, 60 * 60 * 2L); // 7.2초
   }
 
   private Claims parseClaims(String token) {

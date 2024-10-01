@@ -4,22 +4,20 @@ import javax.persistence.*;
 import lombok.Data;
 
 @Data
-
 @Entity
-@Table(name = "classroom")
-public class Classroom {
+@Table(name = "profile_image")
+public class ProfileImage {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true, nullable = false)
-  private String name; //강의실 명
-
   @Column(nullable = false)
-  private int capacity; // 수용 인원
-
-  private boolean isOccupied; //점유 여부
+  private String pictureUrl;
 
   // Getters and Setters
+
+  public String getPictureUrl() {
+    return pictureUrl;
+  }
 }

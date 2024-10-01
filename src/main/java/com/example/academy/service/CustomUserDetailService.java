@@ -23,7 +23,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Optional<Member> userListOptional = userRepository.findByUserName(username);
+    Optional<Member> userListOptional = userRepository.findByName(username);
 
     // Optional에서 값 꺼내기
     Member member = userListOptional.orElseThrow(() ->

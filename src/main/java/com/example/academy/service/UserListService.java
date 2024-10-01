@@ -40,27 +40,30 @@ public class UserListService {
   /**
    * 사용자 이름과 비밀번호를 사용하여 로그인 인증을 시도합니다.
    *
-   * @param userName 사용자의 사용자 이름
+   * @param memberId 사용자의 사용자 이름
    * @param password 사용자의 비밀번호
    * @return 로그인 성공 시 LoginResponseDTO 객체를 포함한 Optional, 실패 시 빈 Optional
    */
-  public Optional<LoginResponseDTO> login(String userName, String password) {
+  public Optional<LoginResponseDTO> login(String memberId, String password) {
     // 사용자 이름으로 사용자 정보를 검색합니다.
-    Optional<Member> user = userRepository.findByUserName(userName);
-    Long userId = user.get().getId();
+    Optional<Member> user = userRepository.findByMemberId(memberId);
     // 사용자가 존재하는 경우
     if (user.isPresent()) {
-      System.out.println("User found: " + user.get().getUserName()); // 디버깅을 위한 로그
+      Long userId = user.get().getId(); // 이 부분을 isPresent() 확인 후에 위치시킵니다.
+      System.out.println("User found: " + user.get().getMemberId()); // 디버깅을 위한 로그
+
+      System.out.println("User found: " + user.get().getMemberId()); // 디버깅을 위한 로그
 
       // 비밀번호가 일치하는지 확인합니다.
       if (passwordEncoder.matches(password, user.get().getPassword())) {
         // 비밀번호가 일치하면 JWT 토큰을 생성합니다. - 7.2초
-        String accessToken = jwtUtil.createJWT(userId, user.get().getRole().toString(),
+        String accessToken = jwtUtil.createJWT(userId, user.get().getMemberType().toString(),
             60 * 60 * 2L);
         System.out.println("accessToken = " + accessToken);
 
         // 인증된 사용자에 대한 Refresh Token 생성 - 72000 - 1분 12초
-        String refreshToken = jwtUtil.createRefreshJWT(userId, user.get().getRole().toString(),
+        String refreshToken = jwtUtil.createRefreshJWT(userId,
+            user.get().getMemberType().toString(),
             60 * 60 * 20L);
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         // 클라이언트 JavaScript에서 접근 불가

@@ -5,9 +5,7 @@ import com.example.academy.domain.Schedule;
 import com.example.academy.dto.ScheduleAddDTO;
 import com.example.academy.dto.ScheduleListDTO;
 import com.example.academy.repository.ClassroomRepository;
-import com.example.academy.repository.CourseRepository;
 import com.example.academy.repository.ScheduleRepository;
-import com.example.academy.repository.StudentCourseRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +19,7 @@ public class ScheduleService {
   private final ClassroomRepository classroomRepository;
 
   public ScheduleService(ScheduleRepository scheduleRepository,
-      ClassroomRepository classroomRepository, StudentCourseRepository studentCourseRepository,
-      CourseRepository courseRepository) {
+      ClassroomRepository classroomRepository) {
     this.scheduleRepository = scheduleRepository;
     this.classroomRepository = classroomRepository;
   }
@@ -88,7 +85,7 @@ public class ScheduleService {
 
     String classroomName = schedule.getClassroomName();
 
-    Long classroomId = classroomRepository.findByName(classroomName).get().getId();
+    Long classroomId = classroomRepository.findByName(classroomName).orElseThrow().getId();
     String eventTitle = schedule.getEventTitle(); // 일정 제목
     LocalDateTime startDate = schedule.getStartDate(); // 일정 시작 날짜
     LocalDateTime endDate = schedule.getEndDate(); // 일정 종료 날짜

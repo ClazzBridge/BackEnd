@@ -9,8 +9,10 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<Member, Long> {
 
   // 사용자 이름으로만 조회
-  Optional<Member> findByUserName(String userName);
+  Optional<Member> findByName(String userName);
+
+  Optional<Member> findByMemberId(String memberId);
 
   // 사용자 이름이 존재하는지 여부 확인
-  boolean existsByUserName(String userName);
+  boolean existsByMemberId(String MemberId);
 }

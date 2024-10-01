@@ -65,8 +65,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     GrantedAuthority auth = iterator.next();
     String role = auth.getAuthority();
 
-    // 인증된 사용자에 대한 JWT 토큰 생성, 36000 => 720초
-    String token = jwtUtil.createJWT(userId, role, 60 * 60 * 200L);
+    // 인증된 사용자에 대한 JWT 토큰 생성, 36000 => 7.2초
+    String token = jwtUtil.createJWT(userId, role, 60 * 60 * 2L);
 
     // 인증된 사용자에 대한 Refresh Token 및 쿠키 생성 72000 => 7200초
     String refreshToken = jwtUtil.createRefreshJWT(userId, role, 60 * 60 * 2000L);
