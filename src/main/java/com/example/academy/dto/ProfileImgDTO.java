@@ -8,11 +8,11 @@ import lombok.Setter;
 public class ProfileImgDTO {
 
   private String pictureUrl;
-  private Long userId;
+  private Long memberId;
 
-  public ProfileImgDTO(String pictureUrl, Long userId) {
+  public ProfileImgDTO(String pictureUrl, Long memberId) {
     this.pictureUrl = pictureUrl;
-    this.userId = userId;
+    this.memberId = memberId;
   }
 }
 

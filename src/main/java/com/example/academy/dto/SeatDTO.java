@@ -8,11 +8,11 @@ import lombok.Setter;
 public class SeatDTO {
 
   private String seatNumber;
-  private Long userId;
+  private Long memberId;
 
-  public SeatDTO(String seatNumber, Long userId) {
+  public SeatDTO(String seatNumber, Long memberId) {
     this.seatNumber = seatNumber;
-    this.userId = userId;
+    this.memberId = memberId;
   }
 }
 

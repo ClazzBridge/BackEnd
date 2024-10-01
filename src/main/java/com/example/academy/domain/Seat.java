@@ -39,15 +39,19 @@ public class Seat {
 
   @NotNull
   @Column(nullable = false)
-  private boolean seatPresence = true;
+  private boolean isExist = true;
 
   @NotNull
   @Column(nullable = false)
   private boolean isOccupied = false;
 
+  @NotNull
+  @Column(nullable = false)
+  private boolean isUnderstand = false;
+
   @ManyToOne
-  @JoinColumn(name = "user_id")
-  private UserList user;
+  @JoinColumn(name = "member_id")
+  private Member member;
 
   @Transient // 이 필드는 DB와 무관하게 설정
   private boolean isSelf;

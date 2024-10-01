@@ -1,10 +1,10 @@
 package com.example.academy.controller;
 
+import com.example.academy.domain.Member;
 import com.example.academy.domain.Seat;
-import com.example.academy.domain.UserList;
 import com.example.academy.dto.SeatDTO;
 import com.example.academy.service.SeatService;
-import com.example.academy.service.UserListService;
+import com.example.academy.service.MemberService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,31 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class SeatController {
 
   private final SeatService seatService;
-  private final UserListService userListService; // UserService 주입 필요
+  private final MemberService memberService; // UserService 주입 필요
 
   @Autowired
-  public SeatController(SeatService seatService, UserListService userListService) {
+  public SeatController(SeatService seatService, MemberService memberService) {
     this.seatService = seatService;
-    this.userListService = userListService; // UserService 초기화
-  }
-
-  @GetMapping
-  public ResponseEntity<List<Seat>> getSeats(@RequestHeader("User-Email") String userEmail) {
-    // 더미 데이터를 활용해 사용자를 'kwon@example.com'로 고정
-    UserList currentUserList = userListService.findByEmail("kwon@example.com"); // '권준성' 사용자를 불러옴
-
-    List<Seat> seats = seatService.getAllSeat();
-
-    // 좌석마다 본인 여부를 확인
-    for (Seat seat : seats) {
-      if (seat.getUser() != null && seat.getUser().getEmail().equals(currentUserList.getEmail())) {
-        seat.setSelf(true); // 본인일 경우 true 설정
-      } else {
-        seat.setSelf(false);
-      }
-    }
-
-    return ResponseEntity.ok(seats);
+    this.memberService = memberService; // UserService 초기화
   }
 
   //좌석
