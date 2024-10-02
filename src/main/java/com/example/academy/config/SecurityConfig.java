@@ -43,51 +43,26 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-//        http
-//                .cors((cors) -> cors
-//                        .configurationSource(new CorsConfigurationSource() {
-//                            @Override
-//                            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-//                                CorsConfiguration configuration = new CorsConfiguration();
-//                                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
-//                                configuration.setAllowedMethods(Collections.singletonList("*"));
-//                                configuration.setAllowCredentials(true);
-//                                configuration.setAllowedHeaders(Collections.singletonList("*"));
-//                                configuration.setMaxAge(3600L);
-//
-//                                configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-//
-//                                return null;
-//                            }
-//                        }));
-
-    //csrf disable
     http
-        .csrf((auth) -> auth.disable());
-    //Form 로그인 방식 disable
-    http
-        .formLogin((auth) -> auth.disable());
-    //http basic 인증 방식 disable
-    http
-        .httpBasic((auth) -> auth.disable());
-    http
-        .authorizeHttpRequests((auth) -> auth
-            .regexMatchers("/api/.*", "/auth/.*", "/", "/userlist/.*").permitAll() //특정 경로에 대한 접근 허용
-            .regexMatchers("/admin").hasRole("ADMIN") // ADMIN 역할을 가진 사용자만 접근허용
+        .cors() // CORS 필터를 사용하도록 설정
+        .and()
+        .csrf().disable() // CSRF 비활성화
+        .formLogin().disable() // Form 로그인 방식 비활성화
+        .httpBasic().disable() // HTTP Basic 인증 비활성화
+        .authorizeHttpRequests(auth -> auth
+            .regexMatchers("/api/.*", "/auth/.*", "/").permitAll() // 특정 경로에 대한 접근 허용
+//            .regexMatchers("/admin", "/userlist/.*").hasRole("ADMIN") // ADMIN 역할을 가진 사용자만 접근 허용
+            .regexMatchers("/admin", "/userlist/.*")
+            .hasAnyRole("ADMIN", "STUDENT", "TEACHER") // 여러 role에 권한 부여 hasAnyRole
             .anyRequest().authenticated());
 
-    http
-        .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
+    http.addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
+    http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
+        UsernamePasswordAuthenticationFilter.class);
 
-    http
-        .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
-            UsernamePasswordAuthenticationFilter.class);
+    http.sessionManagement(session -> session
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-    // 세션 설정
-    http
-        .sessionManagement((session) -> session
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
     return http.build();
   }
 }

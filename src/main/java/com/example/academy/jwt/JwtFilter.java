@@ -32,7 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     // 2. Authorization 헤더가 없거나 Bearer 토큰으로 시작하지 않으면 필터를 통과시키고 아무 작업도 하지 않음
     if (authorization == null || !authorization.startsWith("Bearer ")) {
-      System.out.println("authorization : " + authorization);
+      System.out.println("JWTFilter . authorization : " + authorization);
       filterChain.doFilter(request, response);
 
       return;  // 필터링 중단 후 요청을 다음 필터로 전달

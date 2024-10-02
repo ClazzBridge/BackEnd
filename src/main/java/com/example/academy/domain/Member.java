@@ -43,6 +43,5 @@ public class Member {
   private String experience;
   private String gitUrl;
   private String bio;
-
-
+  
 }

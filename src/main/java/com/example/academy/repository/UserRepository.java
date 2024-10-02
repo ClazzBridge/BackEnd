@@ -13,6 +13,11 @@ public interface UserRepository extends JpaRepository<Member, Long> {
 
   Optional<Member> findByMemberId(String memberId);
 
-  // 사용자 이름이 존재하는지 여부 확인
-  boolean existsByMemberId(String MemberId);
+
+  boolean existsByMemberId(String memberId);
+
+  boolean existsByEmail(String email);
+
+  boolean existsByPhone(String phone);
+
 }

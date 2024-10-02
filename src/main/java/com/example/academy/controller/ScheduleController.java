@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,16 +51,25 @@ public class ScheduleController {
 
 
   @PostMapping("/add")
-  public ResponseEntity<ScheduleAddDTO> addSchedule(@RequestBody ScheduleAddDTO addDTO) {
-    scheduleService.addSchedule(addDTO);
-    return ResponseEntity.status(HttpStatus.OK).body(null);
-  }// return 값 ResponseE
-
-  @PostMapping("/update")
-  public String updateSchedule(@RequestBody ScheduleListDTO updateDTO) {
+  public ResponseEntity<?> addSchedule(@RequestBody ScheduleAddDTO addDTO) {
+    try {
+      scheduleService.addSchedule(addDTO);
+      return ResponseEntity.status(HttpStatus.CREATED).body(addDTO);
+    } catch (IllegalArgumentException e) {
+      // Classroom을 찾지 못한 경우
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    } catch (Exception e) {
+      // 그 외의 예외 처리
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("An error occurred: " + e.getMessage());
+    }
+  }
+  
+  @PutMapping("/update")
+  public ResponseEntity<ScheduleListDTO> updateSchedule(@RequestBody ScheduleListDTO updateDTO) {
     System.out.println("업데이트");
     scheduleService.updateSchedule(updateDTO);
-    return "ok";
+    return ResponseEntity.status(HttpStatus.OK).body(updateDTO);
   }
 
   @DeleteMapping("/delete/{id}")

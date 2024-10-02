@@ -8,6 +8,8 @@ import com.example.academy.repository.UserRepository;
 import java.util.Optional;
 import javax.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +46,7 @@ public class UserListService {
    * @param password 사용자의 비밀번호
    * @return 로그인 성공 시 LoginResponseDTO 객체를 포함한 Optional, 실패 시 빈 Optional
    */
-  public Optional<LoginResponseDTO> login(String memberId, String password) {
+  public ResponseEntity<LoginResponseDTO> login(String memberId, String password) {
     // 사용자 이름으로 사용자 정보를 검색합니다.
     Optional<Member> user = userRepository.findByMemberId(memberId);
     // 사용자가 존재하는 경우
@@ -56,15 +58,15 @@ public class UserListService {
 
       // 비밀번호가 일치하는지 확인합니다.
       if (passwordEncoder.matches(password, user.get().getPassword())) {
-        // 비밀번호가 일치하면 JWT 토큰을 생성합니다. - 7.2초
+        // 비밀번호가 일치하면 JWT 토큰을 생성합니다. - 72초
         String accessToken = jwtUtil.createJWT(userId, user.get().getMemberType().toString(),
-            60 * 60 * 2L);
+            60 * 60 * 20L);
         System.out.println("accessToken = " + accessToken);
 
-        // 인증된 사용자에 대한 Refresh Token 생성 - 72000 - 1분 12초
+        // 인증된 사용자에 대한 Refresh Token 생성 - 7200000 - 7200초
         String refreshToken = jwtUtil.createRefreshJWT(userId,
             user.get().getMemberType().toString(),
-            60 * 60 * 20L);
+            60 * 60 * 2000L);
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         // 클라이언트 JavaScript에서 접근 불가
         refreshTokenCookie.setSecure(false);
@@ -76,7 +78,7 @@ public class UserListService {
 
         // LoginResponseDTO 객체를 생성하고 반환합니다.
         LoginResponseDTO response = new LoginResponseDTO(accessToken, refreshTokenCookie);
-        return Optional.of(response);
+        return ResponseEntity.ok(response);
       } else {
         System.out.println("Password does not match"); // 비밀번호 불일치 로그
       }
@@ -84,6 +86,6 @@ public class UserListService {
       System.out.println("User not found"); // 사용자 미발견 로그
     }
     // 로그인 실패 시 빈 Optional을 반환합니다.
-    return Optional.empty();
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 사용자 미발견 시 404 상태 코드 반환
   }
 }

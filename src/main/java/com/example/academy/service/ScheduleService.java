@@ -85,6 +85,13 @@ public class ScheduleService {
 
     String classroomName = schedule.getClassroomName();
 
+    // classroomId를 찾기
+    Optional<Classroom> optionalClassroom = classroomRepository.findByName(classroomName);
+    if (optionalClassroom.isEmpty()) {
+      // classroomId를 찾지 못하면 null을 반환하거나 적절한 값을 처리하도록 설정
+      throw new IllegalArgumentException("Classroom not found: " + classroomName);
+    }
+    
     Long classroomId = classroomRepository.findByName(classroomName).orElseThrow().getId();
     String eventTitle = schedule.getEventTitle(); // 일정 제목
     LocalDateTime startDate = schedule.getStartDate(); // 일정 시작 날짜
