@@ -68,11 +68,11 @@ public class Question {
     this.content = content;
   }
 
-  public void toggleSolved() {
-    isSolved = !isSolved;
+  public void toggleSolved(boolean solved) {
+    isSolved = solved;
   }
 
-  public void toggleRecommended() {
-    isRecommended = !isRecommended;
+  public void toggleRecommended(boolean recommended) {
+    isRecommended = recommended;
   }
 }

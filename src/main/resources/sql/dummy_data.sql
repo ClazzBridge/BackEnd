@@ -1,6 +1,6 @@
 -- 기존 테이블 삭제
-drop table if exists Question restrict;
 drop table if exists Answer restrict;
+drop table if exists Question restrict;
 drop table if exists User restrict;
 
 -- User (사용자) 테이블 생성
@@ -15,7 +15,7 @@ CREATE TABLE User
 CREATE TABLE Question
 (
     id             int AUTO_INCREMENT PRIMARY KEY,     -- 질문 고유 식별자 (Primary Key)
-    user_id        INT,                                -- 작성자 ID
+    user_id        INT  NOT NULL,                      -- 작성자 ID
     content        TEXT NOT NULL,                      -- 질문 제목
     create_date    DATETIME DEFAULT CURRENT_TIMESTAMP, -- 질문 기재 시간
     is_solved      BOOLEAN  DEFAULT FALSE,             -- 답변 완료 여부
@@ -26,8 +26,8 @@ CREATE TABLE Question
 CREATE TABLE Answer
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,      -- 답변 고유 식별자 (Primary Key)
-    question_id INT,                                 -- 질문 ID
-    teacher_id  INT,                                 -- 작성자 ID
+    question_id INT  NOT NULL,                       -- 질문 ID
+    teacher_id  INT  NOT NULL,                       -- 작성자 ID
     content     TEXT NOT NULL,                       -- 답변 내용
     created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,  -- 답변 작성 시각
     updated_at  DATETIME ON UPDATE CURRENT_TIMESTAMP -- 답변 수정 시각
@@ -36,14 +36,14 @@ CREATE TABLE Answer
 -- Answer 테이블에 question_id와 user_id에 대한 외래 키 추가
 ALTER TABLE Answer
     ADD CONSTRAINT fk_question_Answer
-        FOREIGN KEY (question_id) REFERENCES Question (id),
+        FOREIGN KEY (question_id) REFERENCES Question (id) ON DELETE CASCADE,
     ADD CONSTRAINT fk_teacher_Answer
-        FOREIGN KEY (teacher_id) REFERENCES User (id) ON DELETE SET NULL;
+        FOREIGN KEY (teacher_id) REFERENCES User (id);
 
 -- Question 테이블에 author_id에 대한 외래 키 추가
 ALTER TABLE Question
     ADD CONSTRAINT fk_user_id_Question
-        FOREIGN KEY (user_id) REFERENCES User (id) ON DELETE SET NULL;
+        FOREIGN KEY (user_id) REFERENCES User (id);
 
 -- User 더미 데이터 생성
 -- insert into User values(1, 'djdj12', '1111', '김창호',  'user1@test.com', '010-1111-1111', '2024-03-03', 'Teacher', 1, '사자의 왕 백수', 'www.dd.com', 'sexy boy');

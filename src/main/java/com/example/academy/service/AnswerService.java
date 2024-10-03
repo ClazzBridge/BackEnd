@@ -1,6 +1,7 @@
 package com.example.academy.service;
 
 import com.example.academy.domain.Answer;
+import com.example.academy.domain.Question;
 import com.example.academy.domain.User;
 import com.example.academy.dto.AnswerCreateDTO;
 import com.example.academy.dto.AnswerReadDTO;
@@ -19,12 +20,14 @@ public class AnswerService {
   private final AnswerRepository answerRepository;
   private final AnswerMapper answerMapper = AnswerMapper.INSTANCE;
   private final UserRepository userRepository;
-  private QuestionRepository questionRepository;
+  private final QuestionRepository questionRepository;
 
   @Autowired
-  public AnswerService(AnswerRepository answerRepository, UserRepository userRepository) {
+  public AnswerService(AnswerRepository answerRepository, UserRepository userRepository,
+      QuestionRepository questionRepository) {
     this.answerRepository = answerRepository;
     this.userRepository = userRepository;
+    this.questionRepository = questionRepository;
   }
 
 //  public List<AnswerReadDTO> getAllAnswer() {
@@ -32,13 +35,18 @@ public class AnswerService {
 //  }
 
   public AnswerReadDTO createAnswer(AnswerCreateDTO answerCreateDTO) {
+    System.out.println(answerCreateDTO.getUserId());
+    System.out.println(answerCreateDTO.getQuestionId());
+
     User user = userRepository.findById(answerCreateDTO.getUserId()).orElseThrow();
+    Question question = questionRepository.findById(answerCreateDTO.getQuestionId()).orElseThrow();
     String content = answerCreateDTO.getContent();
 
     Answer newAnswer = answerMapper.answerCreateDTOToAnswer(answerCreateDTO, user);
 
-    newAnswer.setContent(content);
     newAnswer.setUser(user);
+    newAnswer.setQuestion(question);
+    newAnswer.setContent(content);
 
     Answer createdAnswer = answerRepository.save(newAnswer);
 
@@ -59,8 +67,16 @@ public class AnswerService {
   }
 
   public List<AnswerReadDTO> getAnswersByQuestionId(Long id) {
+    List<AnswerReadDTO> answerReadDTOList = answerMapper.answersToAnswerReadDTO(
+        answerRepository.findByQuestionId(id));
 
-    return answerMapper.answersToAnswerReadDTO(answerRepository.findByQuestionId(id));
+    for (AnswerReadDTO answerReadDTO : answerReadDTOList) {
+      Answer existingAnswer = answerRepository.findById(answerReadDTO.getId()).orElseThrow();
+      User user = existingAnswer.getUser();
+      answerReadDTO.setUserName(user.getName());
+    }
+
+    return answerReadDTOList;
   }
 
   public Answer getAnswerById(Long id) {

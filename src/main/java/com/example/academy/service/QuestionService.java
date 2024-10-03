@@ -4,6 +4,8 @@ import com.example.academy.domain.Question;
 import com.example.academy.domain.User;
 import com.example.academy.dto.QuestionCreateDTO;
 import com.example.academy.dto.QuestionReadDTO;
+import com.example.academy.dto.QuestionToggleRecommendedDTO;
+import com.example.academy.dto.QuestionToggleSolvedDTO;
 import com.example.academy.dto.QuestionUpdateDTO;
 import com.example.academy.mapper.QuestionMapper;
 import com.example.academy.repository.QuestionRepository;
@@ -61,19 +63,22 @@ public class QuestionService {
     questionRepository.deleteById(id);
   }
 
-  public QuestionReadDTO completeQuestion(Long id) {
-    Question existingQuestion = questionRepository.findById(id).orElseThrow();
+  public QuestionReadDTO completeQuestion(QuestionToggleSolvedDTO questionToggleSolvedDTO) {
+    Question existingQuestion = questionRepository.findById(questionToggleSolvedDTO.getId())
+        .orElseThrow();
 
-    existingQuestion.toggleSolved();
-    questionRepository.save(existingQuestion);
+    existingQuestion.toggleSolved(questionToggleSolvedDTO.isSolved());
+    Question updatedQuestion = questionRepository.save(existingQuestion);
 
-    return questionMapper.questionToQuestionReadDTO(existingQuestion, existingQuestion.getUser());
+    return questionMapper.questionToQuestionReadDTO(updatedQuestion, updatedQuestion.getUser());
   }
 
-  public QuestionReadDTO recommendQuestion(Long id) {
-    Question existingQuestion = questionRepository.findById(id).orElseThrow();
+  public QuestionReadDTO recommendQuestion(
+      QuestionToggleRecommendedDTO questionToggleRecommendedDTO) {
+    Question existingQuestion = questionRepository.findById(questionToggleRecommendedDTO.getId())
+        .orElseThrow();
 
-    existingQuestion.toggleRecommended();
+    existingQuestion.toggleRecommended(questionToggleRecommendedDTO.isRecommended());
     questionRepository.save(existingQuestion);
 
     return questionMapper.questionToQuestionReadDTO(existingQuestion, existingQuestion.getUser());

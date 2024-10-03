@@ -2,6 +2,8 @@ package com.example.academy.controller;
 
 import com.example.academy.dto.QuestionCreateDTO;
 import com.example.academy.dto.QuestionReadDTO;
+import com.example.academy.dto.QuestionToggleRecommendedDTO;
+import com.example.academy.dto.QuestionToggleSolvedDTO;
 import com.example.academy.dto.QuestionUpdateDTO;
 import com.example.academy.service.QuestionService;
 import java.util.HashMap;
@@ -100,15 +102,19 @@ public class QuestionController {
     return ResponseEntity.noContent().build();
   }
 
-  @PutMapping("/{id}/complete")
-  public ResponseEntity<QuestionReadDTO> toggleQuestionComplete(@PathVariable("id") Long id) {
-    QuestionReadDTO updatedQuestionReadDTO = questionService.completeQuestion(id);
+  @PutMapping("/solved")
+  public ResponseEntity<QuestionReadDTO> toggleQuestionComplete(
+      @RequestBody QuestionToggleSolvedDTO questionToggleSolvedDTO) {
+    QuestionReadDTO updatedQuestionReadDTO = questionService.completeQuestion(
+        questionToggleSolvedDTO);
     return ResponseEntity.status(HttpStatus.OK).body(updatedQuestionReadDTO);
   }
 
-  @PutMapping("/{id}/recommend")
-  public ResponseEntity<QuestionReadDTO> toggleQuestionRecommend(@PathVariable("id") Long id) {
-    QuestionReadDTO updatedQuestionReadDTO = questionService.recommendQuestion(id);
+  @PutMapping("/recommended")
+  public ResponseEntity<QuestionReadDTO> toggleQuestionRecommend(
+      @RequestBody QuestionToggleRecommendedDTO questionToggleRecommendedDTO) {
+    QuestionReadDTO updatedQuestionReadDTO = questionService.recommendQuestion(
+        questionToggleRecommendedDTO);
     return ResponseEntity.status(HttpStatus.OK).body(updatedQuestionReadDTO);
   }
 

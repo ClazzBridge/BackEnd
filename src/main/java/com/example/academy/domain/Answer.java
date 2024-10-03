@@ -30,11 +30,11 @@ public class Answer {
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "question_id")
+  @JoinColumn(name = "question_id", nullable = false)
   private Question question;
 
   @OneToOne
-  @JoinColumn(name = "teacher_id")
+  @JoinColumn(name = "teacher_id", nullable = false)
   private User user;
 
   @NotNull  // null을 허용하지 않음

@@ -61,15 +61,14 @@ public class AnswerController {
     return ResponseEntity.ok(listAnswerReadDTO);  // 답변 목록을 응답으로 반환
   }
 
-  @PostMapping("")
+  @PostMapping()
   public ResponseEntity<AnswerReadDTO> createAnswer(@RequestBody AnswerCreateDTO answerCreateDTO) {
     AnswerReadDTO newAnswerReadDTO = answerService.createAnswer(answerCreateDTO);
     return ResponseEntity.status(HttpStatus.CREATED).body(newAnswerReadDTO);
   }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<AnswerReadDTO> updateQuestion(
-      @RequestBody AnswerUpdateDTO answerUpdateDTO) {
+  @PutMapping()
+  public ResponseEntity<AnswerReadDTO> updateAnswer(@RequestBody AnswerUpdateDTO answerUpdateDTO) {
     AnswerReadDTO updatedAnswerReadDTO = answerService.updateAnswer(answerUpdateDTO);
     return ResponseEntity.ok(updatedAnswerReadDTO);
   }
