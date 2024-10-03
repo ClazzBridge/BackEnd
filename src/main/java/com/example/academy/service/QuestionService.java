@@ -1,66 +1,82 @@
 package com.example.academy.service;
 
 import com.example.academy.domain.Question;
+import com.example.academy.domain.User;
 import com.example.academy.dto.QuestionCreateDTO;
 import com.example.academy.dto.QuestionReadDTO;
 import com.example.academy.dto.QuestionUpdateDTO;
+import com.example.academy.mapper.QuestionMapper;
 import com.example.academy.repository.QuestionRepository;
+import com.example.academy.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class QuestionService {
 
-  private QuestionRepository questionRepository;
+  private final QuestionRepository questionRepository;
+  private final UserRepository userRepository;
+  private final QuestionMapper questionMapper = QuestionMapper.INSTANCE;
 
   @Autowired
-  public QuestionService(QuestionRepository questionRepository) {
+  public QuestionService(QuestionRepository questionRepository, UserRepository userRepository) {
     this.questionRepository = questionRepository;
+    this.userRepository = userRepository;
   }
 
   public List<QuestionReadDTO> getAllQuestions() {
     return questionRepository.findAllQuestionReadDTOs();
   }
 
-  public Question getQuestionById(Long id) {
-    return questionRepository.findById(id).orElseThrow();
+  public QuestionReadDTO getQuestionById(Long id) {
+    Question question = questionRepository.findById(id).orElse(null);
+    return questionMapper.questionToQuestionReadDTO(question, question.getUser());
   }
 
-  public Question createQuestion(QuestionCreateDTO questionCreateDTO) {
-    String content = questionCreateDTO.getContent();
+  public QuestionReadDTO createQuestion(QuestionCreateDTO questionCreateDTO) {
+    User user = userRepository.findById(questionCreateDTO.getUserId())
+        .orElseThrow(() -> new RuntimeException("User not found"));
+    Question newQuestion = questionMapper.questionCreateDTOToQuestion(questionCreateDTO, user);
+    Question savedQuestion = questionRepository.save(newQuestion);
 
-    Question question = new Question();
-    question.setContent(content);
-
-    return questionRepository.save(question);
+    return questionMapper.questionToQuestionReadDTO(savedQuestion, user);
   }
 
-  public Question updateQuestion(Long id, QuestionUpdateDTO questionUpdateDTO) {
-    Question existingQuestion = questionRepository.findById(id).orElseThrow();
-    existingQuestion.setContent(questionUpdateDTO.getContent());
+  public QuestionReadDTO updateQuestion(QuestionUpdateDTO questionUpdateDTO) {
+    Long existingQuestionId = questionUpdateDTO.getId();
+    Question existingQuestion = questionRepository.findById(existingQuestionId).orElseThrow();
 
-    return questionRepository.save(existingQuestion);
+    existingQuestion.updateContent(questionUpdateDTO.getContent());
+    questionRepository.save(existingQuestion);
+
+    return questionMapper.questionToQuestionReadDTO(existingQuestion, existingQuestion.getUser());
   }
 
   public void deleteQuestion(Long id) {
     questionRepository.deleteById(id);
   }
 
-  public Question completeQuestion(Long id) {
+  public QuestionReadDTO completeQuestion(Long id) {
     Question existingQuestion = questionRepository.findById(id).orElseThrow();
-    existingQuestion.setSolved(!existingQuestion.isSolved());
 
-    return questionRepository.save(existingQuestion);
+    existingQuestion.toggleSolved();
+    questionRepository.save(existingQuestion);
+
+    return questionMapper.questionToQuestionReadDTO(existingQuestion, existingQuestion.getUser());
   }
 
-  public Question recommendQuestion(Long id) {
+  public QuestionReadDTO recommendQuestion(Long id) {
     Question existingQuestion = questionRepository.findById(id).orElseThrow();
-    existingQuestion.setRecommended(!existingQuestion.isRecommended());
 
-    return questionRepository.save(existingQuestion);
+    existingQuestion.toggleRecommended();
+    questionRepository.save(existingQuestion);
+
+    return questionMapper.questionToQuestionReadDTO(existingQuestion, existingQuestion.getUser());
   }
 
   public Page<QuestionReadDTO> getPageQuestions(Pageable pageable) {

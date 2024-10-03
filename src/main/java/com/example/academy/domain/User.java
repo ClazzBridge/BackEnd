@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,8 +28,6 @@ enum UserType {
 @AllArgsConstructor // Lombok 라이브러리로, 모든 필드를 인자로 받는 생성자를 자동으로 생성.
 public class User {
 
-  @NotNull // 해당 필드가 null이면 안 된다는 제약 조건을 명시.
-  @Size(min = 0) // 해당 필드의 크기나 길이에 대한 제약을 설정. min = 0은 음수가 될 수 없음을 의미.
   @Id // 해당 필드가 테이블의 기본 키임을 나타냄.
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   // 기본 키 값을 자동 생성하는 전략을 설정. IDENTITY 전략은 DB에서 자동으로 키 값을 생성.

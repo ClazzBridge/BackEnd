@@ -1,7 +1,7 @@
 package com.example.academy.controller;
 
-import com.example.academy.domain.Answer;
 import com.example.academy.dto.AnswerCreateDTO;
+import com.example.academy.dto.AnswerReadDTO;
 import com.example.academy.dto.AnswerUpdateDTO;
 import com.example.academy.service.AnswerService;
 import java.util.List;
@@ -47,35 +47,35 @@ public class AnswerController {
    * 질문 CR*UD 답변 CRUD 질문 추천 질문 완료
    */
 
-  // Answer CRUD
-  @GetMapping("")
-  public ResponseEntity<List<Answer>> getAllAnswer() {
-    List<Answer> listAnswer = answerService.getAllAnswer();
-    return ResponseEntity.ok(listAnswer);
-  }
+//  // Answer CRUD
+//  @GetMapping("")
+//  public ResponseEntity<List<AnswerReadDTO>> getAllAnswer() {
+//    List<AnswerReadDTO> listAnswerReadDTO = answerService.getAllAnswer();
+//    return ResponseEntity.ok(listAnswerReadDTO);
+//  }
 
   // 특정 질문의 답변 목록을 반환하는 API
   @GetMapping("/{id}")
-  public ResponseEntity<List<Answer>> getAnswersByQuestionId(@PathVariable Long id) {
-    List<Answer> answers = answerService.getAnswersByQuestionId(id);
-    return ResponseEntity.ok(answers);  // 답변 목록을 응답으로 반환
+  public ResponseEntity<List<AnswerReadDTO>> getAnswersByQuestionId(@PathVariable Long id) {
+    List<AnswerReadDTO> listAnswerReadDTO = answerService.getAnswersByQuestionId(id);
+    return ResponseEntity.ok(listAnswerReadDTO);  // 답변 목록을 응답으로 반환
   }
 
   @PostMapping("")
-  public ResponseEntity<Answer> createAnswer(@RequestBody AnswerCreateDTO answerCreateDTO) {
-    Answer newAnswer = answerService.createAnswer(answerCreateDTO);
-    return ResponseEntity.status(HttpStatus.CREATED).body(newAnswer);
+  public ResponseEntity<AnswerReadDTO> createAnswer(@RequestBody AnswerCreateDTO answerCreateDTO) {
+    AnswerReadDTO newAnswerReadDTO = answerService.createAnswer(answerCreateDTO);
+    return ResponseEntity.status(HttpStatus.CREATED).body(newAnswerReadDTO);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Answer> updateQuestion(@PathVariable Long id,
+  public ResponseEntity<AnswerReadDTO> updateQuestion(
       @RequestBody AnswerUpdateDTO answerUpdateDTO) {
-    Answer updateAnswer = answerService.updateAnswer(id, answerUpdateDTO);
-    return ResponseEntity.ok(updateAnswer);
+    AnswerReadDTO updatedAnswerReadDTO = answerService.updateAnswer(answerUpdateDTO);
+    return ResponseEntity.ok(updatedAnswerReadDTO);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteAnswer(@PathVariable Long id) {
+  public ResponseEntity<?> deleteAnswer(@PathVariable Long id) {
     answerService.deleteAnswer(id);
     return ResponseEntity.noContent().build();
   }

@@ -20,21 +20,25 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
   @Query("select "
       + "new com.example.academy.dto.QuestionReadDTO("
       + "q.id,"
+      + " u.name,"
       + " q.content,"
       + " q.isSolved,"
       + " q.isRecommended,"
       + " q.createDate) "
-      + "from Question q")
+      + "from Question q, User u "
+      + "where q.user = u")
   List<QuestionReadDTO> findAllQuestionReadDTOs();
 
   @Query("select "
       + "new com.example.academy.dto.QuestionReadDTO("
       + "q.id,"
+      + " u.name,"
       + " q.content,"
       + " q.isSolved,"
       + " q.isRecommended,"
       + " q.createDate) "
-      + "from Question q")
+      + "from Question q, User u "
+      + "where q.user = u")
   Page<QuestionReadDTO> findAllQuestionReadDTOs(Pageable pageable);
 
 }

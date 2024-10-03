@@ -1,16 +1,15 @@
 package com.example.academy.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class QuestionUpdateDTO {
 
   private String content;
-
-  public QuestionUpdateDTO(String content) {
-    this.content = content;
-  }
+  private Long id;
 
 }

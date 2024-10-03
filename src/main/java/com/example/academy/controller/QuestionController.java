@@ -1,12 +1,10 @@
 package com.example.academy.controller;
 
-import com.example.academy.domain.Question;
 import com.example.academy.dto.QuestionCreateDTO;
 import com.example.academy.dto.QuestionReadDTO;
 import com.example.academy.dto.QuestionUpdateDTO;
 import com.example.academy.service.QuestionService;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -62,13 +60,7 @@ public class QuestionController {
    */
 
   //Question CRUD
-  @GetMapping("/all")
-  public ResponseEntity<List<QuestionReadDTO>> getAllQuestions() {
-    List<QuestionReadDTO> listQuestion = questionService.getAllQuestions();
-    return ResponseEntity.ok(listQuestion);
-  }
-
-  @GetMapping("")
+  @GetMapping
   public ResponseEntity<Map<String, Object>> getQuestions(@RequestParam("page") int page) {
     Pageable pageable = PageRequest.of(page - 1, 10);  // 페이지 당 10개의 질문을 가져오기 위해 Pageable 설정
 
@@ -83,40 +75,41 @@ public class QuestionController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Question> getQuestionById(@PathVariable("id") Long id) {
-    Question question = questionService.getQuestionById(id);
-    return ResponseEntity.ok(question);
+  public ResponseEntity<QuestionReadDTO> getQuestionById(@PathVariable("id") Long id) {
+    QuestionReadDTO questionReadDTO = questionService.getQuestionById(id);
+    return ResponseEntity.ok(questionReadDTO);
   }
 
-  @PostMapping("/")
-  public ResponseEntity<Question> createQuestion(@RequestBody QuestionCreateDTO createQuestionDTO) {
-    Question newQuestion = questionService.createQuestion(createQuestionDTO);
-    return ResponseEntity.status(HttpStatus.CREATED).body(newQuestion);
+  @PostMapping
+  public ResponseEntity<QuestionReadDTO> createQuestion(
+      @RequestBody QuestionCreateDTO createQuestionDTO) {
+    QuestionReadDTO newQuestionReadDTO = questionService.createQuestion(createQuestionDTO);
+    return ResponseEntity.status(HttpStatus.CREATED).body(newQuestionReadDTO);
   }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<Question> updateQuestion(@PathVariable("id") Long id,
+  @PutMapping()
+  public ResponseEntity<QuestionReadDTO> updateQuestion(
       @RequestBody QuestionUpdateDTO questionUpdateDTO) {
-    Question updateQuestion = questionService.updateQuestion(id, questionUpdateDTO);
-    return ResponseEntity.ok(updateQuestion);
+    QuestionReadDTO updatedQuestionReadDTO = questionService.updateQuestion(questionUpdateDTO);
+    return ResponseEntity.status(HttpStatus.OK).body(updatedQuestionReadDTO);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteQuestion(@PathVariable("id") Long id) {
+  public ResponseEntity<?> deleteQuestion(@PathVariable("id") Long id) {
     questionService.deleteQuestion(id);
     return ResponseEntity.noContent().build();
   }
 
   @PutMapping("/{id}/complete")
-  public ResponseEntity<Question> toggleQuestionComplete(@PathVariable("id") Long id) {
-    Question question = questionService.completeQuestion(id);
-    return ResponseEntity.status(HttpStatus.OK).body(question);
+  public ResponseEntity<QuestionReadDTO> toggleQuestionComplete(@PathVariable("id") Long id) {
+    QuestionReadDTO updatedQuestionReadDTO = questionService.completeQuestion(id);
+    return ResponseEntity.status(HttpStatus.OK).body(updatedQuestionReadDTO);
   }
 
   @PutMapping("/{id}/recommend")
-  public ResponseEntity<Question> toggleQuestionRecommend(@PathVariable("id") Long id) {
-    Question question = questionService.recommendQuestion(id);
-    return ResponseEntity.ok(question);
+  public ResponseEntity<QuestionReadDTO> toggleQuestionRecommend(@PathVariable("id") Long id) {
+    QuestionReadDTO updatedQuestionReadDTO = questionService.recommendQuestion(id);
+    return ResponseEntity.status(HttpStatus.OK).body(updatedQuestionReadDTO);
   }
 
 }
