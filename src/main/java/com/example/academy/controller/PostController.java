@@ -44,8 +44,11 @@ public class PostController {
     }
 
     @Operation(summary = "게시글 저장")
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<PostResponseDTO> save(@RequestBody PostCreateDTO postDTO) {
+        System.out.println("===================================");
+        System.out.println(postDTO.toString());
+        System.out.println("===================================");
         PostResponseDTO savedPost = postService.save(postDTO);
         return ResponseEntity.ok().body(savedPost);
     }
@@ -67,9 +70,11 @@ public class PostController {
     }
 
     @Operation(summary = "게시글 삭제")
-    @DeleteMapping("/{id}")
-    public HttpStatus delete(@PathVariable(value = "id") Long id) {
-        postService.delete(id);
+    @DeleteMapping("")
+    public HttpStatus delete(@RequestBody List<Long> ids) {
+        // 프론트에서 데이터를 {data : **}로 묶어서 주면 requestBody로 받고
+        // 파람으로 오면 파람으로 받기.
+        postService.delete(ids);
         return HttpStatus.OK;
     }
 

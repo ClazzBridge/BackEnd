@@ -1,5 +1,6 @@
 package com.example.academy.exception;
 
+import com.example.academy.exception.post.PostBadRequestException;
 import com.example.academy.exception.post.PostEmptyTitleException;
 import com.example.academy.exception.post.PostNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PostEmptyTitleException.class)
     public ResponseEntity<String> handlePostEmptyTitleException(PostEmptyTitleException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(PostBadRequestException.class)
+    public ResponseEntity<String> handlePostBadRequestException(PostBadRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }

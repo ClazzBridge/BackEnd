@@ -7,6 +7,7 @@ import com.example.academy.domain.Post;
 import com.example.academy.dto.post.PostCreateDTO;
 import com.example.academy.dto.post.PostResponseDTO;
 import com.example.academy.dto.post.PostUpdateDTO;
+import com.example.academy.exception.post.PostBadRequestException;
 import com.example.academy.exception.post.PostEmptyTitleException;
 import com.example.academy.exception.post.PostNotFoundException;
 import com.example.academy.mapper.post.PostCreateMapper;
@@ -77,13 +78,13 @@ public class PostService {
     @Transactional
     public PostResponseDTO save(PostCreateDTO postDTO) {
         Member member = memberRepository.findById(postDTO.getMemberId())
-            .orElseThrow(() -> new EntityNotFoundException("해당 유저가 없습니다."));
+            .orElseThrow(PostBadRequestException::new);
 
         Board board = boardRepository.findById(postDTO.getBoardId())
-            .orElseThrow(() -> new EntityNotFoundException("해당 게시판이 없습니다."));
+            .orElseThrow(PostBadRequestException::new);
 
         Classroom classroom = classroomRepository.findById(postDTO.getClassroomId())
-            .orElseThrow(() -> new EntityNotFoundException("해당 강의실이 없습니다."));
+            .orElseThrow(PostBadRequestException::new);
 
         Post savedPost = postCreateMapper.toEntity(postDTO, member, board, classroom);
         postRepository.save(savedPost);
@@ -95,8 +96,8 @@ public class PostService {
     public PostResponseDTO update(Long id, PostUpdateDTO postDTO) {
         Post updatedPost = postRepository.findById(id)
             .orElseThrow(() -> new PostNotFoundException(id));
-        
-        if (postDTO.getTitle().isEmpty()) {
+
+        if (postDTO.getTitle() == null || postDTO.getTitle().trim().isEmpty()) {
             throw new PostEmptyTitleException(id);
         }
 
@@ -108,10 +109,11 @@ public class PostService {
 
 
     @Transactional
-    public void delete(Long id) {
-        Post deletedPost = postRepository.findById(id)
-            .orElseThrow(() -> new PostNotFoundException(id));
-
-        postRepository.delete(deletedPost);
+    public void delete(List<Long> ids) {
+        for (Long id : ids) {
+            Post deletedPost = postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
+            postRepository.delete(deletedPost);
+        }
     }
 }
