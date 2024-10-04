@@ -53,15 +53,4 @@ public class Seat {
   @JoinColumn(name = "member_id")
   private Member member;
 
-  @Transient // 이 필드는 DB와 무관하게 설정
-  private boolean isSelf;
-
-  // Getters, setters, other fields
-  public boolean isSelf() {
-    return isSelf;
-  }
-
-  public void setSelf(boolean isSelf) {
-    this.isSelf = isSelf;
-  }
 }
