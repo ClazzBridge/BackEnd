@@ -51,8 +51,8 @@ public class SecurityConfig {
         .httpBasic().disable() // HTTP Basic 인증 비활성화
         .authorizeHttpRequests(auth -> auth
             .regexMatchers("/api/.*", "/auth/.*", "/").permitAll() // 특정 경로에 대한 접근 허용
-//            .regexMatchers("/admin", "/userlist/.*").hasRole("ADMIN") // ADMIN 역할을 가진 사용자만 접근 허용
-            .regexMatchers("/admin", "/userlist/.*")
+//            .regexMatchers("/admin").hasRole("ADMIN") // ADMIN 역할을 가진 사용자만 접근 허용
+            .regexMatchers("/admin")
             .hasAnyRole("ADMIN", "STUDENT", "TEACHER") // 여러 role에 권한 부여 hasAnyRole
             .anyRequest().authenticated());
 
