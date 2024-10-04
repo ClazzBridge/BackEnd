@@ -40,9 +40,8 @@ public class Member {
     @JoinColumn(name = "profile_image_id", nullable = false)
     private ProfileImage profileImage;
 
-    private String experience;
-    private String gitUrl;
-    private String bio;
-
+  private String experience;
+  private String gitUrl;
+  private String bio;
 
 }

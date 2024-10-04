@@ -1,31 +1,34 @@
 package com.example.academy.domain;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.persistence.*;
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Table(name = "schedule")
+@Getter
+@Setter
+
 public class Schedule {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id; // 스케쥴 고유 식별자
 
-    @ManyToOne
-    @JoinColumn(name = "classroom_id")
-    private Classroom classroom;
+  @Column(name = "classroom_id", nullable = false)
+  private Long classroomId; // 강의실 ID
 
-    @Column(nullable = false)
-    private String eventTitle;
+  @Column(name = "event_title", nullable = false)
+  private String eventTitle; // 일정 제목
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+  @Column(name = "start_date", columnDefinition = "TIMESTAMP")
+  private LocalDateTime startDate; // 일정 시작 날짜
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date endDate;
+  @Column(name = "end_date", columnDefinition = "TIMESTAMP")
+  private LocalDateTime endDate; // 일정 종료 날짜
 
-    private String description;
+  @Column(name = "description")
+  private String description; // 일정 설명
 
-    // Getters and Setters
 }
-
