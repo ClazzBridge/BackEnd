@@ -8,6 +8,7 @@ import com.example.academy.dto.post.PostCreateDTO;
 import com.example.academy.dto.post.PostResponseDTO;
 import com.example.academy.dto.post.PostUpdateDTO;
 import com.example.academy.exception.post.PostBadRequestException;
+import com.example.academy.exception.post.PostEmptyException;
 import com.example.academy.exception.post.PostEmptyTitleException;
 import com.example.academy.exception.post.PostNotFoundException;
 import com.example.academy.mapper.post.PostCreateMapper;
@@ -110,6 +111,10 @@ public class PostService {
 
     @Transactional
     public void delete(List<Long> ids) {
+        if (ids.isEmpty()) {
+            throw new PostEmptyException();
+        }
+        
         for (Long id : ids) {
             Post deletedPost = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
