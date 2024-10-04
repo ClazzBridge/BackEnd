@@ -1,5 +1,8 @@
 package com.example.academy.type;
 
+import lombok.Getter;
+
+@Getter
 public enum MemberType {
 
   ROLE_STUDENT("수강생"),
@@ -12,7 +15,4 @@ public enum MemberType {
     this.description = description;
   }
 
-  public String getDescription() {
-    return description;
-  }
 }

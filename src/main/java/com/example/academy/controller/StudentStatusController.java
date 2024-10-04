@@ -41,12 +41,6 @@ public class StudentStatusController {
    * 손 든 후 시간 지나면 -> Set RaiseHand Off
    */
 
-  @GetMapping()
-  public ResponseEntity<List<StudentStatus>> getStudentStatus() {
-    List<StudentStatus> studentStatusList = studentStatusRepository.findAll();
-    return ResponseEntity.ok(studentStatusList);
-  }
-
   @PutMapping("/understanding")
   public ResponseEntity<StudentStatusReadDTO> updateIsUnderstanding(@RequestBody
   StudentStatusUpdateUnderstandingDTO studentStatusUpdateUnderstandingDTO) {

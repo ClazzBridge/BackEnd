@@ -1,24 +1,13 @@
 package com.example.academy.domain;
 
 import com.example.academy.type.MemberType;
+import javax.persistence.*;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Member")
+@Table(name = "member")
 public class Member {
 
   @Id
@@ -40,9 +29,6 @@ public class Member {
   @Column(unique = true, nullable = false)
   private String phone;
 
-  @Temporal(TemporalType.DATE)
-  private Date registrationDate;
-
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private MemberType memberType;
@@ -50,5 +36,9 @@ public class Member {
   @ManyToOne
   @JoinColumn(name = "profile_image_id", nullable = false)
   private ProfileImage profileImage;
+
+  private String experience;
+  private String gitUrl;
+  private String bio;
 
 }
