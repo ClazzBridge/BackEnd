@@ -19,7 +19,7 @@ public class Schedule {
   @Column(name = "classroom_id", nullable = false)
   private Long classroomId; // 강의실 ID
 
-  @Column(name = "event_title", nullable = false, length = 100)
+  @Column(name = "event_title", nullable = false)
   private String eventTitle; // 일정 제목
 
   @Column(name = "start_date", columnDefinition = "TIMESTAMP")

@@ -31,7 +31,7 @@ public class UserController {
     return userListService.login(req.getMemberId(), req.getPassword());
   }
 
-  @PostMapping("/join")
+  @PostMapping("/join") // 과정명 추가 필요.
   public ResponseEntity<String> joinProcess(@RequestBody LoginRequestDTO joinDTO) {
     try {
       joinService.joinProcess(joinDTO);
