@@ -1,6 +1,7 @@
 package com.example.academy.service;
 
 import com.example.academy.domain.Answer;
+import com.example.academy.domain.Member;
 import com.example.academy.domain.Question;
 import com.example.academy.domain.User;
 import com.example.academy.dto.AnswerCreateDTO;
@@ -8,6 +9,7 @@ import com.example.academy.dto.AnswerReadDTO;
 import com.example.academy.dto.AnswerUpdateDTO;
 import com.example.academy.mapper.AnswerMapper;
 import com.example.academy.repository.AnswerRepository;
+import com.example.academy.repository.MemberRepository;
 import com.example.academy.repository.QuestionRepository;
 import com.example.academy.repository.UserRepository;
 import java.util.List;
@@ -19,14 +21,14 @@ public class AnswerService {
 
   private final AnswerRepository answerRepository;
   private final AnswerMapper answerMapper = AnswerMapper.INSTANCE;
-  private final UserRepository userRepository;
+  private final MemberRepository memberRepository;
   private final QuestionRepository questionRepository;
 
   @Autowired
-  public AnswerService(AnswerRepository answerRepository, UserRepository userRepository,
+  public AnswerService(AnswerRepository answerRepository, MemberRepository memberRepository,
       QuestionRepository questionRepository) {
     this.answerRepository = answerRepository;
-    this.userRepository = userRepository;
+    this.memberRepository = memberRepository;
     this.questionRepository = questionRepository;
   }
 
@@ -35,31 +37,31 @@ public class AnswerService {
 //  }
 
   public AnswerReadDTO createAnswer(AnswerCreateDTO answerCreateDTO) {
-    System.out.println(answerCreateDTO.getUserId());
+    System.out.println(answerCreateDTO.getMemberId());
     System.out.println(answerCreateDTO.getQuestionId());
 
-    User user = userRepository.findById(answerCreateDTO.getUserId()).orElseThrow();
+    Member member = memberRepository.findById(answerCreateDTO.getMemberId()).orElseThrow();
     Question question = questionRepository.findById(answerCreateDTO.getQuestionId()).orElseThrow();
     String content = answerCreateDTO.getContent();
 
-    Answer newAnswer = answerMapper.answerCreateDTOToAnswer(answerCreateDTO, user);
+    Answer newAnswer = answerMapper.answerCreateDTOToAnswer(answerCreateDTO, member);
 
-    newAnswer.setUser(user);
+    newAnswer.setMember(member);
     newAnswer.setQuestion(question);
     newAnswer.setContent(content);
 
     Answer createdAnswer = answerRepository.save(newAnswer);
 
-    return answerMapper.answerToAnswerReadDTO(createdAnswer, user);
+    return answerMapper.answerToAnswerReadDTO(createdAnswer, member);
   }
 
   public AnswerReadDTO updateAnswer(AnswerUpdateDTO answerUpdateDTO) {
     Answer existingAnswer = answerRepository.findById(answerUpdateDTO.getId()).orElseThrow();
-    User user = existingAnswer.getUser();
+    Member member = existingAnswer.getMember();
     existingAnswer.setContent(answerUpdateDTO.getContent());
     Answer updatedAnswer = answerRepository.save(existingAnswer);
 
-    return answerMapper.answerToAnswerReadDTO(updatedAnswer, user);
+    return answerMapper.answerToAnswerReadDTO(updatedAnswer, member);
   }
 
   public void deleteAnswer(Long id) {
@@ -72,8 +74,8 @@ public class AnswerService {
 
     for (AnswerReadDTO answerReadDTO : answerReadDTOList) {
       Answer existingAnswer = answerRepository.findById(answerReadDTO.getId()).orElseThrow();
-      User user = existingAnswer.getUser();
-      answerReadDTO.setUserName(user.getName());
+      Member member = existingAnswer.getMember();
+      answerReadDTO.setMemberName(member.getName());
     }
 
     return answerReadDTOList;

@@ -30,12 +30,11 @@ public class Member {
     @Column(unique = true, nullable = false)
     private String phone;
 
-    @Temporal(TemporalType.DATE)
-    private Date registrationDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private MemberType memberType;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private MemberType memberType;
+
 
     @ManyToOne
     @JoinColumn(name = "profile_image_id", nullable = false)

@@ -11,7 +11,7 @@ import lombok.Setter;
 public class AnswerReadDTO {
 
   private Long id;
-  private String userName;
+  private String memberName;
   private String content;
   private Date createdAt;
   private Date updatedAt;
