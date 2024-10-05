@@ -10,6 +10,6 @@ import lombok.Setter;
 public class QuestionCreateDTO {
 
   private String content;
-  private Long userId;
+  private Long memberId;
 
 }

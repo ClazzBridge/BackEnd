@@ -11,7 +11,7 @@ import lombok.Setter;
 public class QuestionReadDTO {
 
   private Long id;
-  private String userName;
+  private String memberName;
   private String content;
   private boolean isSolved;
   private boolean isRecommended;

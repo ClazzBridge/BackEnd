@@ -31,8 +31,8 @@ public class Question {
   @Column(nullable = false) // 이 필드가 DB에서 null 값을 가질 수 없음을 명시.
   private Long id;
   @OneToOne
-  @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+  @JoinColumn(name = "member_id", nullable = false)
+  private Member member;
   @NotNull  // null을 허용하지 않음
   @Size(min = 1)  // 최소 길이가 1 이상이어야 함
   @Column(nullable = false)  // 이 필드가 DB에서 null 값을 가질 수 없음을 명시.
@@ -48,7 +48,7 @@ public class Question {
   public String toString() {
     return "Question{" +
         "id=" + id +
-        ", user=" + user +
+        ", member=" + member +
         ", content='" + content + '\'' +
         ", createDate=" + createDate +
         ", isSolved=" + isSolved +
@@ -57,7 +57,7 @@ public class Question {
   }
 
   public void assignUser(User user) {
-    this.user = user;
+    this.member = member;
   }
 
   public void updateContent(String content) {
