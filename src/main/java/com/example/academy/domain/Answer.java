@@ -35,7 +35,7 @@ public class Answer {
 
   @OneToOne
   @JoinColumn(name = "teacher_id", nullable = false)
-  private User user;
+  private Member member;
 
   @NotNull  // null을 허용하지 않음
   @Size(min = 1)  // 최소 길이가 1 이상이어야 함

@@ -29,9 +29,6 @@ public class Member {
   @Column(unique = true, nullable = false)
   private String phone;
 
-  @Temporal(TemporalType.DATE)
-  private Date registrationDate;
-
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private MemberType memberType;

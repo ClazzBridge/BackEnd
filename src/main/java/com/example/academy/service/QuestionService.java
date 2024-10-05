@@ -1,5 +1,6 @@
 package com.example.academy.service;
 
+import com.example.academy.domain.Member;
 import com.example.academy.domain.Question;
 import com.example.academy.domain.User;
 import com.example.academy.dto.QuestionCreateDTO;
@@ -8,6 +9,7 @@ import com.example.academy.dto.QuestionToggleRecommendedDTO;
 import com.example.academy.dto.QuestionToggleSolvedDTO;
 import com.example.academy.dto.QuestionUpdateDTO;
 import com.example.academy.mapper.QuestionMapper;
+import com.example.academy.repository.MemberRepository;
 import com.example.academy.repository.QuestionRepository;
 import com.example.academy.repository.UserRepository;
 import java.util.List;
@@ -22,13 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class QuestionService {
 
   private final QuestionRepository questionRepository;
-  private final UserRepository userRepository;
+  private final MemberRepository memberRepository;
   private final QuestionMapper questionMapper = QuestionMapper.INSTANCE;
 
   @Autowired
-  public QuestionService(QuestionRepository questionRepository, UserRepository userRepository) {
+  public QuestionService(QuestionRepository questionRepository, MemberRepository memberRepository) {
     this.questionRepository = questionRepository;
-    this.userRepository = userRepository;
+    this.memberRepository = memberRepository;
   }
 
   public List<QuestionReadDTO> getAllQuestions() {
@@ -37,16 +39,16 @@ public class QuestionService {
 
   public QuestionReadDTO getQuestionById(Long id) {
     Question question = questionRepository.findById(id).orElse(null);
-    return questionMapper.questionToQuestionReadDTO(question, question.getUser());
+    return questionMapper.questionToQuestionReadDTO(question, question.getMember());
   }
 
   public QuestionReadDTO createQuestion(QuestionCreateDTO questionCreateDTO) {
-    User user = userRepository.findById(questionCreateDTO.getUserId())
+    Member member = memberRepository.findById(questionCreateDTO.getMemberId())
         .orElseThrow(() -> new RuntimeException("User not found"));
-    Question newQuestion = questionMapper.questionCreateDTOToQuestion(questionCreateDTO, user);
+    Question newQuestion = questionMapper.questionCreateDTOToQuestion(questionCreateDTO, member);
     Question savedQuestion = questionRepository.save(newQuestion);
 
-    return questionMapper.questionToQuestionReadDTO(savedQuestion, user);
+    return questionMapper.questionToQuestionReadDTO(savedQuestion, member);
   }
 
   public QuestionReadDTO updateQuestion(QuestionUpdateDTO questionUpdateDTO) {
@@ -56,7 +58,7 @@ public class QuestionService {
     existingQuestion.updateContent(questionUpdateDTO.getContent());
     questionRepository.save(existingQuestion);
 
-    return questionMapper.questionToQuestionReadDTO(existingQuestion, existingQuestion.getUser());
+    return questionMapper.questionToQuestionReadDTO(existingQuestion, existingQuestion.getMember());
   }
 
   public void deleteQuestion(Long id) {
@@ -70,7 +72,7 @@ public class QuestionService {
     existingQuestion.toggleSolved(questionToggleSolvedDTO.isSolved());
     Question updatedQuestion = questionRepository.save(existingQuestion);
 
-    return questionMapper.questionToQuestionReadDTO(updatedQuestion, updatedQuestion.getUser());
+    return questionMapper.questionToQuestionReadDTO(updatedQuestion, updatedQuestion.getMember());
   }
 
   public QuestionReadDTO recommendQuestion(
@@ -81,7 +83,7 @@ public class QuestionService {
     existingQuestion.toggleRecommended(questionToggleRecommendedDTO.isRecommended());
     questionRepository.save(existingQuestion);
 
-    return questionMapper.questionToQuestionReadDTO(existingQuestion, existingQuestion.getUser());
+    return questionMapper.questionToQuestionReadDTO(existingQuestion, existingQuestion.getMember());
   }
 
   public Page<QuestionReadDTO> getPageQuestions(Pageable pageable) {
