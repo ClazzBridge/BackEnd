@@ -1,10 +1,17 @@
 package com.example.academy.service;
 
 
+import com.example.academy.domain.Course;
 import com.example.academy.domain.Member;
+import com.example.academy.domain.StudentCourse;
+import com.example.academy.dto.GetMemberDTO;
 import com.example.academy.dto.LoginResponseDTO;
 import com.example.academy.jwt.JwtUtil;
-import com.example.academy.repository.UserRepository;
+import com.example.academy.repository.StudentCourseRepository;
+import com.example.academy.repository.MemberRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +24,25 @@ import org.springframework.stereotype.Service;
  * UserListService 클래스는 사용자 관련 서비스 로직을 처리합니다. 이 클래스는 사용자 인증 및 JWT 토큰 생성을 담당합니다.
  */
 @Service
-public class UserListService {
+public class MemberListService {
 
   @Autowired
-  private final UserRepository userRepository;
-
+  private final MemberRepository memberRepository;
+  private final StudentCourseRepository studentCourseRepository;
   private final BCryptPasswordEncoder passwordEncoder;
   private final JwtUtil jwtUtil;
 
   /**
    * UserListService의 생성자.
    *
-   * @param userRepository  사용자 정보를 저장하고 검색하는 레포지토리
+   * @param memberRepository  사용자 정보를 저장하고 검색하는 레포지토리
    * @param passwordEncoder 비밀번호 암호화 및 검증을 위한 암호화기
    * @param jwtUtil         JWT 토큰 생성을 위한 유틸리티
    */
-  public UserListService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
-      JwtUtil jwtUtil) {
-    this.userRepository = userRepository;
+  public MemberListService(MemberRepository memberRepository, StudentCourseRepository courseRepository,
+      BCryptPasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    this.memberRepository = memberRepository;
+    this.studentCourseRepository = courseRepository;
     this.passwordEncoder = passwordEncoder;
     this.jwtUtil = jwtUtil;
   }
@@ -48,7 +56,7 @@ public class UserListService {
    */
   public ResponseEntity<LoginResponseDTO> login(String memberId, String password) {
     // 사용자 이름으로 사용자 정보를 검색합니다.
-    Optional<Member> user = userRepository.findByMemberId(memberId);
+    Optional<Member> user = memberRepository.findByMemberId(memberId);
     // 사용자가 존재하는 경우
     if (user.isPresent()) {
       Long userId = user.get().getId(); // 이 부분을 isPresent() 확인 후에 위치시킵니다.
@@ -87,5 +95,66 @@ public class UserListService {
     }
     // 로그인 실패 시 빈 Optional을 반환합니다.
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 사용자 미발견 시 404 상태 코드 반환
+  }
+
+  public GetMemberDTO getMemberWithCourseInfo(Long memberId) {
+    // Member 조회
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(() -> new NoSuchElementException("Member not found with ID: " + memberId));
+
+    // Member가 수강한 StudentCourse 조회
+    List<StudentCourse> studentCourses = studentCourseRepository.findByStudent(member);
+
+    // 첫 번째 수강 코스의 이름을 가져오거나, 없으면 빈 문자열 반환
+    String courseName = studentCourses.stream()
+        .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
+        .map(studentCourse -> studentCourse.getCourse().getTitle())  // Course 이름 가져오기
+        .orElse("No course enrolled");
+
+    // GetMemberDTO 생성 및 값 설정
+    GetMemberDTO getMemberDTO = new GetMemberDTO(
+        member.getMemberId(),
+        member.getPassword(),
+        member.getName(),
+        member.getEmail(),
+        member.getPhone(),
+        member.getMemberType(),
+        member.getProfileImage(),
+        courseName
+    );
+
+    return getMemberDTO;
+  }
+  public List<GetMemberDTO> getAllMembersWithCourses() {
+    List<Member> members = memberRepository.findAll(); // 전체 멤버 조회
+    List<GetMemberDTO> memberDTOs = new ArrayList<>();
+
+    // 각 멤버에 대해 코스 정보 조회 및 DTO로 변환
+    for (Member member : members) {
+      List<StudentCourse> studentCourses = studentCourseRepository.findByStudent(member);
+
+      // 첫 번째 수강 코스의 이름을 가져오거나, 없으면 빈 문자열 반환
+      String courseName = studentCourses.stream()
+          .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
+          .map(studentCourse -> studentCourse.getCourse().getTitle())
+          .orElse("No course enrolled");
+
+      // GetMemberDTO 생성 및 값 설정
+      GetMemberDTO dto = new GetMemberDTO(
+          member.getMemberId(),
+          member.getPassword(),
+          member.getName(),
+          member.getEmail(),
+          member.getPhone(),
+          member.getMemberType(),
+          member.getProfileImage(),
+          courseName
+      );
+
+      // DTO 리스트에 추가
+      memberDTOs.add(dto);
+    }
+
+    return memberDTOs;
   }
 }

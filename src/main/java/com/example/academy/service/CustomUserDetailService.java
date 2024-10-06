@@ -2,7 +2,7 @@ package com.example.academy.service;
 
 import com.example.academy.domain.Member;
 import com.example.academy.dto.CustomUserDetails;
-import com.example.academy.repository.UserRepository;
+import com.example.academy.repository.MemberRepository;
 import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,17 +13,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
-  private final UserRepository userRepository;
+  private final MemberRepository memberRepository;
   private final PasswordEncoder passwordEncoder;
 
-  public CustomUserDetailService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-    this.userRepository = userRepository;
+  public CustomUserDetailService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+    this.memberRepository = memberRepository;
     this.passwordEncoder = passwordEncoder;
   }
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Optional<Member> userListOptional = userRepository.findByName(username);
+    Optional<Member> userListOptional = memberRepository.findByName(username);
 
     // Optional에서 값 꺼내기
     Member member = userListOptional.orElseThrow(() ->

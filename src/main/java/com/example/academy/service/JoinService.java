@@ -1,12 +1,11 @@
 package com.example.academy.service;
 
-import static com.example.academy.type.MemberType.ROLE_ADMIN;
 
 import com.example.academy.domain.Member;
 import com.example.academy.domain.ProfileImage;
 import com.example.academy.dto.LoginRequestDTO;
+import com.example.academy.repository.MemberRepository;
 import com.example.academy.repository.ProfileImageRepository;
-import com.example.academy.repository.UserRepository;
 import com.example.academy.type.MemberType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,13 +13,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class JoinService {
 
-  private final UserRepository userRepository;
+  private final MemberRepository memberRepository;
   private final ProfileImageRepository profileImageRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  public JoinService(UserRepository userRepository, ProfileImageRepository profileImageRepository,
+  public JoinService(MemberRepository memberRepository, ProfileImageRepository profileImageRepository,
       BCryptPasswordEncoder bCryptPasswordEncoder) {
-    this.userRepository = userRepository;
+    this.memberRepository = memberRepository;
     this.profileImageRepository = profileImageRepository;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
@@ -34,9 +33,9 @@ public class JoinService {
     String phone = joinDTO.getPhone();
     MemberType memberType = joinDTO.getMemberType();
 
-    boolean isExistMember = userRepository.existsByMemberId(memberId);
-    boolean isExistEmail = userRepository.existsByEmail(email);
-    boolean isExistPhone = userRepository.existsByPhone(phone);
+    boolean isExistMember = memberRepository.existsByMemberId(memberId);
+    boolean isExistEmail = memberRepository.existsByEmail(email);
+    boolean isExistPhone = memberRepository.existsByPhone(phone);
 
     if (isExistMember || isExistEmail || isExistPhone) {
       String errorMessage = "";
@@ -73,7 +72,7 @@ public class JoinService {
 // member 객체에 profileImage 설정
     data.setProfileImage(profileImage);
 
-    userRepository.save(data);
+    memberRepository.save(data);
   }
 }
 
