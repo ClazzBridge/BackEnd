@@ -1,6 +1,7 @@
 package com.example.academy.domain;
 
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import com.example.academy.type.MemberType;
@@ -40,9 +42,6 @@ import lombok.Data;
     @Column(unique = true, nullable = false)
     private String phone;
 
-    @Temporal(TemporalType.DATE)
-    private Date registrationDate;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MemberType memberType;
@@ -55,6 +54,8 @@ import lombok.Data;
     private String gitUrl;
     private String bio;
 
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+    private StudentStatus studentStatus;
 
   }
 

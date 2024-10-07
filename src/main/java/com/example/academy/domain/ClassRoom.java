@@ -18,7 +18,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
 @Entity
-@Table(name = "Classroom")
+@Table(name = "classroom")
 @Getter
 @Setter
 @NoArgsConstructor

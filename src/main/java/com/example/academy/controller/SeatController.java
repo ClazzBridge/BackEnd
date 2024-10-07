@@ -4,13 +4,13 @@ import com.example.academy.domain.Member;
 import com.example.academy.domain.Seat;
 import com.example.academy.dto.SeatDTO;
 import com.example.academy.service.SeatService;
-import com.example.academy.service.MemberService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,37 +24,34 @@ import org.springframework.web.bind.annotation.RestController;
 public class SeatController {
 
   private final SeatService seatService;
-  private final MemberService memberService; // UserService 주입 필요
 
   @Autowired
-  public SeatController(SeatService seatService, MemberService memberService) {
+  public SeatController(SeatService seatService) {
     this.seatService = seatService;
-    this.memberService = memberService; // UserService 초기화
   }
 
   //좌석
 
   @GetMapping("/")
-  public ResponseEntity<List<Seat>> getAllSeat() {
-    List<Seat> listSeat = seatService.getAllSeat();
-    return ResponseEntity.ok(listSeat);
+  public ResponseEntity<List<SeatDTO>> getAllSeat() {
+    List<SeatDTO> seatDTOList = seatService.getAllSeat();
+    return ResponseEntity.ok(seatDTOList);
   }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<Seat> updateSeat(@PathVariable Long id, @RequestBody SeatDTO seatDTO) {
-    Seat existingSeat = seatService.updateSeat(id, seatDTO);
-    return ResponseEntity.ok(existingSeat);
-  }
 
-  @PostMapping("/")
-  public ResponseEntity<Seat> createSeat(@RequestBody SeatDTO seatDTO) {
-    Seat newSeat = seatService.createSeat(seatDTO);
-    return ResponseEntity.status(HttpStatus.CREATED).body(newSeat);
+  @PutMapping("/")
+  public ResponseEntity<SeatDTO> assignMemberToSeat(@RequestBody SeatDTO seatDTO) {
+    if (seatDTO.getMemberDTO() != null && seatDTO.getId() != null) {
+      SeatDTO updatedSeatDTO = seatService.assignMemberToSeatById(seatDTO.getId(), seatDTO.getMemberDTO().getMemberId());
+      return ResponseEntity.ok(updatedSeatDTO);
+    } else {
+      return ResponseEntity.badRequest().build(); // 멤버 정보나 좌석 ID가 없으면 잘못된 요청 처리
+    }
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteSeat(@PathVariable Long id) {
-    seatService.deleteSeat(id);
-    return ResponseEntity.noContent().build();
+  public ResponseEntity<Seat> removeMemberFromSeat(@PathVariable Long id) {
+    Seat updatedSeat = seatService.removeMemberFromSeat(id);
+    return ResponseEntity.ok(updatedSeat);
   }
 }

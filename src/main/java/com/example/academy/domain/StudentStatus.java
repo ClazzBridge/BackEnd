@@ -7,9 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,12 +16,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "seat")
+@Table(name = "student_status")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Seat {
+public class StudentStatus {
 
 
   @Id
@@ -31,17 +30,15 @@ public class Seat {
 
   @NotNull
   @Column(nullable = false)
-  private String seatNumber; // 좌석 번호
+  private Boolean isUnderstanding = false; //이해도 측정
 
   @NotNull
   @Column(nullable = false)
-  private Boolean isExist = true; // 자리 공석 여부
+  private Boolean isHandRaised = false; // 손들기
 
-  @NotNull
-  @Column(nullable = false)
-  private Boolean isOnline = false; //온/오프
-
-  @ManyToOne
-  @JoinColumn(name = "member_id")
+  @OneToOne
+  @JoinColumn(name = "member_id", referencedColumnName = "id")
   private Member member;
+
+
 }
