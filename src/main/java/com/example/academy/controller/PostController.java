@@ -61,10 +61,9 @@ public class PostController {
     }
 
     @Operation(summary = "게시글 수정")
-    @PutMapping("/{id}")
-    public ResponseEntity<PostResponseDTO> update(@RequestBody PostUpdateDTO postDTO,
-        @PathVariable(value = "id") Long id) {
-        PostResponseDTO updatedPost = postService.update(id, postDTO);
+    @PutMapping("")
+    public ResponseEntity<PostResponseDTO> update(@RequestBody PostUpdateDTO postDTO) {
+        PostResponseDTO updatedPost = postService.update(postDTO);
 
         return ResponseEntity.ok().body(updatedPost);
     }
