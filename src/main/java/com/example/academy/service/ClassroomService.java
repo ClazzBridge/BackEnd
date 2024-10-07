@@ -1,10 +1,12 @@
 package com.example.academy.service;
 
 import com.example.academy.domain.Classroom;
+import com.example.academy.dto.ClassroomNameDTO;
 import com.example.academy.repository.ClassroomRepository;
 import com.example.academy.repository.MemberRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +21,9 @@ public class ClassroomService {
     this.classroomRepository = classroomRepository;
   }
 
-  public List<String> getClassroomName(){
-    List<Classroom> classrooms =  classroomRepository.findAll();
-    System.out.println(classrooms.get(1).getName());
-    List<String> name = new ArrayList<>();
-    for (Classroom classroom : classrooms) {
-      name.add(classroom.getName());
-    }
-
-    return name;
+  public List<ClassroomNameDTO> getClassroomName(){
+    return classroomRepository.findAll().stream()
+        .map(classroom -> new ClassroomNameDTO(classroom.getName())) // ClassroomNameDTO로 변환
+        .collect(Collectors.toList()); // List로 수집
   }
 }

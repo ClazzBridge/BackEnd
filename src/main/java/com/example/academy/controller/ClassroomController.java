@@ -1,6 +1,7 @@
 package com.example.academy.controller;
 
 
+import com.example.academy.dto.ClassroomNameDTO;
 import com.example.academy.service.ClassroomService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -21,7 +22,7 @@ public class ClassroomController {
   @GetMapping
   @Operation(summary = "강의실명 전체 조회")
   public ResponseEntity<List<?>> getClassroomName(){
-    List<String> name = classroomService.getClassroomName();
+    List<ClassroomNameDTO> name = classroomService.getClassroomName();
 
     return ResponseEntity.ok(name);
   }
