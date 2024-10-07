@@ -56,24 +56,24 @@ public class MemberListService {
    */
   public ResponseEntity<LoginResponseDTO> login(String memberId, String password) {
     // 사용자 이름으로 사용자 정보를 검색합니다.
-    Optional<Member> user = memberRepository.findByMemberId(memberId);
+    Optional<Member> member = memberRepository.findByMemberId(memberId);
     // 사용자가 존재하는 경우
-    if (user.isPresent()) {
-      Long userId = user.get().getId(); // 이 부분을 isPresent() 확인 후에 위치시킵니다.
-      System.out.println("User found: " + user.get().getMemberId()); // 디버깅을 위한 로그
+    if (member.isPresent()) {
+      Long userId = member.get().getId(); // 이 부분을 isPresent() 확인 후에 위치시킵니다.
+      System.out.println("User found: " + member.get().getMemberId()); // 디버깅을 위한 로그
 
-      System.out.println("User found: " + user.get().getMemberId()); // 디버깅을 위한 로그
+      System.out.println("User found: " + member.get().getMemberId()); // 디버깅을 위한 로그
 
       // 비밀번호가 일치하는지 확인합니다.
-      if (passwordEncoder.matches(password, user.get().getPassword())) {
+      if (passwordEncoder.matches(password, member.get().getPassword())) {
         // 비밀번호가 일치하면 JWT 토큰을 생성합니다. - 72초
-        String accessToken = jwtUtil.createJWT(userId, user.get().getMemberType().toString(),
+        String accessToken = jwtUtil.createJWT(userId, member.get().getMemberType().toString(),
             60 * 60 * 20L);
         System.out.println("accessToken = " + accessToken);
 
         // 인증된 사용자에 대한 Refresh Token 생성 - 7200000 - 7200초
         String refreshToken = jwtUtil.createRefreshJWT(userId,
-            user.get().getMemberType().toString(),
+            member.get().getMemberType().toString(),
             60 * 60 * 2000L);
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         // 클라이언트 JavaScript에서 접근 불가
@@ -91,7 +91,7 @@ public class MemberListService {
         System.out.println("Password does not match"); // 비밀번호 불일치 로그
       }
     } else {
-      System.out.println("User not found"); // 사용자 미발견 로그
+      System.out.println("Member not found"); // 사용자 미발견 로그
     }
     // 로그인 실패 시 빈 Optional을 반환합니다.
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 사용자 미발견 시 404 상태 코드 반환
@@ -156,5 +156,9 @@ public class MemberListService {
     }
 
     return memberDTOs;
+  }
+
+  public void deleteMember(Long id) {
+    memberRepository.deleteById(id);
   }
 }

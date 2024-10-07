@@ -10,7 +10,6 @@ import com.example.academy.mapper.AnswerMapper;
 import com.example.academy.repository.AnswerRepository;
 import com.example.academy.repository.MemberRepository;
 import com.example.academy.repository.QuestionRepository;
-import com.example.academy.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

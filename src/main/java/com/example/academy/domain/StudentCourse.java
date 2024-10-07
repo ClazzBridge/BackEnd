@@ -21,7 +21,4 @@ public class StudentCourse {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @Temporal(TemporalType.DATE)
-    private Date enrollmentDate;
-
 }

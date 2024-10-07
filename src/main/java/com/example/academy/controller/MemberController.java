@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,9 +46,9 @@ public class MemberController {
     }
   }
   @Operation(summary = "회원 조회")
-  @GetMapping("/{memberId}")
-  public ResponseEntity<GetMemberDTO> getMemberWithCourseInfo(@PathVariable Long memberId) {
-    GetMemberDTO memberDTO = memberListService.getMemberWithCourseInfo(memberId);
+  @GetMapping("/{id}")
+  public ResponseEntity<GetMemberDTO> getMemberWithCourseInfo(@PathVariable Long id) {
+    GetMemberDTO memberDTO = memberListService.getMemberWithCourseInfo(id);
     return ResponseEntity.ok(memberDTO);
   }
 
@@ -56,6 +57,13 @@ public class MemberController {
   public ResponseEntity<List<GetMemberDTO>> getAllMembersWithCoursesInfo() {
     List<GetMemberDTO> memberDTOs = memberListService.getAllMembersWithCourses();
     return ResponseEntity.ok(memberDTOs);
+  }
+
+  @Operation(summary = "회원 삭제")
+  @DeleteMapping("/{id}")
+  public ResponseEntity<String> deleteMembers(@PathVariable Long id) {
+    memberListService.deleteMember(id);
+    return ResponseEntity.ok().body("삭제 완료");
   }
 }
 

@@ -56,10 +56,6 @@ public class Question {
         '}';
   }
 
-  public void assignUser(Member member) {
-    this.member = member;
-  }
-
   public void updateContent(String content) {
     if (content == null || content.length() < 1) {
       throw new IllegalArgumentException("Content cannot be empty");
