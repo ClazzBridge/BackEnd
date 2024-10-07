@@ -25,8 +25,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 
-	implementation 'org.mongodb:mongodb-driver-sync:5.2.0'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.mongodb:mongodb-driver-core:5.2.0'
+	implementation 'org.mongodb:mongodb-driver-sync:5.2.0'
 	implementation 'org.mongodb:bson:5.2.0'
 
 
