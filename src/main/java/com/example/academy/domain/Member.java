@@ -4,8 +4,10 @@ import com.example.academy.type.MemberType;
 import javax.persistence.*;
 import java.util.Date;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "member")
 public class Member {

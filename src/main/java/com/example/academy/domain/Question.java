@@ -56,9 +56,6 @@ public class Question {
         '}';
   }
 
-  public void assignUser(User user) {
-    this.member = member;
-  }
 
   public void updateContent(String content) {
     if (content == null || content.length() < 1) {
