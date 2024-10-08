@@ -18,7 +18,7 @@ public interface AnswerMapper {
   // Domain to DTO
   @Mapping(source = "member.name", target = "memberName")
   @Mapping(source = "answer.id", target = "id")
-  AnswerReadDTO answerToAnswerReadDTO(Answer answer, Member member);
+  AnswerReadDTO answersToAnswerReadDTOs(Answer answer, Member member);
 
   // DTO do Domain
   @Mapping(target = "id", ignore = true)      // id는 자동 생성되므로 무시
@@ -29,6 +29,8 @@ public interface AnswerMapper {
   @Mapping(target = "updatedAt", ignore = true)
   Answer answerCreateDTOToAnswer(AnswerCreateDTO answerCreateDTO, Member member, Question question);
 
-  @Mapping(target = "memberName", ignore = true)
-  List<AnswerReadDTO> answersToAnswerReadDTO(List<Answer> answers);
+  @Mapping(source = "answer.member.name", target = "memberName")
+  AnswerReadDTO answerToAnswerReadDTO(Answer answer);
+
+  List<AnswerReadDTO> answersToAnswerReadDTOs(List<Answer> answers);
 }
