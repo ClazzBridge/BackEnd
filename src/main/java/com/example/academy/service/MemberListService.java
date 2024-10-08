@@ -1,15 +1,15 @@
 package com.example.academy.service;
 
 
-import com.example.academy.domain.Course;
-import com.example.academy.domain.Member;
-import com.example.academy.domain.StudentCourse;
+import com.example.academy.domain.mysql.Course;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.StudentCourse;
 import com.example.academy.dto.GetMemberDTO;
-import com.example.academy.dto.LoginResponseDTO;
+import com.example.academy.dto.auth.LoginResponseDTO;
 import com.example.academy.jwt.JwtUtil;
 import com.example.academy.repository.CourseRepository;
 import com.example.academy.repository.StudentCourseRepository;
-import com.example.academy.repository.MemberRepository;
+import com.example.academy.repository.mysql.MemberRepository;
 import com.example.academy.type.MemberType;
 import java.util.ArrayList;
 import java.util.List;

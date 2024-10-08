@@ -2,7 +2,6 @@ package com.example.academy.service;
 
 import com.example.academy.dto.ClassroomNameDTO;
 import com.example.academy.dto.CourseNameDTO;
-import com.example.academy.repository.ClassroomRepository;
 import com.example.academy.repository.CourseRepository;
 import java.util.List;
 import java.util.stream.Collectors;

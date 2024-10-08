@@ -1,7 +1,7 @@
 package com.example.academy.controller;
 
 
-import com.example.academy.domain.Member;
+import com.example.academy.domain.mysql.Member;
 import com.example.academy.service.UserProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.HashMap;

@@ -1,9 +1,9 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.Classroom;
+import com.example.academy.domain.mysql.Classroom;
 import com.example.academy.dto.ClassroomNameDTO;
-import com.example.academy.repository.ClassroomRepository;
-import com.example.academy.repository.MemberRepository;
+import com.example.academy.repository.mysql.ClassroomRepository;
+import com.example.academy.repository.mysql.MemberRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

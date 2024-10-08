@@ -1,15 +1,15 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.Answer;
-import com.example.academy.domain.Member;
-import com.example.academy.domain.Question;
-import com.example.academy.dto.AnswerCreateDTO;
-import com.example.academy.dto.AnswerReadDTO;
-import com.example.academy.dto.AnswerUpdateDTO;
-import com.example.academy.mapper.AnswerMapper;
-import com.example.academy.repository.AnswerRepository;
-import com.example.academy.repository.MemberRepository;
-import com.example.academy.repository.QuestionRepository;
+import com.example.academy.domain.mysql.Answer;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.Question;
+import com.example.academy.dto.answer.AnswerCreateDTO;
+import com.example.academy.dto.answer.AnswerReadDTO;
+import com.example.academy.dto.answer.AnswerUpdateDTO;
+import com.example.academy.mapper.answer.AnswerMapper;
+import com.example.academy.repository.mysql.AnswerRepository;
+import com.example.academy.repository.mysql.MemberRepository;
+import com.example.academy.repository.mysql.QuestionRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.example.academy.controller;
 
-import com.example.academy.dto.RefreshTokenDTO;
+import com.example.academy.dto.auth.RefreshTokenDTO;
 import com.example.academy.jwt.AccessTokenResponse;
 import com.example.academy.jwt.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;

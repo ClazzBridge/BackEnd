@@ -1,9 +1,9 @@
 package com.example.academy.mapper.post;
 
-import com.example.academy.domain.Board;
-import com.example.academy.domain.Classroom;
-import com.example.academy.domain.Member;
-import com.example.academy.domain.Post;
+import com.example.academy.domain.mysql.Board;
+import com.example.academy.domain.mysql.Classroom;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.Post;
 import com.example.academy.dto.post.PostCreateDTO;
 import org.springframework.stereotype.Component;
 
