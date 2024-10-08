@@ -1,8 +1,8 @@
 package com.example.academy.controller;
 
-import com.example.academy.dto.LoginRequestDTO;
 import com.example.academy.dto.GetMemberDTO;
-import com.example.academy.service.JoinService;
+import com.example.academy.dto.StudentSignUpDTO;
+import com.example.academy.service.MemberManageService;
 import com.example.academy.service.MemberListService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -22,23 +22,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
   private final MemberListService memberListService;
-  private final JoinService joinService;
+  private final MemberManageService memberManageService;
 
-  public MemberController(MemberListService memberListService, JoinService joinService) {
+  public MemberController(MemberListService memberListService, MemberManageService memberManageService) {
     this.memberListService = memberListService;
-    this.joinService = joinService;
+    this.memberManageService = memberManageService;
   }
 
   @PostMapping
-  @Operation(summary = "회원 등록")
-  public ResponseEntity<String> joinProcess(@RequestBody LoginRequestDTO joinDTO) {
+  @Operation(summary = "회원 등록") //과정명 등록 필요
+  public ResponseEntity<String> signUp(@RequestBody StudentSignUpDTO studentSignUpDTO) {
     try {
-      joinService.joinProcess(joinDTO);
+      memberManageService.signUp(studentSignUpDTO);
       return ResponseEntity.status(HttpStatus.CREATED).body("회원 등록 완료");
     } catch (DataIntegrityViolationException e) { // 중복 값 등으로 인한 DB 제약 조건 위반
       e.printStackTrace();
-      return ResponseEntity.status(HttpStatus.CONFLICT).body("중복된 값이 있습니다.");
-    } catch (IllegalArgumentException e) { // 서비스에서 던진 중복 예외 처리
       return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     } catch (Exception e) { // 그 외의 일반적인 예외 처리
       e.printStackTrace();
@@ -46,7 +44,7 @@ public class MemberController {
     }
   }
   @Operation(summary = "회원 조회")
-  @GetMapping("/{id}")
+  @GetMapping("/{id}") 
   public ResponseEntity<GetMemberDTO> getMemberWithCourseInfo(@PathVariable Long id) {
     GetMemberDTO memberDTO = memberListService.getMemberWithCourseInfo(id);
     return ResponseEntity.ok(memberDTO);

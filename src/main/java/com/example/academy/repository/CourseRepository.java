@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface StudentCourseRepository extends JpaRepository<StudentCourse,Long> {
+public interface CourseRepository extends JpaRepository<Course,Long> {
+  List<Course> findByInstructor(Member instructor);
 
-  List<StudentCourse> findByStudent(Member student);
+  Optional<Course> findByTitle(String title);
 
-  Optional<StudentCourse> findById(Long id);
-}
+  boolean existsByTitle(String title);
+ }

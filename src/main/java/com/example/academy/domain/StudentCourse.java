@@ -2,10 +2,11 @@ package com.example.academy.domain;
 
 import javax.persistence.*;
 import java.util.Date;
+import lombok.Data;
 import lombok.Getter;
 
 @Entity
-@Getter
+@Data
 @Table(name = "student_course")
 public class StudentCourse {
 
