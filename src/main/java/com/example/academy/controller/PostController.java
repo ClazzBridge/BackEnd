@@ -73,6 +73,7 @@ public class PostController {
     public HttpStatus delete(@RequestBody List<Long> ids) {
         // 프론트에서 데이터를 {data : **}로 묶어서 주면 requestBody로 받고
         // 파람으로 오면 파람으로 받기.
+        // 야호
         postService.delete(ids);
         return HttpStatus.OK;
     }
