@@ -1,15 +1,19 @@
 package com.example.academy.service;
 
 import com.example.academy.domain.Member;
+import com.example.academy.domain.Post;
 import com.example.academy.domain.Question;
 import com.example.academy.dto.QuestionCreateDTO;
 import com.example.academy.dto.QuestionReadDTO;
 import com.example.academy.dto.QuestionToggleRecommendedDTO;
 import com.example.academy.dto.QuestionToggleSolvedDTO;
 import com.example.academy.dto.QuestionUpdateDTO;
+import com.example.academy.exception.post.PostEmptyException;
+import com.example.academy.exception.post.PostNotFoundException;
 import com.example.academy.mapper.QuestionMapper;
 import com.example.academy.repository.MemberRepository;
 import com.example.academy.repository.QuestionRepository;
+import com.example.academy.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,9 +35,9 @@ public class QuestionService {
     this.memberRepository = memberRepository;
   }
 
-    public List<QuestionReadDTO> getAllQuestions() {
-        return questionRepository.findAllQuestionReadDTOs();
-    }
+  public List<QuestionReadDTO> getAllQuestions() {
+    return questionRepository.findAllQuestionReadDTOs();
+  }
 
   public QuestionReadDTO getQuestionById(Long id) {
     Question question = questionRepository.findById(id).orElse(null);
@@ -49,43 +53,51 @@ public class QuestionService {
     return questionMapper.questionToQuestionReadDTO(savedQuestion, member);
   }
 
-    public QuestionReadDTO updateQuestion(QuestionUpdateDTO questionUpdateDTO) {
-        Long existingQuestionId = questionUpdateDTO.getId();
-        Question existingQuestion = questionRepository.findById(existingQuestionId).orElseThrow();
+  public QuestionReadDTO updateQuestion(QuestionUpdateDTO questionUpdateDTO) {
+    Long existingQuestionId = questionUpdateDTO.getId();
+    Question existingQuestion = questionRepository.findById(existingQuestionId).orElseThrow();
 
-        existingQuestion.updateContent(questionUpdateDTO.getContent());
-        questionRepository.save(existingQuestion);
+    existingQuestion.updateContent(questionUpdateDTO.getContent());
+    questionRepository.save(existingQuestion);
 
     return questionMapper.questionToQuestionReadDTO(existingQuestion, existingQuestion.getMember());
   }
 
-    public void deleteQuestion(Long id) {
-        questionRepository.deleteById(id);
-    }
 
-    public QuestionReadDTO completeQuestion(QuestionToggleSolvedDTO questionToggleSolvedDTO) {
-        Question existingQuestion = questionRepository.findById(questionToggleSolvedDTO.getId())
-            .orElseThrow();
+  public QuestionReadDTO completeQuestion(QuestionToggleSolvedDTO questionToggleSolvedDTO) {
+    Question existingQuestion = questionRepository.findById(questionToggleSolvedDTO.getId())
+        .orElseThrow();
 
-        existingQuestion.toggleSolved(questionToggleSolvedDTO.isSolved());
-        Question updatedQuestion = questionRepository.save(existingQuestion);
+    existingQuestion.toggleSolved(questionToggleSolvedDTO.isSolved());
+    Question updatedQuestion = questionRepository.save(existingQuestion);
 
     return questionMapper.questionToQuestionReadDTO(updatedQuestion, updatedQuestion.getMember());
   }
 
-    public QuestionReadDTO recommendQuestion(
-        QuestionToggleRecommendedDTO questionToggleRecommendedDTO) {
-        Question existingQuestion = questionRepository.findById(
-                questionToggleRecommendedDTO.getId())
-            .orElseThrow();
+  public QuestionReadDTO recommendQuestion(
+      QuestionToggleRecommendedDTO questionToggleRecommendedDTO) {
+    Question existingQuestion = questionRepository.findById(questionToggleRecommendedDTO.getId())
+        .orElseThrow();
 
-        existingQuestion.toggleRecommended(questionToggleRecommendedDTO.isRecommended());
-        questionRepository.save(existingQuestion);
+    existingQuestion.toggleRecommended(questionToggleRecommendedDTO.isRecommended());
+    questionRepository.save(existingQuestion);
 
     return questionMapper.questionToQuestionReadDTO(existingQuestion, existingQuestion.getMember());
   }
 
-    public Page<QuestionReadDTO> getPageQuestions(Pageable pageable) {
-        return questionRepository.findAllQuestionReadDTOs(pageable);  // 질문 목록을 페이지네이션으로 조회
+  public Page<QuestionReadDTO> getPageQuestions(Pageable pageable) {
+    return questionRepository.findAllQuestionReadDTOs(pageable);  // 질문 목록을 페이지네이션으로 조회
+  }
+
+  public void deleteQuestion(List<Long> ids) {
+    if (ids.isEmpty()) {
+      throw new PostEmptyException();
     }
+
+    for (Long id : ids) {
+      Question deletedQuestion = questionRepository.findById(id)
+          .orElseThrow(() -> new PostNotFoundException(id));
+      questionRepository.delete(deletedQuestion);
+    }
+  }
 }

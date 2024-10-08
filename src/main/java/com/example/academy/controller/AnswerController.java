@@ -78,12 +78,4 @@ public class AnswerController {
     answerService.deleteAnswer(id);
     return ResponseEntity.noContent().build();
   }
-//
-//  @PutMapping("/{id}/complete")
-//  public ResponseEntity<ToDo> toggleComplete(@PathVariable Long id) {
-//    ToDo toDo = toDoRepository.findById(id).orElseThrow();
-//    toDo.setCompleted(!toDo.isCompleted());
-//    ToDo updatedToDo = toDoRepository.save(toDo);
-//    return ResponseEntity.ok(updatedToDo);
-//  }
 }
