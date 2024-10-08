@@ -24,7 +24,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
       + " q.content,"
       + " q.isSolved,"
       + " q.isRecommended,"
-      + " q.createDate) "
+      + " q.createdAt,"
+      + " q.updatedAt) "
       + "from Question q, Member m "
       + "where q.member = m")
   List<QuestionReadDTO> findAllQuestionReadDTOs();
@@ -36,7 +37,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
       + " q.content,"
       + " q.isSolved,"
       + " q.isRecommended,"
-      + " q.createDate) "
+      + " q.createdAt,"
+      + " q.updatedAt) "
       + "from Question q, Member m "
       + "where q.member = m")
   Page<QuestionReadDTO> findAllQuestionReadDTOs(Pageable pageable);
