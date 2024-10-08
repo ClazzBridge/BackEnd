@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity // JPA에서 엔티티 클래스임을 나타냄. DB 테이블과 매핑되는 객체임을 의미.
 @Table(name = "Question") // 이 엔티티가 데이터베이스의 테이블과 매핑됨을 나타냄. 테이블의 이름 등을 설정할 수 있음.
@@ -38,7 +39,9 @@ public class Question {
   @Column(nullable = false)  // 이 필드가 DB에서 null 값을 가질 수 없음을 명시.
   private String content;
   @CreationTimestamp
-  private Date createDate;
+  private Date createdAt;
+  @UpdateTimestamp
+  private Date updatedAt;
   @Column(nullable = false) // 이 필드가 DB에서 null 값을 가질 수 없음을 명시.
   private boolean isSolved = false;
   @Column(nullable = false) // 이 필드가 DB에서 null 값을 가질 수 없음을 명시.
@@ -50,14 +53,10 @@ public class Question {
         "id=" + id +
         ", member=" + member +
         ", content='" + content + '\'' +
-        ", createDate=" + createDate +
+        ", createdAt=" + createdAt +
         ", isSolved=" + isSolved +
         ", isRecommended=" + isRecommended +
         '}';
-  }
-
-  public void assignUser(User user) {
-    this.member = member;
   }
 
   public void updateContent(String content) {
