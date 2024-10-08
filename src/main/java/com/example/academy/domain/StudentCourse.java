@@ -2,10 +2,11 @@ package com.example.academy.domain;
 
 import javax.persistence.*;
 import java.util.Date;
+import lombok.Data;
 import lombok.Getter;
 
 @Entity
-@Getter
+@Data
 @Table(name = "student_course")
 public class StudentCourse {
 
@@ -20,8 +21,5 @@ public class StudentCourse {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
-
-    @Temporal(TemporalType.DATE)
-    private Date enrollmentDate;
 
 }

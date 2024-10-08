@@ -13,7 +13,6 @@ import com.example.academy.exception.post.PostNotFoundException;
 import com.example.academy.mapper.QuestionMapper;
 import com.example.academy.repository.MemberRepository;
 import com.example.academy.repository.QuestionRepository;
-import com.example.academy.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

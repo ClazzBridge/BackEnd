@@ -3,6 +3,7 @@ package com.example.academy.controller;
 import com.example.academy.dto.ScheduleAddDTO;
 import com.example.academy.dto.ScheduleListDTO;
 import com.example.academy.service.ScheduleService;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class ScheduleController {
   @Autowired
   private ScheduleService scheduleService;
 
-  @GetMapping("/find")
+  @Operation(summary = "모든 일정 리스트 반환")
+  @GetMapping
   public ResponseEntity<List<ScheduleListDTO>> getAllSchedules() {
     List<ScheduleListDTO> scheduleList = scheduleService.getScheduleAll();
 
@@ -33,9 +35,10 @@ public class ScheduleController {
           .body(scheduleList); // 데이터가 없으면 204 No Content
     }
 
-    return ResponseEntity.status(HttpStatus.OK).body(scheduleList); // 데이터가 있으면 200 OK
+    return ResponseEntity.status(HttpStatus.OK).body(scheduleList);
   }
 
+  @Operation(summary = "선택한 일정 정보 반환")
   @GetMapping("/{id}")
   public ResponseEntity<ScheduleListDTO> getScheduleById(@PathVariable("id") Long id) {
     Optional<ScheduleListDTO> scheduleAddDTOOptional = scheduleService.getScheduleById(id);
@@ -50,7 +53,8 @@ public class ScheduleController {
   }
 
 
-  @PostMapping("/add")
+  @Operation(summary = "일정 정보 추가")
+  @PostMapping
   public ResponseEntity<?> addSchedule(@RequestBody ScheduleAddDTO addDTO) {
     try {
       scheduleService.addSchedule(addDTO);
@@ -64,15 +68,17 @@ public class ScheduleController {
           .body("An error occurred: " + e.getMessage());
     }
   }
-  
-  @PutMapping("/update")
+
+  @Operation(summary = "일정 정보 변경")
+  @PutMapping
   public ResponseEntity<ScheduleListDTO> updateSchedule(@RequestBody ScheduleListDTO updateDTO) {
     System.out.println("업데이트");
     scheduleService.updateSchedule(updateDTO);
     return ResponseEntity.status(HttpStatus.OK).body(updateDTO);
   }
 
-  @DeleteMapping("/delete/{id}")
+  @Operation(summary = "일정 정보 삭제")
+  @DeleteMapping("/{id}")
   public ResponseEntity<String> deleteSchedule(@PathVariable Long id) {
     try {
       scheduleService.deleteSchedule(id);
