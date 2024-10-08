@@ -3,6 +3,7 @@ package com.example.academy.controller;
 import com.example.academy.dto.auth.RefreshTokenDTO;
 import com.example.academy.jwt.AccessTokenResponse;
 import com.example.academy.jwt.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ public class AuthController {
   private JwtUtil jwtUtil; // JwtUtil을 자동으로 주입받습니다.
 
   @PostMapping("/refresh")
+  @Operation(summary = "새로고침")
   public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenDTO refreshToken) {
 
     // refreshToken이 null이거나 유효하지 않은 경우

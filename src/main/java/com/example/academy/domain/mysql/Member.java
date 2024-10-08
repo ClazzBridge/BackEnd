@@ -33,11 +33,12 @@ public class Member {
   @Column(nullable = false)
   private MemberType memberType;
 
+
     @ManyToOne
     @JoinColumn(name = "profile_image_id", nullable = false)
     private ProfileImage profileImage;
 
   private String gitUrl;
   private String bio;
-  
+
 }
