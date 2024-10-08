@@ -3,9 +3,10 @@ package com.example.academy.domain;
 import com.example.academy.type.MemberType;
 import javax.persistence.*;
 import java.util.Date;
+import lombok.Data;
 import lombok.Getter;
 
-@Getter
+@Data
 @Entity
 @Table(name = "member")
 public class Member {
@@ -39,7 +40,6 @@ public class Member {
     @JoinColumn(name = "profile_image_id", nullable = false)
     private ProfileImage profileImage;
 
-  private String experience;
   private String gitUrl;
   private String bio;
 

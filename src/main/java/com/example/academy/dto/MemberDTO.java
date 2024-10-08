@@ -34,7 +34,7 @@ public class MemberDTO {
     if (studentStatusDTO != null) {
       this.studentStatusDTO = new StudentStatusDTO(
           studentStatusDTO.getId(),
-          studentStatusDTO.getIsUnderStanding(),
+          studentStatusDTO.getIsUnderstanding(),
           studentStatusDTO.getIsHandRaised()
       );
     }

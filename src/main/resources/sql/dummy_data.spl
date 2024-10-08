@@ -52,16 +52,17 @@ VALUES
 
 INSERT INTO seat (classroom_id, seat_number, is_exist, is_online, member_id)
 VALUES
-    (1, 'A1', TRUE, FALSE, 1),
-    (1, 'A2', TRUE, FALSE, 2),
-    (1, 'A3', TRUE, TRUE, NULL),
-    (1, 'A4', TRUE, TRUE, NULL),
+    (1, 'A1', TRUE, TRUE, 1),
+    (1, 'A2', TRUE, TRUE, 2),
+    (1, 'A3', TRUE, TRUE, 6),
+    (1, 'A5', TRUE, TRUE, 9),
     (2, 'B1', TRUE, FALSE, 3),
     (2, 'B2', TRUE, TRUE, NULL),
     (2, 'B3', TRUE, FALSE, 4),
     (2, 'B4', TRUE, TRUE, NULL),
     (2, 'B5', TRUE, TRUE, NULL),
     (2, 'B6', TRUE, FALSE, 5);
+
 
 INSERT INTO student_course (student_id, course_id)
 VALUES

@@ -56,7 +56,7 @@ public class Question {
         '}';
   }
 
-  public void assignUser(User user) {
+  public void assignUser(Member member) {
     this.member = member;
   }
 

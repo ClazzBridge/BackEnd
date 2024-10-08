@@ -50,6 +50,7 @@ public class SecurityConfig {
         .formLogin().disable() // Form 로그인 방식 비활성화
         .httpBasic().disable() // HTTP Basic 인증 비활성화
         .authorizeHttpRequests(auth -> auth
+            .regexMatchers("/api/.*", "/auth/.*", "/swagger-ui.*", "/v3/api-docs.*").permitAll()
             .regexMatchers("/api/.*", "/auth/.*", "/").permitAll() // 특정 경로에 대한 접근 허용
 //            .regexMatchers("/admin").hasRole("ADMIN") // ADMIN 역할을 가진 사용자만 접근 허용
             .regexMatchers("/admin")

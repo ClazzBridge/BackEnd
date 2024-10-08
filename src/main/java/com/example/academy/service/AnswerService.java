@@ -3,7 +3,6 @@ package com.example.academy.service;
 import com.example.academy.domain.Answer;
 import com.example.academy.domain.Member;
 import com.example.academy.domain.Question;
-import com.example.academy.domain.User;
 import com.example.academy.dto.AnswerCreateDTO;
 import com.example.academy.dto.AnswerReadDTO;
 import com.example.academy.dto.AnswerUpdateDTO;

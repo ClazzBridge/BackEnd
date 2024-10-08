@@ -2,7 +2,6 @@ package com.example.academy.mapper;
 
 import com.example.academy.domain.Member;
 import com.example.academy.domain.Question;
-import com.example.academy.domain.User;
 import com.example.academy.dto.QuestionCreateDTO;
 import com.example.academy.dto.QuestionReadDTO;
 import com.example.academy.dto.QuestionUpdateDTO;

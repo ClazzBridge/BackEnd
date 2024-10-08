@@ -29,10 +29,10 @@ public class Seat {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @ManyToOne
+  @JoinColumn(name = "classroom_id")
+  private Classroom classroom;
 
-    @ManyToOne
-    @JoinColumn(name = "classroom_id")
-    private Classroom classroom;
   @NotNull
   @Column(nullable = false)
   private String seatNumber; // 좌석 번호
