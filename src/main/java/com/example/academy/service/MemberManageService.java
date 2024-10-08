@@ -81,7 +81,6 @@ public class MemberManageService {
     data.setEmail(email);
     data.setPhone(phone);
     data.setMemberType(memberType);
-
     // ProfileImage 테이블의 총 레코드 수 가져오기
     long count = profileImageRepository.count();
 
