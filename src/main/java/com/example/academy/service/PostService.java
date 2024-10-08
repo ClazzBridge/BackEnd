@@ -1,9 +1,9 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.Board;
-import com.example.academy.domain.Classroom;
-import com.example.academy.domain.Member;
-import com.example.academy.domain.Post;
+import com.example.academy.domain.mysql.Board;
+import com.example.academy.domain.mysql.Classroom;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.Post;
 import com.example.academy.dto.post.PostCreateDTO;
 import com.example.academy.dto.post.PostResponseDTO;
 import com.example.academy.dto.post.PostUpdateDTO;
@@ -13,10 +13,10 @@ import com.example.academy.exception.post.PostEmptyTitleException;
 import com.example.academy.exception.post.PostNotFoundException;
 import com.example.academy.mapper.post.PostCreateMapper;
 import com.example.academy.mapper.post.PostResponseMapper;
-import com.example.academy.repository.BoardRepository;
-import com.example.academy.repository.ClassroomRepository;
-import com.example.academy.repository.MemberRepository;
-import com.example.academy.repository.PostRepository;
+import com.example.academy.repository.mysql.BoardRepository;
+import com.example.academy.repository.mysql.ClassroomRepository;
+import com.example.academy.repository.mysql.MemberRepository;
+import com.example.academy.repository.mysql.PostRepository;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
 package com.example.academy.service;
 
 
-import com.example.academy.domain.Member;
-import com.example.academy.repository.UserRepository;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.repository.mysql.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,13 +13,13 @@ import java.util.Optional;
 public class UserProfileService {
 
   @Autowired
-  private UserRepository userRepository;
+  private MemberRepository memberRepository;
 
   @Autowired
   private BCryptPasswordEncoder passwordEncoder;
 
   public Optional<Member> getUserProfileById(Long id) {
-    return userRepository.findById(id);
+    return memberRepository.findById(id);
   }
 
   public Member createOrUpdateUserProfile(Member member) {
@@ -29,7 +29,7 @@ public class UserProfileService {
       String encodedPassword = passwordEncoder.encode(member.getPassword());
       member.setPassword(encodedPassword);
     }
-    return userRepository.save(member);
+    return memberRepository.save(member);
   }
 
   // 비밀번호를 확인하는 메서드
