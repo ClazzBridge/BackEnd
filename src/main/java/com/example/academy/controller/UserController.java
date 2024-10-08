@@ -1,10 +1,9 @@
 package com.example.academy.controller;
 
-import com.example.academy.dto.LoginRequestDTO;
-import com.example.academy.dto.LoginResponseDTO;
+import com.example.academy.dto.auth.LoginRequestDTO;
+import com.example.academy.dto.auth.LoginResponseDTO;
 import com.example.academy.service.JoinService;
 import com.example.academy.service.UserListService;
-import java.util.Optional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

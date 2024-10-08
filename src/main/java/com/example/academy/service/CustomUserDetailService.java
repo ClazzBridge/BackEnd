@@ -1,8 +1,8 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.Member;
+import com.example.academy.domain.mysql.Member;
 import com.example.academy.dto.CustomUserDetails;
-import com.example.academy.repository.UserRepository;
+import com.example.academy.repository.mysql.UserRepository;
 import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,12 +1,10 @@
 package com.example.academy.service;
 
-import static com.example.academy.type.MemberType.ROLE_ADMIN;
-
-import com.example.academy.domain.Member;
-import com.example.academy.domain.ProfileImage;
-import com.example.academy.dto.LoginRequestDTO;
-import com.example.academy.repository.ProfileImageRepository;
-import com.example.academy.repository.UserRepository;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.ProfileImage;
+import com.example.academy.dto.auth.LoginRequestDTO;
+import com.example.academy.repository.mysql.ProfileImageRepository;
+import com.example.academy.repository.mysql.UserRepository;
 import com.example.academy.type.MemberType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

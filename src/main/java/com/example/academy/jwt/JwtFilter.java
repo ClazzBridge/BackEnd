@@ -1,6 +1,6 @@
 package com.example.academy.jwt;
 
-import com.example.academy.domain.Member;
+import com.example.academy.domain.mysql.Member;
 import com.example.academy.dto.CustomUserDetails;
 import com.example.academy.type.MemberType;
 import java.io.IOException;

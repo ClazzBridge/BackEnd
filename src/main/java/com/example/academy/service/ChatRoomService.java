@@ -1,8 +1,8 @@
 package com.example.academy.service;
 
 import com.example.academy.domain.mongodb.ChatRoom;
-import com.example.academy.dto.mongodb.ChatRoomDTO;
-import com.example.academy.mapper.ChatRoomMapper;
+import com.example.academy.dto.chat.ChatRoomDTO;
+import com.example.academy.mapper.chat.ChatRoomMapper;
 import com.example.academy.repository.mongodb.ChatRoomRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

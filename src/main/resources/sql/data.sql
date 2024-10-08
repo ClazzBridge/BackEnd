@@ -102,7 +102,6 @@ CREATE TABLE member
     phone            VARCHAR(20) UNIQUE                                  NOT NULL, -- 전화번호 (고유)
     member_type         ENUM ('ROLE_STUDENT', 'ROLE_TEACHER', 'ROLE_ADMIN') NOT NULL, -- 사용자 유형 (수강생, 강사, 관리자)
     profile_image_id INT,                                                          -- 프로필 사진 ID
-    experience       TEXT,                                                         -- 강사만 사용할 수 있는 경력 정보
     git_url          VARCHAR(100),                                                 -- git 주소
     bio              TEXT                                                          -- 수강생 자기소개 정보
 );
