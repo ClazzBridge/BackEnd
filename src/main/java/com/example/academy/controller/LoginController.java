@@ -1,7 +1,7 @@
 package com.example.academy.controller;
 
-import com.example.academy.dto.LoginRequestDTO;
-import com.example.academy.dto.LoginResponseDTO;
+import com.example.academy.dto.auth.LoginRequestDTO;
+import com.example.academy.dto.auth.LoginResponseDTO;
 import com.example.academy.service.MemberListService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;

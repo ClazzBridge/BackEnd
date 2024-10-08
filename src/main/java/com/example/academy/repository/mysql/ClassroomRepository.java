@@ -1,7 +1,7 @@
-package com.example.academy.repository;
+package com.example.academy.repository.mysql;
 
-import com.example.academy.domain.Classroom;
-import com.example.academy.domain.Member;
+import com.example.academy.domain.mysql.Classroom;
+import com.example.academy.domain.mysql.Member;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.text.html.Option;

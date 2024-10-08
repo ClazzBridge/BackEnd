@@ -1,8 +1,8 @@
 package com.example.academy.service;
 
 
-import com.example.academy.domain.Member;
-import com.example.academy.repository.MemberRepository;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.repository.mysql.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

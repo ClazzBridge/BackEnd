@@ -1,8 +1,8 @@
 package com.example.academy.repository;
 
-import com.example.academy.domain.Course;
-import com.example.academy.domain.Member;
-import com.example.academy.domain.StudentCourse;
+import com.example.academy.domain.mysql.Course;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.StudentCourse;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

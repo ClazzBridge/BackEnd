@@ -1,5 +1,7 @@
-package com.example.academy.domain;
+package com.example.academy.domain.mysql;
 
+import com.example.academy.domain.mysql.Course;
+import com.example.academy.domain.mysql.Member;
 import javax.persistence.*;
 import java.util.Date;
 import lombok.Data;
