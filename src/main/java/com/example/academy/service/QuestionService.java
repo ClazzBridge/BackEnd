@@ -1,12 +1,15 @@
 package com.example.academy.service;
 
 import com.example.academy.domain.Member;
+import com.example.academy.domain.Post;
 import com.example.academy.domain.Question;
 import com.example.academy.dto.QuestionCreateDTO;
 import com.example.academy.dto.QuestionReadDTO;
 import com.example.academy.dto.QuestionToggleRecommendedDTO;
 import com.example.academy.dto.QuestionToggleSolvedDTO;
 import com.example.academy.dto.QuestionUpdateDTO;
+import com.example.academy.exception.post.PostEmptyException;
+import com.example.academy.exception.post.PostNotFoundException;
 import com.example.academy.mapper.QuestionMapper;
 import com.example.academy.repository.MemberRepository;
 import com.example.academy.repository.QuestionRepository;
@@ -60,9 +63,6 @@ public class QuestionService {
     return questionMapper.questionToQuestionReadDTO(existingQuestion, existingQuestion.getMember());
   }
 
-  public void deleteQuestion(Long id) {
-    questionRepository.deleteById(id);
-  }
 
   public QuestionReadDTO completeQuestion(QuestionToggleSolvedDTO questionToggleSolvedDTO) {
     Question existingQuestion = questionRepository.findById(questionToggleSolvedDTO.getId())
@@ -87,5 +87,17 @@ public class QuestionService {
 
   public Page<QuestionReadDTO> getPageQuestions(Pageable pageable) {
     return questionRepository.findAllQuestionReadDTOs(pageable);  // 질문 목록을 페이지네이션으로 조회
+  }
+
+  public void deleteQuestion(List<Long> ids) {
+    if (ids.isEmpty()) {
+      throw new PostEmptyException();
+    }
+
+    for (Long id : ids) {
+      Question deletedQuestion = questionRepository.findById(id)
+          .orElseThrow(() -> new PostNotFoundException(id));
+      questionRepository.delete(deletedQuestion);
+    }
   }
 }
