@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class StudentStatusReadDTO {
 
-  private Long userId;
+  private Long memberId;
   private boolean isHandRaised;
   private boolean isUnderstanding;
 }
