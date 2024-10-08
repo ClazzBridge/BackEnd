@@ -96,7 +96,7 @@ CREATE TABLE member
 (
     id               INT AUTO_INCREMENT PRIMARY KEY,                               -- 사용자 고유 식별자 (Primary Key)
     member_id        VARCHAR(20) UNIQUE                                  NOT NULL, -- 사용자 계정
-    password         VARCHAR(30)                                         NOT NULL, -- 사용자 비밀번호
+    password         VARCHAR(100)                                         NOT NULL, -- 사용자 비밀번호
     name             VARCHAR(10)                                         NOT NULL, -- 사용자 이름
     email            VARCHAR(30) UNIQUE                                  NOT NULL, -- 이메일 주소 (고유)
     phone            VARCHAR(20) UNIQUE                                  NOT NULL, -- 전화번호 (고유)
@@ -245,7 +245,8 @@ CREATE TABLE question
     id             int AUTO_INCREMENT PRIMARY KEY,     -- 질문 고유 식별자 (Primary Key)
     member_id      INT  NOT NULL,                      -- 작성자 ID
     content        TEXT NOT NULL,                      -- 질문 제목
-    create_date    DATETIME DEFAULT CURRENT_TIMESTAMP, -- 질문 기재 시간
+    created_at    DATETIME DEFAULT CURRENT_TIMESTAMP, -- 질문 기재 시간
+    updated_at  DATETIME ON UPDATE CURRENT_TIMESTAMP, -- 답변 수정 시각
     is_solved      BOOLEAN  DEFAULT FALSE,             -- 답변 완료 여부
     is_recommended BOOLEAN  DEFAULT FALSE              -- 강사님의 질문 추천 여부
 );

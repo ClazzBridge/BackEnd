@@ -180,7 +180,7 @@ VALUES
     ('New Course Addition', 'Vote on adding a new course to the curriculum', '2024-09-01 09:00:00', '2024-09-05 18:00:00', TRUE, 9, '{"Approve": 0, "Reject": 0}', '{"Approve": 20, "Reject": 15}'),
     ('Holiday Event Planning', 'Choose the activities for the holiday event', '2024-09-15 09:00:00', '2024-09-20 18:00:00', TRUE, 10, '{"Activity 1": 0, "Activity 2": 0}', '{"Activity 1": 22, "Activity 2": 18}');
 
-INSERT INTO question (member_id, content, create_date, is_solved, is_recommended)
+INSERT INTO question (member_id, content, created_at, is_solved, is_recommended)
 VALUES
     (1, 'How does gravity work?', '2024-01-10 10:00:00', FALSE, FALSE),
     (2, 'What is the theory of relativity?', '2024-01-11 11:00:00', TRUE, TRUE),
