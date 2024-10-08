@@ -46,9 +46,7 @@ public class PostController {
     @Operation(summary = "게시글 저장")
     @PostMapping("")
     public ResponseEntity<PostResponseDTO> save(@RequestBody PostCreateDTO postDTO) {
-        System.out.println("===================================");
-        System.out.println(postDTO.toString());
-        System.out.println("===================================");
+
         PostResponseDTO savedPost = postService.save(postDTO);
         return ResponseEntity.ok().body(savedPost);
     }
