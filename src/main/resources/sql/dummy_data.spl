@@ -1,0 +1,220 @@
+INSERT INTO profile_image (picture_url)
+VALUES
+    ('https://example.com/images/profile1.jpg'),
+    ('https://example.com/images/profile2.jpg'),
+    ('https://example.com/images/profile3.jpg'),
+    ('https://example.com/images/profile4.jpg'),
+    ('https://example.com/images/profile5.jpg'),
+    ('https://example.com/images/profile6.jpg'),
+    ('https://example.com/images/profile7.jpg'),
+    ('https://example.com/images/profile8.jpg'),
+    ('https://example.com/images/profile9.jpg'),
+    ('https://example.com/images/profile10.jpg');
+
+INSERT INTO member (member_id, password, name, email, phone, member_type, profile_image_id, experience, git_url, bio)
+VALUES
+    ('student01', 'password1', 'John', 'john@example.com', '010-1234-5678', 'ROLE_STUDENT', 1, NULL, 'https://github.com/johndoe', 'Hello, I am John Doe, a student.'),
+    ('student02', 'password2', 'Jane', 'jane@example.com', '010-2345-6789', 'ROLE_STUDENT', 2, NULL, 'https://github.com/janesmith', 'Hi, I am Jane Smith, passionate about learning.'),
+    ('teacher01', 'password3', 'Alice', 'alice@example.com', '010-3456-7890', 'ROLE_TEACHER', 3, '10 years of teaching experience in Mathematics.', 'https://github.com/alicebrown', 'I am Alice Brown, a Mathematics teacher.'),
+    ('teacher02', 'password4', 'Bob', 'bob@example.com', '010-4567-8901', 'ROLE_TEACHER', 4, '5 years of teaching experience in Physics.', 'https://github.com/bobwhite', 'I am Bob White, a Physics teacher.'),
+    ('admin01', 'password5', 'Charlie', 'charlie@example.com', '010-5678-9012', 'ROLE_ADMIN', 5, NULL, NULL, 'I am Charlie Black, an administrator of the system.'),
+    ('student03', 'password6', 'Daniel', 'daniel@example.com', '010-6789-0123', 'ROLE_STUDENT', 6, NULL, 'https://github.com/danielgreen', 'I am Daniel Green, a student interested in programming.'),
+    ('student04', 'password7', 'Emily', 'emily@example.com', '010-7890-1234', 'ROLE_STUDENT', 7, NULL, 'https://github.com/emilyblue', 'I am Emily Blue, studying data science.'),
+    ('teacher03', 'password8', 'Frank', 'frank@example.com', '010-8901-2345', 'ROLE_TEACHER', 8, '8 years of teaching experience in Chemistry.', 'https://github.com/frankred', 'I am Frank Red, a Chemistry teacher.'),
+    ('student05', 'password9', 'Grace', 'grace@example.com', '010-9012-3456', 'ROLE_STUDENT', 9, NULL, 'https://github.com/graceyellow', 'I am Grace Yellow, enthusiastic about science.'),
+    ('admin02', 'password10', 'Hannah', 'hannah@example.com', '010-0123-4567', 'ROLE_ADMIN', 10, NULL, NULL, 'I am Hannah Violet, an administrator managing the platform.');
+
+INSERT INTO classroom (name, capacity, is_occupied)
+VALUES
+    ('Room 101', 30, FALSE),
+    ('Room 102', 40, TRUE),
+    ('Room 103', 50, FALSE),
+    ('Room 104', 35, TRUE),
+    ('Room 105', 45, FALSE),
+    ('Room 106', 25, TRUE),
+    ('Room 107', 60, FALSE),
+    ('Room 108', 55, TRUE),
+    ('Room 109', 70, FALSE),
+    ('Room 110', 80, TRUE);
+
+INSERT INTO course (title, description, start_date, end_date, instructor_id, classroom_id)
+VALUES
+    ('Mathematics 101', 'Basic mathematics course', '2024-01-01', '2024-06-01', 2, 1),
+    ('Physics 101', 'Introduction to physics', '2024-01-01', '2024-06-01', 3, 2),
+    ('Chemistry 101', 'Introduction to chemistry', '2024-01-01', '2024-06-01', 2, 1),
+    ('Biology 101', 'Basic biology course', '2024-01-01', '2024-06-01', 4, 2),
+    ('History 101', 'Introduction to history', '2024-01-01', '2024-06-01', 5, 1),
+    ('Geography 101', 'Introduction to geography', '2024-01-01', '2024-06-01', 6, 2),
+    ('English 101', 'Basic English course', '2024-01-01', '2024-06-01', 7, 1),
+    ('Programming 101', 'Introduction to programming', '2024-01-01', '2024-06-01', 8, 2),
+    ('Data Science 101', 'Basics of data science', '2024-01-01', '2024-06-01', 2, 1),
+    ('Philosophy 101', 'Introduction to philosophy', '2024-01-01', '2024-06-01', 9, 2);
+
+INSERT INTO seat (classroom_id, seat_number, is_exist, is_online, member_id)
+VALUES
+    (1, 'A1', TRUE, FALSE, 1),
+    (1, 'A2', TRUE, FALSE, 2),
+    (1, 'A3', TRUE, TRUE, NULL),
+    (1, 'A4', TRUE, TRUE, NULL),
+    (2, 'B1', TRUE, FALSE, 3),
+    (2, 'B2', TRUE, TRUE, NULL),
+    (2, 'B3', TRUE, FALSE, 4),
+    (2, 'B4', TRUE, TRUE, NULL),
+    (2, 'B5', TRUE, TRUE, NULL),
+    (2, 'B6', TRUE, FALSE, 5);
+
+INSERT INTO student_course (student_id, course_id)
+VALUES
+    (1, 1),
+    (1, 2),
+    (2, 1),
+    (2, 2),
+    (3, 1),
+    (3, 2),
+    (4, 1),
+    (4, 2),
+    (5, 1),
+    (5, 2);
+
+INSERT INTO assignment (course_id, title, description, due_date)
+VALUES
+    (1, 'Assignment 1', 'Description of assignment 1', '2024-05-01'),
+    (1, 'Assignment 2', 'Description of assignment 2', '2024-05-15'),
+    (2, 'Assignment 1', 'Description of assignment 1', '2024-05-01'),
+    (2, 'Assignment 2', 'Description of assignment 2', '2024-05-15'),
+    (1, 'Assignment 3', 'Description of assignment 3', '2024-06-01'),
+    (2, 'Assignment 3', 'Description of assignment 3', '2024-06-01'),
+    (1, 'Assignment 4', 'Description of assignment 4', '2024-06-15'),
+    (2, 'Assignment 4', 'Description of assignment 4', '2024-06-15'),
+    (1, 'Assignment 5', 'Description of assignment 5', '2024-07-01'),
+    (2, 'Assignment 5', 'Description of assignment 5', '2024-07-01');
+
+INSERT INTO submission (assignment_id, student_id, title, content, submission_url, submission_date)
+VALUES
+    (1, 1, 'Submission 1', 'Content for submission 1', 'https://example.com/submissions/1', '2024-04-30'),
+    (2, 1, 'Submission 2', 'Content for submission 2', 'https://example.com/submissions/2', '2024-05-15'),
+    (3, 2, 'Submission 1', 'Content for submission 3', 'https://example.com/submissions/3', '2024-06-01'),
+    (4, 2, 'Submission 2', 'Content for submission 4', 'https://example.com/submissions/4', '2024-06-15'),
+    (5, 3, 'Submission 1', 'Content for submission 5', 'https://example.com/submissions/5', '2024-07-01'),
+    (6, 3, 'Submission 2', 'Content for submission 6', 'https://example.com/submissions/6', '2024-07-15'),
+    (7, 4, 'Submission 3', 'Content for submission 7', 'https://example.com/submissions/7', '2024-08-01'),
+    (8, 4, 'Submission 4', 'Content for submission 8', 'https://example.com/submissions/8', '2024-08-15'),
+    (9, 5, 'Submission 5', 'Content for submission 9', 'https://example.com/submissions/9', '2024-09-01'),
+    (10, 5, 'Submission 6', 'Content for submission 10', 'https://example.com/submissions/10', '2024-09-15');
+
+INSERT INTO board_type (description)
+VALUES
+    ('General'),
+    ('Q&A'),
+    ('Announcements'),
+    ('Resources'),
+    ('Discussions'),
+    ('Feedback'),
+    ('Support'),
+    ('Technical Help'),
+    ('Ideas'),
+    ('Miscellaneous');
+
+INSERT INTO board (board_type_id)
+VALUES
+    (1),
+    (1),
+    (1),
+    (1),
+    (2),
+    (2),
+    (2),
+    (2),
+    (3),
+    (3);
+
+INSERT INTO post (board_id, classroom_id, author_id, title, content, created_at)
+VALUES
+    (1, 1, 1, 'Post 1', 'Content of post 1', '2024-01-01 10:00:00'),
+    (2, 1, 2, 'Post 2', 'Content of post 2', '2024-01-02 11:00:00'),
+    (3, 1, 3, 'Post 3', 'Content of post 3', '2024-01-03 12:00:00'),
+    (4, 2, 4, 'Post 4', 'Content of post 4', '2024-01-04 13:00:00'),
+    (5, 2, 5, 'Post 5', 'Content of post 5', '2024-01-05 14:00:00'),
+    (6, 2, 1, 'Post 6', 'Content of post 6', '2024-01-06 15:00:00'),
+    (7, 2, 2, 'Post 7', 'Content of post 7', '2024-01-07 16:00:00'),
+    (8, 3, 3, 'Post 8', 'Content of post 8', '2024-01-08 17:00:00'),
+    (9, 3, 4, 'Post 9', 'Content of post 9', '2024-01-09 18:00:00'),
+    (10, 3, 5, 'Post 10', 'Content of post 10', '2024-01-10 19:00:00');
+
+INSERT INTO comment (post_id, author_id, content, created_at)
+VALUES
+    (1, 1, 'Comment 1 on post 1', '2024-01-01 11:00:00'),
+    (2, 2, 'Comment 2 on post 2', '2024-01-02 12:00:00'),
+    (3, 3, 'Comment 3 on post 3', '2024-01-03 13:00:00'),
+    (4, 4, 'Comment 4 on post 4', '2024-01-04 14:00:00'),
+    (5, 5, 'Comment 5 on post 5', '2024-01-05 15:00:00'),
+    (6, 1, 'Comment 6 on post 6', '2024-01-06 16:00:00'),
+    (7, 2, 'Comment 7 on post 7', '2024-01-07 17:00:00'),
+    (8, 3, 'Comment 8 on post 8', '2024-01-08 18:00:00'),
+    (9, 4, 'Comment 9 on post 9', '2024-01-09 19:00:00'),
+    (10, 5, 'Comment 10 on post 10', '2024-01-10 20:00:00');
+
+INSERT INTO schedule (classroom_id, event_title, start_date, end_date, description)
+VALUES
+    (1, 'Classroom A Event 1', '2024-02-01 09:00:00', '2024-02-01 10:00:00', 'Event 1 description'),
+    (1, 'Classroom A Event 2', '2024-02-02 10:00:00', '2024-02-02 11:00:00', 'Event 2 description'),
+    (2, 'Classroom B Event 1', '2024-02-03 11:00:00', '2024-02-03 12:00:00', 'Event 3 description'),
+    (2, 'Classroom B Event 2', '2024-02-04 12:00:00', '2024-02-04 13:00:00', 'Event 4 description'),
+    (1, 'Classroom A Event 3', '2024-02-05 13:00:00', '2024-02-05 14:00:00', 'Event 5 description'),
+    (1, 'Classroom A Event 4', '2024-02-06 14:00:00', '2024-02-06 15:00:00', 'Event 6 description'),
+    (2, 'Classroom B Event 3', '2024-02-07 15:00:00', '2024-02-07 16:00:00', 'Event 7 description'),
+    (2, 'Classroom B Event 4', '2024-02-08 16:00:00', '2024-02-08 17:00:00', 'Event 8 description'),
+    (1, 'Classroom A Event 5', '2024-02-09 17:00:00', '2024-02-09 18:00:00', 'Event 9 description'),
+    (1, 'Classroom A Event 6', '2024-02-10 18:00:00', '2024-02-10 19:00:00', 'Event 10 description');
+
+INSERT INTO vote (title, description, start_date, end_date, is_expired, creator_id, options, responses)
+VALUES
+    ('Vote for Class President', 'Vote for the next class president', '2024-04-01 09:00:00', '2024-04-10 18:00:00', FALSE, 1, '{"Option A": 0, "Option B": 0}', '{"Option A": 30, "Option B": 20}'),
+    ('Best Project Award', 'Vote for the best project', '2024-04-15 09:00:00', '2024-04-20 18:00:00', FALSE, 2, '{"Project 1": 0, "Project 2": 0}', '{"Project 1": 25, "Project 2": 30}'),
+    ('Event Date Decision', 'Choose the date for the event', '2024-05-01 09:00:00', '2024-05-05 18:00:00', FALSE, 3, '{"Option 1": 0, "Option 2": 0}', '{"Option 1": 40, "Option 2": 10}'),
+    ('Course Extension Vote', 'Vote on whether to extend the course', '2024-06-01 09:00:00', '2024-06-10 18:00:00', TRUE, 4, '{"Yes": 0, "No": 0}', '{"Yes": 35, "No": 15}'),
+    ('New Club Formation', 'Vote for forming a new student club', '2024-07-01 09:00:00', '2024-07-10 18:00:00', FALSE, 5, '{"Approve": 0, "Reject": 0}', '{"Approve": 28, "Reject": 12}'),
+    ('Exam Schedule Decision', 'Decide on the exam schedule', '2024-07-15 09:00:00', '2024-07-20 18:00:00', FALSE, 6, '{"Morning": 0, "Afternoon": 0}', '{"Morning": 22, "Afternoon": 18}'),
+    ('Field Trip Destination', 'Choose the destination for the field trip', '2024-08-01 09:00:00', '2024-08-10 18:00:00', FALSE, 7, '{"Beach": 0, "Mountains": 0}', '{"Beach": 15, "Mountains": 25}'),
+    ('Favorite Teacher Vote', 'Vote for your favorite teacher', '2024-08-15 09:00:00', '2024-08-20 18:00:00', FALSE, 8, '{"Teacher A": 0, "Teacher B": 0}', '{"Teacher A": 18, "Teacher B": 12}'),
+    ('New Course Addition', 'Vote on adding a new course to the curriculum', '2024-09-01 09:00:00', '2024-09-05 18:00:00', TRUE, 9, '{"Approve": 0, "Reject": 0}', '{"Approve": 20, "Reject": 15}'),
+    ('Holiday Event Planning', 'Choose the activities for the holiday event', '2024-09-15 09:00:00', '2024-09-20 18:00:00', TRUE, 10, '{"Activity 1": 0, "Activity 2": 0}', '{"Activity 1": 22, "Activity 2": 18}');
+
+INSERT INTO question (member_id, content, created_at, is_solved, is_recommended)
+VALUES
+    (1, 'How does gravity work?', '2024-01-10 10:00:00', FALSE, FALSE),
+    (2, 'What is the theory of relativity?', '2024-01-11 11:00:00', TRUE, TRUE),
+    (3, 'What are the states of matter?', '2024-01-12 12:00:00', FALSE, FALSE),
+    (4, 'How do plants perform photosynthesis?', '2024-01-13 13:00:00', TRUE, FALSE),
+    (5, 'What is quantum mechanics?', '2024-01-14 14:00:00', FALSE, TRUE),
+    (1, 'How do ecosystems function?', '2024-01-15 15:00:00', TRUE, FALSE),
+    (2, 'What is the process of mitosis?', '2024-01-16 16:00:00', TRUE, TRUE),
+    (3, 'How does the water cycle work?', '2024-01-17 17:00:00', FALSE, FALSE),
+    (4, 'What are the different types of chemical bonds?', '2024-01-18 18:00:00', FALSE, FALSE),
+    (5, 'How do we measure time in physics?', '2024-01-19 19:00:00', TRUE, TRUE);
+
+INSERT INTO answer (question_id, teacher_id, content, created_at)
+VALUES
+    (1, 2, 'Gravity is the force that attracts two bodies toward each other.', '2024-01-10 11:00:00'),
+    (2, 3, 'The theory of relativity explains how space and time are linked.', '2024-01-11 12:00:00'),
+    (3, 4, 'The states of matter are solid, liquid, gas, and plasma.', '2024-01-12 13:00:00'),
+    (4, 5, 'Plants perform photosynthesis using sunlight, water, and carbon dioxide.', '2024-01-13 14:00:00'),
+    (5, 2, 'Quantum mechanics describes the behavior of particles at the atomic level.', '2024-01-14 15:00:00'),
+    (6, 3, 'Ecosystems function through energy flow and nutrient cycles.', '2024-01-15 16:00:00'),
+    (7, 4, 'Mitosis is the process of cell division.', '2024-01-16 17:00:00'),
+    (8, 5, 'The water cycle involves evaporation, condensation, and precipitation.', '2024-01-17 18:00:00'),
+    (9, 2, 'Chemical bonds include covalent, ionic, and hydrogen bonds.', '2024-01-18 19:00:00'),
+    (10, 3, 'Time in physics can be measured using clocks and based on motion.', '2024-01-19 20:00:00');
+
+INSERT INTO student_status (is_understanding, is_hand_raised, member_id)
+VALUES
+    (TRUE, FALSE, 1),
+    (FALSE, TRUE, 2),
+    (TRUE, TRUE, 3),
+    (FALSE, FALSE, 4),
+    (TRUE, TRUE, 5),
+    (FALSE, FALSE, 6),
+    (TRUE, TRUE, 7),
+    (FALSE, TRUE, 8),
+    (TRUE, FALSE, 9),
+    (FALSE, TRUE, 10);
