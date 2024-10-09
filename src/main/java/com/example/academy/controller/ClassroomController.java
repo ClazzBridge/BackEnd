@@ -1,7 +1,7 @@
 package com.example.academy.controller;
 
 
-import com.example.academy.dto.ClassroomNameDTO;
+import com.example.academy.dto.classroom.ClassroomNameDTO;
 import com.example.academy.service.ClassroomService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;

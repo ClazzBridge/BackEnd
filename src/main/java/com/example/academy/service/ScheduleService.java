@@ -1,13 +1,11 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.Classroom;
-import com.example.academy.domain.Course;
-import com.example.academy.domain.Schedule;
-import com.example.academy.dto.ScheduleAddDTO;
-import com.example.academy.dto.ScheduleListDTO;
-import com.example.academy.repository.ClassroomRepository;
-import com.example.academy.repository.CourseRepository;
-import com.example.academy.repository.ScheduleRepository;
+import com.example.academy.domain.mysql.Course;
+import com.example.academy.domain.mysql.Schedule;
+import com.example.academy.dto.schedule.ScheduleAddDTO;
+import com.example.academy.dto.schedule.ScheduleListDTO;
+import com.example.academy.repository.mysql.CourseRepository;
+import com.example.academy.repository.mysql.ScheduleRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

@@ -1,9 +1,9 @@
 package com.example.academy.controller;
 
-import com.example.academy.dto.GetDetailMemberDTO;
-import com.example.academy.dto.GetMemberDTO;
-import com.example.academy.dto.MemberSignUpDTO;
-import com.example.academy.dto.MemberUpdateDTO;
+import com.example.academy.dto.member.GetDetailMemberDTO;
+import com.example.academy.dto.member.GetMemberDTO;
+import com.example.academy.dto.member.MemberSignUpDTO;
+import com.example.academy.dto.member.MemberUpdateDTO;
 import com.example.academy.service.MemberManageService;
 import com.example.academy.service.MemberListService;
 import io.swagger.v3.oas.annotations.Operation;

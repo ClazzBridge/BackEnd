@@ -1,7 +1,7 @@
 package com.example.academy.controller;
 
-import com.example.academy.dto.ScheduleAddDTO;
-import com.example.academy.dto.ScheduleListDTO;
+import com.example.academy.dto.schedule.ScheduleAddDTO;
+import com.example.academy.dto.schedule.ScheduleListDTO;
 import com.example.academy.service.ScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
