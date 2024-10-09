@@ -4,6 +4,7 @@ package com.example.academy.service;
 import com.example.academy.domain.Course;
 import com.example.academy.domain.Member;
 import com.example.academy.domain.StudentCourse;
+import com.example.academy.dto.GetDetailMemberDTO;
 import com.example.academy.dto.GetMemberDTO;
 import com.example.academy.dto.LoginResponseDTO;
 import com.example.academy.jwt.JwtUtil;
@@ -102,7 +103,7 @@ public class MemberListService {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 사용자 미발견 시 404 상태 코드 반환
   }
 
-  public GetMemberDTO getMemberWithCourseInfo(Long memberId) {
+  public GetDetailMemberDTO getMemberWithCourseInfo(Long memberId) {
     // Member 조회
     Member member = memberRepository.findById(memberId)
         .orElseThrow(() -> new NoSuchElementException("Member not found with ID: " + memberId));
@@ -127,7 +128,7 @@ public class MemberListService {
     }
 
     // GetMemberDTO 생성 및 값 설정
-    GetMemberDTO getMemberDTO = new GetMemberDTO(
+    GetDetailMemberDTO getDetailMemberDTO = new GetDetailMemberDTO(
         member.getId(),
         member.getMemberId(),
         member.getPassword(),
@@ -139,7 +140,7 @@ public class MemberListService {
         courseName
     );
 
-    return getMemberDTO;
+    return getDetailMemberDTO;
   }
   public List<GetMemberDTO> getAllMembersWithCourses() {
     List<Member> members = memberRepository.findAll(); // 전체 멤버 조회
