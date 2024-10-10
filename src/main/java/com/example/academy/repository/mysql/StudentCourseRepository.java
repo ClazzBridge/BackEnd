@@ -1,6 +1,5 @@
-package com.example.academy.repository;
+package com.example.academy.repository.mysql;
 
-import com.example.academy.domain.mysql.Course;
 import com.example.academy.domain.mysql.Member;
 import com.example.academy.domain.mysql.StudentCourse;
 import java.util.List;
@@ -12,4 +11,5 @@ public interface StudentCourseRepository extends JpaRepository<StudentCourse,Lon
   List<StudentCourse> findByStudent(Member student);
 
   Optional<StudentCourse> findById(Long id);
+
 }

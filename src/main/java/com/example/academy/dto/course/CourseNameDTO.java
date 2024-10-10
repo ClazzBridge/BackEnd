@@ -1,4 +1,4 @@
-package com.example.academy.dto;
+package com.example.academy.dto.course;
 
 import lombok.Data;
 

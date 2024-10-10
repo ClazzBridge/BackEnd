@@ -1,4 +1,4 @@
-package com.example.academy.dto;
+package com.example.academy.dto.schedule;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class ScheduleAddDTO {
 
-  private String classroomName; // 강의실 명
+  private String courseName; // 강의실 명
 
   private String eventTitle; // 일정 제목
 
