@@ -1,11 +1,11 @@
 package com.example.academy.domain.mysql;
 
+import com.example.academy.common.BaseTimeEntity;
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "comment")
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +22,10 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
-
     // Getters and Setters
+
+    public String updateContent(String newContent) {
+        this.content = newContent;
+        return this.content;
+    }
 }

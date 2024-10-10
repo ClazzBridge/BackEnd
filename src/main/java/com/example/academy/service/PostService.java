@@ -93,12 +93,14 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDTO update(Long id, PostUpdateDTO postDTO) {
-        Post updatedPost = postRepository.findById(id)
-            .orElseThrow(() -> new PostNotFoundException(id));
+    public PostResponseDTO update(PostUpdateDTO postDTO) {
+        Long postId = postDTO.getId();
+
+        Post updatedPost = postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFoundException(postId));
 
         if (postDTO.getTitle() == null || postDTO.getTitle().trim().isEmpty()) {
-            throw new PostEmptyTitleException(id);
+            throw new PostEmptyTitleException(postId);
         }
 
         updatedPost.updateTitle(postDTO.getTitle());
@@ -113,7 +115,7 @@ public class PostService {
         if (ids.isEmpty()) {
             throw new PostEmptyException();
         }
-        
+
         for (Long id : ids) {
             Post deletedPost = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));

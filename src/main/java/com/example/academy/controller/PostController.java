@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/post")
+@RequestMapping("/api/posts")
 public class PostController {
 
     private final PostService postService;
@@ -46,9 +46,7 @@ public class PostController {
     @Operation(summary = "게시글 저장")
     @PostMapping("")
     public ResponseEntity<PostResponseDTO> save(@RequestBody PostCreateDTO postDTO) {
-        System.out.println("===================================");
-        System.out.println(postDTO.toString());
-        System.out.println("===================================");
+
         PostResponseDTO savedPost = postService.save(postDTO);
         return ResponseEntity.ok().body(savedPost);
     }
@@ -61,10 +59,9 @@ public class PostController {
     }
 
     @Operation(summary = "게시글 수정")
-    @PutMapping("/{id}")
-    public ResponseEntity<PostResponseDTO> update(@RequestBody PostUpdateDTO postDTO,
-        @PathVariable(value = "id") Long id) {
-        PostResponseDTO updatedPost = postService.update(id, postDTO);
+    @PutMapping("")
+    public ResponseEntity<PostResponseDTO> update(@RequestBody PostUpdateDTO postDTO) {
+        PostResponseDTO updatedPost = postService.update(postDTO);
 
         return ResponseEntity.ok().body(updatedPost);
     }
@@ -74,6 +71,7 @@ public class PostController {
     public HttpStatus delete(@RequestBody List<Long> ids) {
         // 프론트에서 데이터를 {data : **}로 묶어서 주면 requestBody로 받고
         // 파람으로 오면 파람으로 받기.
+        // 야호
         postService.delete(ids);
         return HttpStatus.OK;
     }
