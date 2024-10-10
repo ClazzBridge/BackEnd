@@ -40,7 +40,7 @@ public class ScheduleService {
       // ScheduleAddDTO로 변환
       ScheduleListDTO scheduleListDTO = new ScheduleListDTO();
       scheduleListDTO.setId(schedule.getId());
-      scheduleListDTO.setCourseName(courseName);
+      scheduleListDTO.setCourseTitle(courseName);
       scheduleListDTO.setEventTitle(schedule.getEventTitle());
       scheduleListDTO.setStartDate(schedule.getStartDate());
       scheduleListDTO.setEndDate(schedule.getEndDate());
@@ -68,11 +68,11 @@ public class ScheduleService {
     }
 
     Course course = courseOptional.get();
-    String courseName = course.getTitle(); // 강의실 명 추출
+    String courseTitle = course.getTitle(); // 강의실 명 추출
 
     ScheduleListDTO scheduleListDTO = new ScheduleListDTO();
     scheduleListDTO.setId(id);
-    scheduleListDTO.setCourseName(courseName);
+    scheduleListDTO.setCourseTitle(courseTitle);
     scheduleListDTO.setEventTitle(schedule.getEventTitle());
     scheduleListDTO.setStartDate(schedule.getStartDate());
     scheduleListDTO.setEndDate(schedule.getEndDate());
@@ -84,16 +84,16 @@ public class ScheduleService {
 
   public void addSchedule(ScheduleAddDTO schedule) {
 
-    String courseName = schedule.getCourseName();
+    String courseTitle = schedule.getCourseTitle();
 
     // courseName 찾기
-    Optional<Course> optionalCourse = courseRepository.findByTitle(courseName);
+    Optional<Course> optionalCourse = courseRepository.findByTitle(courseTitle);
     if (optionalCourse.isEmpty()) {
       // courseName를 찾지 못하면 null을 반환하거나 적절한 값을 처리하도록 설정
-      throw new IllegalArgumentException("CourseName not found: " + courseName);
+      throw new IllegalArgumentException("CourseName not found: " + courseTitle);
     }
     
-    Long courseId = courseRepository.findByTitle(courseName).orElseThrow().getId();
+    Long courseId = courseRepository.findByTitle(courseTitle).orElseThrow().getId();
     String eventTitle = schedule.getEventTitle(); // 일정 제목
     LocalDateTime startDate = schedule.getStartDate(); // 일정 시작 날짜
     LocalDateTime endDate = schedule.getEndDate(); // 일정 종료 날짜
@@ -115,10 +115,10 @@ public class ScheduleService {
   }
 
   public void updateSchedule(ScheduleListDTO schedule) {
-    String courseName = schedule.getCourseName();
+    String courseTitle = schedule.getCourseTitle();
 
     // classroomRepository에서 courseName 강의실 조회
-    Optional<Course> courseOptional = courseRepository.findByTitle(courseName);
+    Optional<Course> courseOptional = courseRepository.findByTitle(courseTitle);
     if (!courseOptional.isPresent()) {
       throw new RuntimeException("해당 이름의 강의실을 찾을 수 없습니다.");
     }

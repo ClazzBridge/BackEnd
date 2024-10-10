@@ -11,8 +11,8 @@ public class Seat {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "classroom_id")
-    private Classroom classroom;
+    @JoinColumn(name = "course_id")
+    private Course course;
 
     @Column(nullable = false)
     private String seatNumber;
