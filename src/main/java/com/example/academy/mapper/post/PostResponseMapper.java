@@ -19,7 +19,7 @@ public class PostResponseMapper {
             post.getContent(),
             post.getAuthor().getName(),
             post.getBoard().getBoardType().getDescription(),
-            post.getClassroom().getName(),
+            post.getCourse().getTitle(),
             post.getCreatedAt()
         );
     }

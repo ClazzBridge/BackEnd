@@ -1,13 +1,9 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.mysql.Classroom;
-import com.example.academy.dto.ClassroomNameDTO;
+import com.example.academy.dto.classroom.ClassroomNameDTO;
 import com.example.academy.repository.mysql.ClassroomRepository;
-import com.example.academy.repository.mysql.MemberRepository;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

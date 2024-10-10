@@ -1,4 +1,4 @@
-package com.example.academy.dto;
+package com.example.academy.dto.member;
 
 import com.example.academy.domain.mysql.Member;
 import java.util.Collection;

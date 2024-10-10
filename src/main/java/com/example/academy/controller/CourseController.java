@@ -1,8 +1,7 @@
 package com.example.academy.controller;
 
 
-import com.example.academy.dto.ClassroomNameDTO;
-import com.example.academy.dto.CourseNameDTO;
+import com.example.academy.dto.course.CourseTitleDTO;
 import com.example.academy.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -24,9 +23,9 @@ public class CourseController {
   }
   @Operation(summary = "강의명 전체 조회")
   @GetMapping
-  public ResponseEntity<List<?>> getCourseName(){
-    List<CourseNameDTO> name = courseService.getCourseName();
+  public ResponseEntity<List<?>> getCourseTitle(){
+    List<CourseTitleDTO> title = courseService.getCourseTitle();
 
-    return ResponseEntity.ok(name);
+    return ResponseEntity.ok(title);
   }
 }
