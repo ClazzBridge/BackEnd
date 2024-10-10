@@ -20,4 +20,5 @@ public class CourseService {
         .map(course -> new CourseTitleDTO(course.getTitle())) // ClassroomNameDTO로 변환
         .collect(Collectors.toList()); // List로 수집
   }
+
 }

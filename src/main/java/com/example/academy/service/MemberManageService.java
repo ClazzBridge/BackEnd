@@ -49,7 +49,7 @@ public class MemberManageService {
     String email = memberSignUpDTO.getEmail();
     String phone = memberSignUpDTO.getPhone();
     MemberType memberType = memberSignUpDTO.getMemberType();
-    String title = memberSignUpDTO.getTitle();
+    String title = memberSignUpDTO.getCourseTitle();
 
     boolean isExistMember = memberRepository.existsByMemberId(memberId);
     boolean isExistEmail = memberRepository.existsByEmail(email);
@@ -148,7 +148,7 @@ public class MemberManageService {
     member.setEmail(memberUpdateDTO.getEmail());
     member.setPhone(memberUpdateDTO.getPhone());
     member.setMemberType(memberUpdateDTO.getMemberType());
-    String title = memberUpdateDTO.getTitle();
+    String title = memberUpdateDTO.getCourseTitle();
     // 과정명 업데이트 (수강생인 경우)
     if (memberUpdateDTO.getMemberType().equals(MemberType.ROLE_STUDENT)) {
       List<StudentCourse> studentCourses = studentCourseRepository.findByStudent(member);

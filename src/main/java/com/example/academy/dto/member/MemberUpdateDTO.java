@@ -17,13 +17,13 @@ public class MemberUpdateDTO {
   private String phone;
   private MemberType memberType;
   private ProfileImage profileImage;
-  private String title;
+  private String courseTitle;
 
   public MemberUpdateDTO() {
   }
 
   public MemberUpdateDTO(Long id, String memberId, String password, String name, String email,
-      String phone, MemberType memberType, ProfileImage profileImage, String title) {
+      String phone, MemberType memberType, ProfileImage profileImage, String courseTitle) {
     this.id = id;
     this.memberId = memberId;
     this.password = password;
@@ -32,6 +32,6 @@ public class MemberUpdateDTO {
     this.phone = phone;
     this.memberType = memberType;
     this.profileImage = profileImage;
-    this.title = title;
+    this.courseTitle = courseTitle;
   }
 }

@@ -19,11 +19,12 @@ public class ClassroomController {
   @Autowired
   private ClassroomService classroomService;
 
-  @GetMapping
+  @GetMapping("/name")
   @Operation(summary = "강의실명 전체 조회")
   public ResponseEntity<List<?>> getClassroomName(){
     List<ClassroomNameDTO> name = classroomService.getClassroomName();
-
     return ResponseEntity.ok(name);
   }
+
+
 }
