@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/seat")
+@RequestMapping("/api/seats")
 public class SeatController {
 
   private final SeatService seatService;
@@ -23,7 +23,7 @@ public class SeatController {
   }
 
   @Operation(summary = "모든 좌석 리스트 반환")
-  @GetMapping("/")
+  @GetMapping("/seat")
   public ResponseEntity<List<SeatDTO>> getAllSeat() {
     List<SeatDTO> seatDTOList = seatService.getAllSeat();
     return ResponseEntity.ok(seatDTOList);
