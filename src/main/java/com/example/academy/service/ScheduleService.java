@@ -86,10 +86,10 @@ public class ScheduleService {
 
     String courseName = schedule.getCourseName();
 
-    // classroomId를 찾기
+    // courseName 찾기
     Optional<Course> optionalCourse = courseRepository.findByTitle(courseName);
     if (optionalCourse.isEmpty()) {
-      // classroomId를 찾지 못하면 null을 반환하거나 적절한 값을 처리하도록 설정
+      // courseName를 찾지 못하면 null을 반환하거나 적절한 값을 처리하도록 설정
       throw new IllegalArgumentException("CourseName not found: " + courseName);
     }
     
@@ -98,6 +98,10 @@ public class ScheduleService {
     LocalDateTime startDate = schedule.getStartDate(); // 일정 시작 날짜
     LocalDateTime endDate = schedule.getEndDate(); // 일정 종료 날짜
     String description = schedule.getDescription(); // 일정 설명
+    if (endDate.isBefore(startDate)) {
+      throw new IllegalArgumentException("종료 날짜는 시작 날짜보다 이후여야 합니다.");
+    }
+
 
     Schedule data = new Schedule();
 
@@ -113,7 +117,7 @@ public class ScheduleService {
   public void updateSchedule(ScheduleListDTO schedule) {
     String courseName = schedule.getCourseName();
 
-    // classroomRepository에서 classroomName으로 강의실 조회
+    // classroomRepository에서 courseName 강의실 조회
     Optional<Course> courseOptional = courseRepository.findByTitle(courseName);
     if (!courseOptional.isPresent()) {
       throw new RuntimeException("해당 이름의 강의실을 찾을 수 없습니다.");
@@ -124,6 +128,9 @@ public class ScheduleService {
     LocalDateTime startDate = schedule.getStartDate(); // 일정 시작 날짜
     LocalDateTime endDate = schedule.getEndDate(); // 일정 종료 날짜
     String description = schedule.getDescription(); // 일정 설명
+    if (endDate.isBefore(startDate)) {
+      throw new IllegalArgumentException("종료 날짜는 시작 날짜보다 이후여야 합니다.");
+    }
 
     Long scheduleId = schedule.getId(); // 일정 번호
 
