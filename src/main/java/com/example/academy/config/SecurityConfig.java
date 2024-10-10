@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -51,7 +50,7 @@ public class SecurityConfig {
         .httpBasic().disable() // HTTP Basic 인증 비활성화
         .authorizeHttpRequests(auth -> auth
             .regexMatchers("/api/.*", "/auth/.*", "/swagger-ui.*", "/v3/api-docs.*").permitAll()
-            .regexMatchers("/api/.*", "/auth/.*", "/").permitAll() // 특정 경로에 대한 접근 허용
+// 특정 경로에 대한 접근 허용
 //            .regexMatchers("/admin").hasRole("ADMIN") // ADMIN 역할을 가진 사용자만 접근 허용
             .regexMatchers("/admin")
             .hasAnyRole("ADMIN", "STUDENT", "TEACHER") // 여러 role에 권한 부여 hasAnyRole

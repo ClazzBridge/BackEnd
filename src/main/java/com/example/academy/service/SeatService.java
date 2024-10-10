@@ -1,12 +1,11 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.Member;
-import com.example.academy.domain.Seat;
-import com.example.academy.dto.MemberDTO;
-import com.example.academy.dto.SeatDTO;
-import com.example.academy.dto.StudentStatusDTO;
-import com.example.academy.repository.MemberRepository;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.Seat;
+import com.example.academy.dto.member.MemberDTO;
+import com.example.academy.dto.seat.SeatDTO;
 import com.example.academy.repository.SeatRepository;
+import com.example.academy.repository.mysql.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -67,15 +66,17 @@ public class SeatService {
     MemberDTO memberDTO = null;
 
     if (member != null) {
-      StudentStatusDTO studentStatusDTO = member.getStudentStatus() != null
-          ? new StudentStatusDTO(member.getStudentStatus().getId(),
-          member.getStudentStatus().getIsUnderstanding(),
-          member.getStudentStatus().getIsHandRaised())
-          : null;
-      memberDTO = new MemberDTO(member.getMemberId(), member.getName(), member.getEmail(),
-          member.getPhone(), member.getMemberType(), member.getProfileImage(),
-          member.getGitUrl(), member.getBio(), studentStatusDTO);
+      memberDTO = new MemberDTO(
+          member.getMemberId(),
+          member.getName(),
+          member.getEmail(),
+          member.getPhone(),
+          member.getMemberType(),
+          member.getProfileImage(),
+          member.getGitUrl(),
+          member.getBio()
+      );
     }
-    return new SeatDTO(seat.getId(), seat.getClassroom(), seat.getSeatNumber(), seat.getIsExist(), seat.getIsOnline(), memberDTO);
+    return new SeatDTO(seat.getId(), seat.getSeatNumber(), seat.getIsExist(), seat.getIsOnline(), memberDTO);
   }
 }

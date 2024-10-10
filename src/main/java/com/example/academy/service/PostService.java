@@ -1,9 +1,9 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.Board;
-import com.example.academy.domain.Classroom;
-import com.example.academy.domain.Member;
-import com.example.academy.domain.Post;
+import com.example.academy.domain.mysql.Board;
+import com.example.academy.domain.mysql.Course;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.Post;
 import com.example.academy.dto.post.PostCreateDTO;
 import com.example.academy.dto.post.PostResponseDTO;
 import com.example.academy.dto.post.PostUpdateDTO;
@@ -13,13 +13,12 @@ import com.example.academy.exception.post.PostEmptyTitleException;
 import com.example.academy.exception.post.PostNotFoundException;
 import com.example.academy.mapper.post.PostCreateMapper;
 import com.example.academy.mapper.post.PostResponseMapper;
-import com.example.academy.repository.BoardRepository;
-import com.example.academy.repository.ClassroomRepository;
-import com.example.academy.repository.MemberRepository;
-import com.example.academy.repository.PostRepository;
+import com.example.academy.repository.mysql.BoardRepository;
+import com.example.academy.repository.mysql.CourseRepository;
+import com.example.academy.repository.mysql.MemberRepository;
+import com.example.academy.repository.mysql.PostRepository;
 import java.util.Comparator;
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,21 +28,21 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-    private final ClassroomRepository classroomRepository;
+    private final CourseRepository courseRepository;
     private final BoardRepository boardRepository;
 
     private final PostResponseMapper postResponseMapper;
     private final PostCreateMapper postCreateMapper;
 
-    public PostService(PostRepository postRepository, PostResponseMapper postResponseMapper,
-        PostCreateMapper postCreateMapper, MemberRepository memberRepository,
-        ClassroomRepository classroomRepository, BoardRepository boardRepository) {
+    public PostService(PostRepository postRepository, MemberRepository memberRepository,
+        CourseRepository courseRepository, BoardRepository boardRepository,
+        PostResponseMapper postResponseMapper, PostCreateMapper postCreateMapper) {
         this.postRepository = postRepository;
-        this.postCreateMapper = postCreateMapper;
-        this.postResponseMapper = postResponseMapper;
         this.memberRepository = memberRepository;
-        this.classroomRepository = classroomRepository;
+        this.courseRepository = courseRepository;
         this.boardRepository = boardRepository;
+        this.postResponseMapper = postResponseMapper;
+        this.postCreateMapper = postCreateMapper;
     }
 
     public PostResponseDTO findById(Long id) {
@@ -84,10 +83,10 @@ public class PostService {
         Board board = boardRepository.findById(postDTO.getBoardId())
             .orElseThrow(PostBadRequestException::new);
 
-        Classroom classroom = classroomRepository.findById(postDTO.getClassroomId())
+        Course course = courseRepository.findById(postDTO.getCourseId())
             .orElseThrow(PostBadRequestException::new);
 
-        Post savedPost = postCreateMapper.toEntity(postDTO, member, board, classroom);
+        Post savedPost = postCreateMapper.toEntity(postDTO, member, board, course);
         postRepository.save(savedPost);
 
         return postResponseMapper.toDto(savedPost);

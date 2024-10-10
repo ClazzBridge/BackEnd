@@ -1,10 +1,11 @@
 package com.example.academy.mapper;
 
-import com.example.academy.domain.Answer;
-import com.example.academy.domain.Member;
-import com.example.academy.dto.AnswerCreateDTO;
-import com.example.academy.dto.AnswerReadDTO;
-import com.example.academy.dto.AnswerUpdateDTO;
+
+import com.example.academy.domain.mysql.Answer;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.dto.answer.AnswerCreateDTO;
+import com.example.academy.dto.answer.AnswerReadDTO;
+import com.example.academy.dto.answer.AnswerUpdateDTO;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

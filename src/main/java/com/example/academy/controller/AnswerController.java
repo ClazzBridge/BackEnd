@@ -1,8 +1,8 @@
 package com.example.academy.controller;
 
-import com.example.academy.dto.AnswerCreateDTO;
-import com.example.academy.dto.AnswerReadDTO;
-import com.example.academy.dto.AnswerUpdateDTO;
+import com.example.academy.dto.answer.AnswerCreateDTO;
+import com.example.academy.dto.answer.AnswerReadDTO;
+import com.example.academy.dto.answer.AnswerUpdateDTO;
 import com.example.academy.service.AnswerService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,12 +78,4 @@ public class AnswerController {
     answerService.deleteAnswer(id);
     return ResponseEntity.noContent().build();
   }
-//
-//  @PutMapping("/{id}/complete")
-//  public ResponseEntity<ToDo> toggleComplete(@PathVariable Long id) {
-//    ToDo toDo = toDoRepository.findById(id).orElseThrow();
-//    toDo.setCompleted(!toDo.isCompleted());
-//    ToDo updatedToDo = toDoRepository.save(toDo);
-//    return ResponseEntity.ok(updatedToDo);
-//  }
 }

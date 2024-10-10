@@ -1,17 +1,13 @@
 package com.example.academy.controller;
 
-import com.example.academy.dto.QuestionCreateDTO;
-import com.example.academy.dto.QuestionReadDTO;
-import com.example.academy.dto.QuestionToggleRecommendedDTO;
-import com.example.academy.dto.QuestionToggleSolvedDTO;
-import com.example.academy.dto.QuestionUpdateDTO;
+import com.example.academy.dto.question.QuestionCreateDTO;
+import com.example.academy.dto.question.QuestionReadDTO;
+import com.example.academy.dto.question.QuestionToggleRecommendedDTO;
+import com.example.academy.dto.question.QuestionToggleSolvedDTO;
+import com.example.academy.dto.question.QuestionUpdateDTO;
 import com.example.academy.service.QuestionService;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -60,20 +55,26 @@ public class QuestionController {
    * 질문 답변 완료 (강사) *
    * <p>
    */
+//
+//  //Question CRUD
+//  @GetMapping
+//  public ResponseEntity<Map<String, Object>> getQuestionsByPage(@RequestParam("page") int page) {
+//    Pageable pageable = PageRequest.of(page - 1, 10);  // 페이지 당 10개의 질문을 가져오기 위해 Pageable 설정
+//
+//    Page<QuestionReadDTO> questionsPage = questionService.getPageQuestions(pageable);
+//
+//    // 질문 목록과 총 페이지 수를 담는 응답 데이터를 구성
+//    Map<String, Object> response = new HashMap<>();
+//    response.put("questions", questionsPage.getContent());  // 현재 페이지의 질문 목록
+//    response.put("totalPages", questionsPage.getTotalPages());  // 총 페이지 수
+//
+//    return ResponseEntity.ok(response);  // 응답을 반환
+//  }
 
-  //Question CRUD
   @GetMapping
-  public ResponseEntity<Map<String, Object>> getQuestions(@RequestParam("page") int page) {
-    Pageable pageable = PageRequest.of(page - 1, 10);  // 페이지 당 10개의 질문을 가져오기 위해 Pageable 설정
-
-    Page<QuestionReadDTO> questionsPage = questionService.getPageQuestions(pageable);
-
-    // 질문 목록과 총 페이지 수를 담는 응답 데이터를 구성
-    Map<String, Object> response = new HashMap<>();
-    response.put("questions", questionsPage.getContent());  // 현재 페이지의 질문 목록
-    response.put("totalPages", questionsPage.getTotalPages());  // 총 페이지 수
-
-    return ResponseEntity.ok(response);  // 응답을 반환
+  public ResponseEntity<List<QuestionReadDTO>> getAllQuestions() {
+    List<QuestionReadDTO> questions = questionService.getAllQuestions();
+    return ResponseEntity.ok(questions);
   }
 
   @GetMapping("/{id}")
@@ -96,9 +97,9 @@ public class QuestionController {
     return ResponseEntity.status(HttpStatus.OK).body(updatedQuestionReadDTO);
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<?> deleteQuestion(@PathVariable("id") Long id) {
-    questionService.deleteQuestion(id);
+  @DeleteMapping("/{ids}")
+  public ResponseEntity<?> deleteQuestion(@PathVariable("ids") List<Long> ids) {
+    questionService.deleteQuestion(ids);
     return ResponseEntity.noContent().build();
   }
 

@@ -1,16 +1,15 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.Answer;
-import com.example.academy.domain.Member;
-import com.example.academy.domain.Question;
-import com.example.academy.dto.AnswerCreateDTO;
-import com.example.academy.dto.AnswerReadDTO;
-import com.example.academy.dto.AnswerUpdateDTO;
-import com.example.academy.mapper.AnswerMapper;
-import com.example.academy.repository.AnswerRepository;
-import com.example.academy.repository.MemberRepository;
-import com.example.academy.repository.QuestionRepository;
-import com.example.academy.repository.UserRepository;
+import com.example.academy.domain.mysql.Answer;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.Question;
+import com.example.academy.dto.answer.AnswerCreateDTO;
+import com.example.academy.dto.answer.AnswerReadDTO;
+import com.example.academy.dto.answer.AnswerUpdateDTO;
+import com.example.academy.mapper.answer.AnswerMapper;
+import com.example.academy.repository.mysql.AnswerRepository;
+import com.example.academy.repository.mysql.MemberRepository;
+import com.example.academy.repository.mysql.QuestionRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,17 +40,12 @@ public class AnswerService {
 
     Member member = memberRepository.findById(answerCreateDTO.getMemberId()).orElseThrow();
     Question question = questionRepository.findById(answerCreateDTO.getQuestionId()).orElseThrow();
-    String content = answerCreateDTO.getContent();
 
-    Answer newAnswer = answerMapper.answerCreateDTOToAnswer(answerCreateDTO, member);
-
-    newAnswer.setMember(member);
-    newAnswer.setQuestion(question);
-    newAnswer.setContent(content);
+    Answer newAnswer = answerMapper.answerCreateDTOToAnswer(answerCreateDTO, member, question);
 
     Answer createdAnswer = answerRepository.save(newAnswer);
 
-    return answerMapper.answerToAnswerReadDTO(createdAnswer, member);
+    return answerMapper.answersToAnswerReadDTOs(createdAnswer, member);
   }
 
   public AnswerReadDTO updateAnswer(AnswerUpdateDTO answerUpdateDTO) {
@@ -60,7 +54,7 @@ public class AnswerService {
     existingAnswer.setContent(answerUpdateDTO.getContent());
     Answer updatedAnswer = answerRepository.save(existingAnswer);
 
-    return answerMapper.answerToAnswerReadDTO(updatedAnswer, member);
+    return answerMapper.answersToAnswerReadDTOs(updatedAnswer, member);
   }
 
   public void deleteAnswer(Long id) {
@@ -68,16 +62,9 @@ public class AnswerService {
   }
 
   public List<AnswerReadDTO> getAnswersByQuestionId(Long id) {
-    List<AnswerReadDTO> answerReadDTOList = answerMapper.answersToAnswerReadDTO(
+
+    return answerMapper.answersToAnswerReadDTOs(
         answerRepository.findByQuestionId(id));
-
-    for (AnswerReadDTO answerReadDTO : answerReadDTOList) {
-      Answer existingAnswer = answerRepository.findById(answerReadDTO.getId()).orElseThrow();
-      Member member = existingAnswer.getMember();
-      answerReadDTO.setMemberName(member.getName());
-    }
-
-    return answerReadDTOList;
   }
 
   public Answer getAnswerById(Long id) {
