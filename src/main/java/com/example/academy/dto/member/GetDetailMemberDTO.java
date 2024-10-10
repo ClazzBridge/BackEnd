@@ -17,13 +17,13 @@ public class GetDetailMemberDTO {
   private String phone;
   private MemberType memberType;
   private ProfileImage profileImage;
-  private String courseName;
+  private String courseTitle;
 
   public GetDetailMemberDTO() {
   }
 
   public GetDetailMemberDTO(Long id, String memberId, String password, String name, String email,
-      String phone, MemberType memberType, ProfileImage profileImage, String courseName) {
+      String phone, MemberType memberType, ProfileImage profileImage, String courseTitle) {
     this.id = id;
     this.memberId = memberId;
     this.password = password;
@@ -32,6 +32,6 @@ public class GetDetailMemberDTO {
     this.phone = phone;
     this.memberType = memberType;
     this.profileImage = profileImage;
-    this.courseName = courseName;
+    this.courseTitle = courseTitle;
   }
 }
