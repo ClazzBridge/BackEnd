@@ -1,6 +1,6 @@
 package com.example.academy.jwt;
 
-import com.example.academy.dto.CustomUserDetails;
+import com.example.academy.dto.member.CustomUserDetails;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;

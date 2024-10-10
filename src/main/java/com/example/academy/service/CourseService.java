@@ -1,8 +1,7 @@
 package com.example.academy.service;
 
-import com.example.academy.dto.ClassroomNameDTO;
-import com.example.academy.dto.CourseNameDTO;
-import com.example.academy.repository.CourseRepository;
+import com.example.academy.dto.course.CourseTitleDTO;
+import com.example.academy.repository.mysql.CourseRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -16,9 +15,10 @@ public class CourseService {
     this.courseRepository = courseRepository;
   }
 
-  public List<CourseNameDTO> getCourseName(){
+  public List<CourseTitleDTO> getCourseTitle(){
     return courseRepository.findAll().stream()
-        .map(course -> new CourseNameDTO(course.getTitle())) // ClassroomNameDTO로 변환
+        .map(course -> new CourseTitleDTO(course.getTitle())) // ClassroomNameDTO로 변환
         .collect(Collectors.toList()); // List로 수집
   }
+
 }

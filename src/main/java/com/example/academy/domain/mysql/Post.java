@@ -19,8 +19,8 @@ public class Post extends BaseTimeEntity {
     private Board board;
 
     @ManyToOne
-    @JoinColumn(name = "classroom_id")
-    private Classroom classroom;
+    @JoinColumn(name = "course_id")
+    private Course course;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -37,21 +37,21 @@ public class Post extends BaseTimeEntity {
     }
 
     @Builder
-    public Post(Long id, Board board, Classroom classroom, Member author, String title,
+    public Post(Long id, Board board, Course course, Member author, String title,
         String content) {
         this.id = id;
         this.board = board;
-        this.classroom = classroom;
+        this.course = course;
         this.author = author;
         this.title = title;
         this.content = content;
     }
 
     @Builder
-    public Post(Board board, Classroom classroom, Member author, String title,
+    public Post(Board board, Course course, Member author, String title,
         String content) {
         this.board = board;
-        this.classroom = classroom;
+        this.course = course;
         this.author = author;
         this.title = title;
         this.content = content;

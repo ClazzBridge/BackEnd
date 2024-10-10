@@ -1,4 +1,4 @@
-package com.example.academy.dto;
+package com.example.academy.dto.member;
 
 import com.example.academy.domain.mysql.ProfileImage;
 import com.example.academy.type.MemberType;
@@ -7,8 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class StudentSignUpDTO {
+public class MemberUpdateDTO {
 
+  private Long id;
   private String memberId;
   private String password;
   private String name;
@@ -16,13 +17,14 @@ public class StudentSignUpDTO {
   private String phone;
   private MemberType memberType;
   private ProfileImage profileImage;
-  private String title;
+  private String courseTitle;
 
-  public StudentSignUpDTO() {
+  public MemberUpdateDTO() {
   }
 
-  public StudentSignUpDTO(String memberId, String password, String name, String email, String phone,
-      MemberType memberType, ProfileImage profileImage, String title) {
+  public MemberUpdateDTO(Long id, String memberId, String password, String name, String email,
+      String phone, MemberType memberType, ProfileImage profileImage, String courseTitle) {
+    this.id = id;
     this.memberId = memberId;
     this.password = password;
     this.name = name;
@@ -30,6 +32,6 @@ public class StudentSignUpDTO {
     this.phone = phone;
     this.memberType = memberType;
     this.profileImage = profileImage;
-    this.title = title;
+    this.courseTitle = courseTitle;
   }
 }
