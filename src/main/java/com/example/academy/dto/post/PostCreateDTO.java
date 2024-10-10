@@ -13,5 +13,5 @@ public class PostCreateDTO {
     private String content;
     private Long memberId;
     private Long boardId;
-    private Long classroomId;
+    private Long courseId;
 }
