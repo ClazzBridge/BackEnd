@@ -1,6 +1,6 @@
 package com.example.academy.dto.chat;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MessageDTO {
+public class ChatRoomReadDTO {
+
   private String id;
-  private String chatRoomId;
-  private String senderId;
-  private String content;
-  private LocalDateTime timestamp;
+  private String name;
+  private List<String> memberIds;
 }

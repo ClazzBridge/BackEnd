@@ -54,6 +54,7 @@ public class Question {
         ", member=" + member +
         ", content='" + content + '\'' +
         ", createdAt=" + createdAt +
+        ", updatedAt=" + updatedAt +
         ", isSolved=" + isSolved +
         ", isRecommended=" + isRecommended +
         '}';

@@ -10,8 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ChatRoomDTO {
-  private String id;
+public class ChatRoomCreateDTO {
+
   private String name;
-  private List<String> userIds;
+  private List<String> memberIds;
 }
