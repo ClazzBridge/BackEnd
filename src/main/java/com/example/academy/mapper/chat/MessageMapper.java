@@ -12,8 +12,8 @@ public interface MessageMapper {
 
   MessageMapper INSTANCE = Mappers.getMapper(MessageMapper.class);
 
+  @Mapping(target = "send_at", ignore = true)
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "timestamp", ignore = true)
   Message messageSendToMessage(MessageSendDTO messageSendDTO);
 
   MessageReadDTO messageToMessageReadDTO(Message message);

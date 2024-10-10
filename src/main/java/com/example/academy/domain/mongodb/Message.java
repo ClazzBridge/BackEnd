@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
@@ -19,7 +19,7 @@ public class Message {
   private String senderId;
   private String content;
 
-  @CreationTimestamp
-  private LocalDateTime timestamp;
+  @CreatedDate
+  private LocalDateTime send_at;
 
 }

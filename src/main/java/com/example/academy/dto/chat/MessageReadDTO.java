@@ -14,5 +14,5 @@ public class MessageReadDTO {
 
   private String senderId;
   private String content;
-  private LocalDateTime timestamp;
+  private LocalDateTime send_at;
 }
