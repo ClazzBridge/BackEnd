@@ -21,11 +21,14 @@ public class CourseController {
   public CourseController(CourseService courseService) {
     this.courseService = courseService;
   }
+
   @Operation(summary = "강의명 전체 조회")
-  @GetMapping
+  @GetMapping("/title")
   public ResponseEntity<List<?>> getCourseTitle(){
     List<CourseTitleDTO> title = courseService.getCourseTitle();
 
     return ResponseEntity.ok(title);
   }
+
+
 }
