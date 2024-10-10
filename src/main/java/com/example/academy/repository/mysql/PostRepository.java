@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @EntityGraph(attributePaths = {"author", "board", "board.boardType", "classroom"})
+    @EntityGraph(attributePaths = {"author", "board", "board.boardType", "course"})
     List<Post> findAll();
 
  
