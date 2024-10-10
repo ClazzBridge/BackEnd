@@ -16,13 +16,13 @@ public class MemberSignUpDTO {
   private String phone;
   private MemberType memberType;
   private ProfileImage profileImage;
-  private String title;
+  private String courseTitle;
 
   public MemberSignUpDTO() {
   }
 
   public MemberSignUpDTO(String memberId, String password, String name, String email, String phone,
-      MemberType memberType, ProfileImage profileImage, String title) {
+      MemberType memberType, ProfileImage profileImage, String courseTitle) {
     this.memberId = memberId;
     this.password = password;
     this.name = name;
@@ -30,6 +30,6 @@ public class MemberSignUpDTO {
     this.phone = phone;
     this.memberType = memberType;
     this.profileImage = profileImage;
-    this.title = title;
+    this.courseTitle = courseTitle;
   }
 }
