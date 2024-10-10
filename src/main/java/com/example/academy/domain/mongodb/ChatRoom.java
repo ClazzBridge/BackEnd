@@ -15,6 +15,6 @@ public class ChatRoom {
   private String id;
 
   private String name;
-  private List<String> userIds;
+  private List<String> memberIds;
 
 }
