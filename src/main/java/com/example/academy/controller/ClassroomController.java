@@ -70,7 +70,11 @@ public class ClassroomController {
   @PutMapping
   @Operation(summary = "강의실 변경")
   public ResponseEntity<?> updateClassroom(@RequestBody UpdateClassroomDTO updateClassroomDTO){
-    classroomService
+    try {
+      classroomService.updateClassroom(updateClassroomDTO);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당하는 강의실이 없습니다.");
+    }
     return ResponseEntity.ok(updateClassroomDTO);
   }
 
