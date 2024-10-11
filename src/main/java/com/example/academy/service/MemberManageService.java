@@ -1,17 +1,12 @@
 package com.example.academy.service;
 
 
-import com.example.academy.domain.mysql.Course;
-import com.example.academy.domain.mysql.Member;
-import com.example.academy.domain.mysql.ProfileImage;
-import com.example.academy.domain.mysql.StudentCourse;
 import com.example.academy.dto.member.MemberSignUpDTO;
 import com.example.academy.dto.member.MemberUpdateDTO;
 import com.example.academy.repository.mysql.CourseRepository;
-
-import com.example.academy.repository.mysql.StudentCourseRepository;
 import com.example.academy.repository.mysql.MemberRepository;
 import com.example.academy.repository.mysql.ProfileImageRepository;
+import com.example.academy.repository.mysql.StudentCourseRepository;
 import com.example.academy.type.MemberType;
 import java.util.List;
 import java.util.Optional;
@@ -124,10 +119,12 @@ public class MemberManageService {
         .orElseThrow(() -> new RuntimeException("회원 정보를 찾을 수 없습니다."));
 
     // 본인을 제외한 memberId와 email 중복 체크
-    boolean isExistMember = memberRepository.existsByMemberIdAndIdNot(memberUpdateDTO.getMemberId(), member.getId());
+    boolean isExistMember = memberRepository.existsByMemberIdAndIdNot(memberUpdateDTO.getMemberId(),
+        member.getId());
 
     //memberUpdateDTO.getEmail()을 갖는 값이 없나 찾는데 meber.getId를 갖는 레코드는 제외
-    boolean isExistEmail = memberRepository.existsByEmailAndIdNot(memberUpdateDTO.getEmail(), member.getId());
+    boolean isExistEmail = memberRepository.existsByEmailAndIdNot(memberUpdateDTO.getEmail(),
+        member.getId());
 
     if (isExistMember || isExistEmail) {
       String errorMessage = "";

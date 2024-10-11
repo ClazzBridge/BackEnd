@@ -1,8 +1,5 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.mysql.Answer;
-import com.example.academy.domain.mysql.Member;
-import com.example.academy.domain.mysql.Question;
 import com.example.academy.dto.answer.AnswerCreateDTO;
 import com.example.academy.dto.answer.AnswerReadDTO;
 import com.example.academy.dto.answer.AnswerUpdateDTO;

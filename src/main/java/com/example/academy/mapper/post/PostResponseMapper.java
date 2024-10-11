@@ -1,6 +1,5 @@
 package com.example.academy.mapper.post;
 
-import com.example.academy.domain.mysql.Post;
 import com.example.academy.dto.post.PostResponseDTO;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,29 +8,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class PostResponseMapper {
 
-    public PostResponseDTO toDto(Post post) {
-        if (post == null) {
-            return null;
-        }
-        return new PostResponseDTO(
-            post.getId(),
-            post.getTitle(),
-            post.getContent(),
-            post.getAuthor().getName(),
-            post.getBoard().getBoardType().getDescription(),
-            post.getCourse().getTitle(),
-            post.getCreatedAt()
-        );
+  public PostResponseDTO toDto(Post post) {
+    if (post == null) {
+      return null;
     }
+    return new PostResponseDTO(
+        post.getId(),
+        post.getTitle(),
+        post.getContent(),
+        post.getAuthor().getName(),
+        post.getBoard().getBoardType().getDescription(),
+        post.getCourse().getTitle(),
+        post.getCreatedAt()
+    );
+  }
 
-    public List<PostResponseDTO> toDtoList(List<Post> posts) {
-        if (posts.isEmpty()) {
-            return null;
-        }
-        return posts.stream()
-            .map(todo -> toDto(todo))
-            .collect(Collectors.toList());
+  public List<PostResponseDTO> toDtoList(List<Post> posts) {
+    if (posts.isEmpty()) {
+      return null;
     }
+    return posts.stream()
+        .map(todo -> toDto(todo))
+        .collect(Collectors.toList());
+  }
 
 //    public Post toEntity(PostResponseDTO postDTO) {
 //        if (postDTO == null) {

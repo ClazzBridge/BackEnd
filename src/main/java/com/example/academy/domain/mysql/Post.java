@@ -1,70 +1,55 @@
 package com.example.academy.domain.mysql;
 
-import com.example.academy.common.BaseTimeEntity;
-import javax.persistence.*;
-import lombok.Builder;
+import java.time.Instant;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 
-@Entity
 @Getter
+@Setter
+@Entity
 @Table(name = "post")
-public class Post extends BaseTimeEntity {
+public class Post {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @Column(name = "id", nullable = false)
+  private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "board_id")
-    private Board board;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "classroom_id")
+  private Course classroom;
 
-    @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+  @NotNull
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "board_type_id", nullable = false)
+  private BoardType boardType;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private Member author;
+  @NotNull
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "author_id", nullable = false)
+  private Member author;
 
-    @Column(nullable = false, length = 100)
-    private String title;
+  @Size(max = 100)
+  @NotNull
+  @Column(name = "title", nullable = false, length = 100)
+  private String title;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String content;
+  @NotNull
+  @Lob
+  @Column(name = "content", nullable = false)
+  private String content;
 
-
-    public Post() {
-    }
-
-    @Builder
-    public Post(Long id, Board board, Course course, Member author, String title,
-        String content) {
-        this.id = id;
-        this.board = board;
-        this.course = course;
-        this.author = author;
-        this.title = title;
-        this.content = content;
-    }
-
-    @Builder
-    public Post(Board board, Course course, Member author, String title,
-        String content) {
-        this.board = board;
-        this.course = course;
-        this.author = author;
-        this.title = title;
-        this.content = content;
-    }
-
-
-    public void updateTitle(String title) {
-        this.title = title;
-    }
-
-    public void updateContent(String content) {
-        this.content = content;
-    }
-
+  @NotNull
+  @Column(name = "created_at", nullable = false)
+  private Instant createdAt;
 
 }

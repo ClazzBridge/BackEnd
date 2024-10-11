@@ -1,6 +1,5 @@
 package com.example.academy.dto.member;
 
-import com.example.academy.domain.mysql.Member;
 import java.util.Collection;
 import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;

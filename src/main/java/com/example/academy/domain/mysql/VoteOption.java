@@ -15,8 +15,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "seat")
-public class Seat {
+@Table(name = "vote_option")
+public class VoteOption {
 
   @Id
   @Column(name = "id", nullable = false)
@@ -24,24 +24,12 @@ public class Seat {
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "classroom_id", nullable = false)
-  private Course classroom;
+  @JoinColumn(name = "vote_id", nullable = false)
+  private Vote vote;
 
-  @Size(max = 10)
+  @Size(max = 40)
   @NotNull
-  @Column(name = "seat_number", nullable = false, length = 10)
-  private String seatNumber;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "member_id")
-  private Member member;
-
-  @NotNull
-  @Column(name = "is_exist", nullable = false)
-  private Boolean isExist = false;
-
-  @NotNull
-  @Column(name = "is_online", nullable = false)
-  private Boolean isOnline = false;
+  @Column(name = "option_text", nullable = false, length = 40)
+  private String optionText;
 
 }

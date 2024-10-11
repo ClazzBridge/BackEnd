@@ -1,13 +1,11 @@
 package com.example.academy.service;
 
 
-import com.example.academy.domain.mysql.Member;
 import com.example.academy.repository.mysql.MemberRepository;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserProfileService {
