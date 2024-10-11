@@ -6,7 +6,6 @@ import com.example.academy.dto.schedule.ScheduleAddDTO;
 import com.example.academy.dto.schedule.ScheduleListDTO;
 import com.example.academy.repository.mysql.CourseRepository;
 import com.example.academy.repository.mysql.ScheduleRepository;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -96,8 +95,8 @@ public class ScheduleService {
 
     Course courseId = courseRepository.findByTitle(courseTitle).orElseThrow();
     String eventTitle = schedule.getEventTitle(); // 일정 제목
-    Instant startDate = schedule.getStartDate(); // 일정 시작 날짜
-    Instant endDate = schedule.getEndDate(); // 일정 종료 날짜
+    LocalDateTime startDate = schedule.getStartDate(); // 일정 시작 날짜
+    LocalDateTime endDate = schedule.getEndDate(); // 일정 종료 날짜
     String description = schedule.getDescription(); // 일정 설명
     if (endDate.isBefore(startDate)) {
       throw new IllegalArgumentException("종료 날짜는 시작 날짜보다 이후여야 합니다.");
@@ -126,8 +125,8 @@ public class ScheduleService {
 
     Course course = courseOptional.get(); // 강의 ID 추출
     String eventTitle = schedule.getEventTitle(); // 일정 제목
-    Instant startDate = schedule.getStartDate(); // 일정 시작 날짜
-    Instant endDate = schedule.getEndDate(); // 일정 종료 날짜
+    LocalDateTime startDate = schedule.getStartDate(); // 일정 시작 날짜
+    LocalDateTime endDate = schedule.getEndDate(); // 일정 종료 날짜
     String description = schedule.getDescription(); // 일정 설명
     if (endDate.isBefore(startDate)) {
       throw new IllegalArgumentException("종료 날짜는 시작 날짜보다 이후여야 합니다.");

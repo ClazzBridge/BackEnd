@@ -1,6 +1,7 @@
 package com.example.academy.domain.mysql;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,11 +40,11 @@ public class Schedule {
 
   @NotNull
   @Column(name = "start_date", nullable = false)
-  private Instant startDate;
+  private LocalDateTime startDate;
 
   @NotNull
   @Column(name = "end_date", nullable = false)
-  private Instant endDate;
+  private LocalDateTime endDate;
 
   @Lob
   @Column(name = "description")
