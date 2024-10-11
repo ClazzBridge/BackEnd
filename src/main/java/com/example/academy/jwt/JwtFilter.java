@@ -1,8 +1,11 @@
 package com.example.academy.jwt;
 
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.MemberType;
 import com.example.academy.dto.member.CustomUserDetails;
-import com.example.academy.type.MemberType;
+import com.example.academy.repository.mysql.MemberTypeRepositoy;
 import java.io.IOException;
+import java.util.Optional;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +19,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
   private final JwtUtil jwtUtil;
 
+  private MemberTypeRepositoy memberTypeRepositoy;
+
   // JwtUtil 클래스를 사용하기 위해 필드로 주입받는 생성자
-  public JwtFilter(JwtUtil jwtUtil) {
+
+
+  public JwtFilter(JwtUtil jwtUtil, MemberTypeRepositoy memberTypeRepositoy) {
     this.jwtUtil = jwtUtil;
+    this.memberTypeRepositoy = memberTypeRepositoy;
   }
 
   // doFilterInternal: HTTP 요청이 올 때마다 실행되는 필터 메소드
@@ -52,13 +60,21 @@ public class JwtFilter extends OncePerRequestFilter {
     // 5. 토큰에서 사용자 id와 역할 추출
     Long userId = jwtUtil.getUserId(token);
     String role = jwtUtil.getRole(token);
+    System.out.println("role = " + role);
 
     // 6. UserList 객체 생성 및 사용자 이름, 역할 설정 (임시 비밀번호로 설정)
     Member member = new Member();
-    member.setId(userId);
-    member.setPassword("temppassword");  // 실제 비밀번호는 사용되지 않고 임시 비밀번호로 설정
-    member.setMemberType(MemberType.valueOf(role.toUpperCase()));
+    Optional<MemberType> memberTypeOptional = memberTypeRepositoy.findByType(role.toUpperCase());
 
+    if (memberTypeOptional.isPresent()) {
+      MemberType memberType = memberTypeOptional.get();
+      member.setId(userId);
+      member.setPassword("temppassword");  // 임시 비밀번호
+      member.setMemberType(memberType);
+    } else {
+      // 예외 처리 또는 기본 MemberType 설정
+      throw new IllegalArgumentException("MemberType not found for role: " + role);
+    }
     // 7. CustomUserDetails 객체 생성, 이 객체는 Spring Security에서 사용하는 사용자 정보 객체
     CustomUserDetails customUserDetails = new CustomUserDetails(member);
 

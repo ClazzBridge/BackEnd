@@ -47,7 +47,7 @@ public class MemberController {
     }
   }
   @Operation(summary = "회원 조회")
-  @GetMapping("/{id}") 
+  @GetMapping("/{id}")
   public ResponseEntity<GetDetailMemberDTO> getMemberWithCourseInfo(@PathVariable Long id) {
     GetDetailMemberDTO memberDTO = memberListService.getMemberWithCourseInfo(id);
     return ResponseEntity.ok(memberDTO);

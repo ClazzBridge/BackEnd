@@ -1,5 +1,6 @@
 package com.example.academy.dto.member;
 
+import com.example.academy.domain.mysql.Member;
 import java.util.Collection;
 import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +17,7 @@ public class CustomUserDetails implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.singletonList(new SimpleGrantedAuthority(user.getMemberType().name()));
+    return Collections.singletonList(new SimpleGrantedAuthority(user.getMemberType().getType()));
   }
 
   @Override

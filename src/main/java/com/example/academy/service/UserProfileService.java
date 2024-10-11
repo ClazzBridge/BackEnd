@@ -1,6 +1,7 @@
 package com.example.academy.service;
 
 
+import com.example.academy.domain.mysql.Member;
 import com.example.academy.repository.mysql.MemberRepository;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;

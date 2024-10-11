@@ -1,3 +1,4 @@
+
 package com.example.academy.controller;
 
 import com.example.academy.dto.schedule.ScheduleAddDTO;
@@ -88,3 +89,4 @@ public class ScheduleController {
     }
   }
 }
+
