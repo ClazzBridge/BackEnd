@@ -16,11 +16,11 @@ public class SubmissionId implements java.io.Serializable {
   private static final long serialVersionUID = -8173060769844765609L;
   @NotNull
   @Column(name = "assignment_id", nullable = false)
-  private Integer assignmentId;
+  private Long assignmentId;
 
   @NotNull
   @Column(name = "student_course_id", nullable = false)
-  private Integer studentCourseId;
+  private Long studentCourseId;
 
   @Override
   public boolean equals(Object o) {

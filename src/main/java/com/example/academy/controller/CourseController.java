@@ -26,7 +26,6 @@ public class CourseController {
   @GetMapping("/title")
   public ResponseEntity<List<?>> getCourseTitle(){
     List<CourseTitleDTO> title = courseService.getCourseTitle();
-
     return ResponseEntity.ok(title);
   }
 

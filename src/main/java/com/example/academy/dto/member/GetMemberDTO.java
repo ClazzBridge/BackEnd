@@ -1,6 +1,7 @@
 package com.example.academy.dto.member;
 
-import com.example.academy.type.MemberType;
+import com.example.academy.domain.mysql.MemberType;
+import com.example.academy.domain.mysql.AvatarImage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,14 +16,14 @@ public class GetMemberDTO {
   private String email;
   private String phone;
   private MemberType memberType;
-  private ProfileImage profileImage;
+  private AvatarImage avatarImage;
   private String courseTitle;
 
   public GetMemberDTO() {
   }
 
   public GetMemberDTO(Long id, String memberId, String password, String name, String email,
-      String phone, MemberType memberType, ProfileImage profileImage, String courseTitle) {
+      String phone, MemberType memberType, AvatarImage avatarImage, String courseTitle) {
     this.id = id;
     this.memberId = memberId;
     this.password = password;
@@ -30,7 +31,7 @@ public class GetMemberDTO {
     this.email = email;
     this.phone = phone;
     this.memberType = memberType;
-    this.profileImage = profileImage;
+    this.avatarImage = avatarImage;
     this.courseTitle = courseTitle;
   }
 }
