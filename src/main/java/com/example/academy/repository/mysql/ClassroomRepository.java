@@ -15,4 +15,5 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
 
 
   List<Classroom> findAll();
+
 }

@@ -17,7 +17,7 @@ public class CustomUserDetails implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.singletonList(new SimpleGrantedAuthority(user.getMemberType().name()));
+    return Collections.singletonList(new SimpleGrantedAuthority(user.getMemberType().getType()));
   }
 
   @Override

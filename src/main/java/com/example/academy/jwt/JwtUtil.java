@@ -1,5 +1,6 @@
 package com.example.academy.jwt;
 
+import com.example.academy.domain.mysql.MemberType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,6 +28,11 @@ public class JwtUtil {
 
   public String getRole(String token) {
     Claims claims = parseClaims(token);
+//
+//    MemberType role = (MemberType) claims.get("role");
+//
+//    return role.getType();
+
     return claims.get("role", String.class);
   }
 

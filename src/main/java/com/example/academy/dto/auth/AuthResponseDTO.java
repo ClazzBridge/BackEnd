@@ -1,6 +1,6 @@
 package com.example.academy.dto.auth;
 
-import com.example.academy.type.MemberType;
+import com.example.academy.domain.mysql.MemberType;
 import lombok.Builder;
 import lombok.Data;
 

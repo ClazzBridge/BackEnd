@@ -1,10 +1,8 @@
 package com.example.academy.domain.mysql;
 
-import com.example.academy.type.MemberType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,13 +35,13 @@ public class Member {
   @Column(unique = true, nullable = false)
   private String phone;
 
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
+  @ManyToOne
+  @JoinColumn(name = "member_type_id")
   private MemberType memberType;
 
   @ManyToOne
-  @JoinColumn(name = "profile_image_id", nullable = false)
-  private ProfileImage profileImage;
+  @JoinColumn(name = "avatar_image_id", nullable = false)
+  private AvatarImage avatarImageId;
 
   private String gitUrl;
   private String bio;
