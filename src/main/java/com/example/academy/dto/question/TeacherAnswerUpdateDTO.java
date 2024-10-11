@@ -5,9 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class QuestionUpdateDTO {
+public class TeacherAnswerUpdateDTO {
 
-  private String content;
-  private Long id;
-
+  private Long questionId;
+  private String teacherAnswer;
 }

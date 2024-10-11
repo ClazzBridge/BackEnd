@@ -1,6 +1,5 @@
 //package com.example.academy.service;
 //
-//import com.example.academy.domain.mysql.Seat;
 //import com.example.academy.dto.member.MemberDTO;
 //import com.example.academy.dto.seat.SeatDTO;
 //import com.example.academy.repository.SeatRepository;

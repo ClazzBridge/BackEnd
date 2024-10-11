@@ -1,9 +1,9 @@
-package com.example.academy.controller;
+package com.example.academy.controller.qna;
 
 import com.example.academy.dto.question.QuestionCreateDTO;
+import com.example.academy.dto.question.QuestionDetailReadDTO;
 import com.example.academy.dto.question.QuestionReadDTO;
 import com.example.academy.dto.question.QuestionToggleRecommendedDTO;
-import com.example.academy.dto.question.QuestionToggleSolvedDTO;
 import com.example.academy.dto.question.QuestionUpdateDTO;
 import com.example.academy.service.QuestionService;
 import java.util.List;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/questions")
+@RequestMapping("/api/qnas/questions")
 public class QuestionController {
 
   private QuestionService questionService;
@@ -70,7 +70,6 @@ public class QuestionController {
 //
 //    return ResponseEntity.ok(response);  // 응답을 반환
 //  }
-
   @GetMapping
   public ResponseEntity<List<QuestionReadDTO>> getAllQuestions() {
     List<QuestionReadDTO> questions = questionService.getAllQuestions();
@@ -78,9 +77,9 @@ public class QuestionController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<QuestionReadDTO> getQuestionById(@PathVariable("id") Long id) {
-    QuestionReadDTO questionReadDTO = questionService.getQuestionById(id);
-    return ResponseEntity.ok(questionReadDTO);
+  public ResponseEntity<QuestionDetailReadDTO> getQuestionDetailById(@PathVariable("id") Long id) {
+    QuestionDetailReadDTO questionDetailReadDTO = questionService.getQuestionDetailById(id);
+    return ResponseEntity.ok(questionDetailReadDTO);
   }
 
   @PostMapping
@@ -101,14 +100,6 @@ public class QuestionController {
   public ResponseEntity<?> deleteQuestion(@PathVariable("ids") List<Long> ids) {
     questionService.deleteQuestion(ids);
     return ResponseEntity.noContent().build();
-  }
-
-  @PutMapping("/solved")
-  public ResponseEntity<QuestionReadDTO> toggleQuestionComplete(
-      @RequestBody QuestionToggleSolvedDTO questionToggleSolvedDTO) {
-    QuestionReadDTO updatedQuestionReadDTO = questionService.completeQuestion(
-        questionToggleSolvedDTO);
-    return ResponseEntity.status(HttpStatus.OK).body(updatedQuestionReadDTO);
   }
 
   @PutMapping("/recommended")
