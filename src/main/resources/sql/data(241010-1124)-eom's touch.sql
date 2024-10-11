@@ -242,7 +242,7 @@ CREATE TABLE question
 CREATE TABLE schedule
 (
     id           INT AUTO_INCREMENT NOT NULL PRIMARY KEY COMMENT '일정 ID', -- 일정 ID
-    classroom_id INT                NOT NULL COMMENT '강의 ID',             -- 강의 ID
+    course_id INT                NOT NULL COMMENT '강의 ID',             -- 강의 ID
     event_title  VARCHAR(100)       NOT NULL COMMENT '제목',                -- 제목
     start_date   TIMESTAMP          NOT NULL COMMENT '시작 날짜',             -- 시작 날짜
     end_date     TIMESTAMP          NOT NULL COMMENT '종료 날짜',             -- 종료 날짜
@@ -465,7 +465,7 @@ ALTER TABLE question
 ALTER TABLE schedule
     ADD CONSTRAINT FK_course_TO_schedule -- 강의 -> 일정
         FOREIGN KEY (
-                     classroom_id -- 강의 ID
+                     course_id -- 강의 ID
             )
             REFERENCES course ( -- 강의
                                id -- 강의 ID
