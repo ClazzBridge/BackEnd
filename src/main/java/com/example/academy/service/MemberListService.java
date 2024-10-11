@@ -1,16 +1,13 @@
 package com.example.academy.service;
 
 
-import com.example.academy.domain.mysql.Course;
-import com.example.academy.domain.mysql.Member;
-import com.example.academy.domain.mysql.StudentCourse;
+import com.example.academy.dto.auth.LoginResponseDTO;
 import com.example.academy.dto.member.GetDetailMemberDTO;
 import com.example.academy.dto.member.GetMemberDTO;
-import com.example.academy.dto.auth.LoginResponseDTO;
 import com.example.academy.jwt.JwtUtil;
 import com.example.academy.repository.mysql.CourseRepository;
-import com.example.academy.repository.mysql.StudentCourseRepository;
 import com.example.academy.repository.mysql.MemberRepository;
+import com.example.academy.repository.mysql.StudentCourseRepository;
 import com.example.academy.type.MemberType;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +36,9 @@ public class MemberListService {
   /**
    * UserListService의 생성자.
    *
-   * @param memberRepository  사용자 정보를 저장하고 검색하는 레포지토리
-   * @param passwordEncoder 비밀번호 암호화 및 검증을 위한 암호화기
-   * @param jwtUtil         JWT 토큰 생성을 위한 유틸리티
+   * @param memberRepository 사용자 정보를 저장하고 검색하는 레포지토리
+   * @param passwordEncoder  비밀번호 암호화 및 검증을 위한 암호화기
+   * @param jwtUtil          JWT 토큰 생성을 위한 유틸리티
    */
   public MemberListService(MemberRepository memberRepository,
       StudentCourseRepository studentCourseRepository, CourseRepository courseRepository,
@@ -109,20 +106,20 @@ public class MemberListService {
         .orElseThrow(() -> new NoSuchElementException("Member not found with ID: " + memberId));
 
     String courseName = "";
-    if(member.getMemberType().equals(MemberType.ROLE_STUDENT)) {
+    if (member.getMemberType().equals(MemberType.ROLE_STUDENT)) {
       // Member가 수강한 StudentCourse 조회
       List<StudentCourse> courses = studentCourseRepository.findByStudent(member);
-       courseName = courses.stream()
+      courseName = courses.stream()
           .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
           .map(studentCourse -> studentCourse.getCourse().getTitle())  // Course 이름 가져오기
           .orElse("No course enrolled");
-    } else if(member.getMemberType().equals(MemberType.ROLE_TEACHER)){
+    } else if (member.getMemberType().equals(MemberType.ROLE_TEACHER)) {
       List<Course> courses = courseRepository.findByInstructor(member);
-       courseName = courses.stream()
+      courseName = courses.stream()
           .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
           .map(Course -> Course.getTitle())  // Course 이름 가져오기
           .orElse("No course enrolled");
-    }else {
+    } else {
       // 멤버 타입이 STUDENT 또는 TEACHER가 아니면 예외 발생
       throw new UnsupportedOperationException("Unsupported member type for ID: " + memberId);
     }
@@ -142,6 +139,7 @@ public class MemberListService {
 
     return getDetailMemberDTO;
   }
+
   public List<GetMemberDTO> getAllMembersWithCourses() {
     List<Member> members = memberRepository.findAll(); // 전체 멤버 조회
     List<GetMemberDTO> memberDTOs = new ArrayList<>();
@@ -152,19 +150,19 @@ public class MemberListService {
         List<StudentCourse> studentCourses = studentCourseRepository.findByStudent(member);
 
         // 첫 번째 수강 코스의 이름을 가져오거나, 없으면 빈 문자열 반환
-         courseName = studentCourses.stream()
+        courseName = studentCourses.stream()
             .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
             .map(studentCourse -> studentCourse.getCourse().getTitle())
             .orElse("No course enrolled");
-      }else if (member.getMemberType().equals(MemberType.ROLE_TEACHER)) {
+      } else if (member.getMemberType().equals(MemberType.ROLE_TEACHER)) {
         List<Course> courses = courseRepository.findByInstructor(member);
 
         // 첫 번째 수강 코스의 이름을 가져오거나, 없으면 빈 문자열 반환
-         courseName = courses.stream()
+        courseName = courses.stream()
             .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
             .map(studentCourse -> studentCourse.getTitle())
             .orElse("No course enrolled");
-      }else {
+      } else {
         continue;
       }
       // GetMemberDTO 생성 및 값 설정

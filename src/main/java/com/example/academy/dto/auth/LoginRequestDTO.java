@@ -1,7 +1,5 @@
 package com.example.academy.dto.auth;
 
-import com.example.academy.domain.mysql.ProfileImage;
-import com.example.academy.type.MemberType;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,7 +1,5 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.mysql.Course;
-import com.example.academy.domain.mysql.Schedule;
 import com.example.academy.dto.schedule.ScheduleAddDTO;
 import com.example.academy.dto.schedule.ScheduleListDTO;
 import com.example.academy.repository.mysql.CourseRepository;
@@ -92,7 +90,7 @@ public class ScheduleService {
       // courseName를 찾지 못하면 null을 반환하거나 적절한 값을 처리하도록 설정
       throw new IllegalArgumentException("CourseName not found: " + courseTitle);
     }
-    
+
     Long courseId = courseRepository.findByTitle(courseTitle).orElseThrow().getId();
     String eventTitle = schedule.getEventTitle(); // 일정 제목
     LocalDateTime startDate = schedule.getStartDate(); // 일정 시작 날짜
@@ -101,7 +99,6 @@ public class ScheduleService {
     if (endDate.isBefore(startDate)) {
       throw new IllegalArgumentException("종료 날짜는 시작 날짜보다 이후여야 합니다.");
     }
-
 
     Schedule data = new Schedule();
 

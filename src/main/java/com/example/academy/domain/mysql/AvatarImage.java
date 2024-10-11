@@ -12,20 +12,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "classroom")
-public class Classroom {
+@Table(name = "avatar_image")
+public class AvatarImage {
 
   @Id
   @Column(name = "id", nullable = false)
   private Integer id;
 
-  @Size(max = 100)
+  @Size(max = 255)
   @NotNull
-  @Column(name = "name", nullable = false, length = 100)
-  private String name;
-
-  @NotNull
-  @Column(name = "is_occupied", nullable = false)
-  private Boolean isOccupied = false;
+  @Column(name = "avatar_image_url", nullable = false)
+  private String avatarImageUrl;
 
 }

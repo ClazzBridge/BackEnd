@@ -12,8 +12,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "classroom")
-public class Classroom {
+@Table(name = "member_type")
+public class MemberType {
 
   @Id
   @Column(name = "id", nullable = false)
@@ -21,11 +21,7 @@ public class Classroom {
 
   @Size(max = 100)
   @NotNull
-  @Column(name = "name", nullable = false, length = 100)
-  private String name;
-
-  @NotNull
-  @Column(name = "is_occupied", nullable = false)
-  private Boolean isOccupied = false;
+  @Column(name = "type", nullable = false, length = 100)
+  private String type;
 
 }
