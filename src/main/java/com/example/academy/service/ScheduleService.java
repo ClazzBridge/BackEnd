@@ -6,6 +6,7 @@ import com.example.academy.dto.schedule.ScheduleAddDTO;
 import com.example.academy.dto.schedule.ScheduleListDTO;
 import com.example.academy.repository.mysql.CourseRepository;
 import com.example.academy.repository.mysql.ScheduleRepository;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +32,7 @@ public class ScheduleService {
     // Schedule 리스트를 ScheduleAddDTO 리스트로 변환
     return schedules.stream().map(schedule -> {
       // 강의실 정보 가져오기
-      Long courseId = schedule.getCourseId();
+      Long courseId = schedule.getCourse().getId();
       Optional<Course> courseOptional = courseRepository.findById(courseId);
 
       String courseName =
@@ -60,7 +61,7 @@ public class ScheduleService {
 
     Schedule schedule = scheduleOptional.get();
 
-    Long courseId = schedule.getCourseId();
+    Long courseId = schedule.getCourse().getId();
     Optional<Course> courseOptional = courseRepository.findById(courseId);
 
     if (!courseOptional.isPresent()) {
@@ -93,10 +94,10 @@ public class ScheduleService {
       throw new IllegalArgumentException("CourseName not found: " + courseTitle);
     }
 
-    Long courseId = courseRepository.findByTitle(courseTitle).orElseThrow().getId();
+    Course courseId = courseRepository.findByTitle(courseTitle).orElseThrow();
     String eventTitle = schedule.getEventTitle(); // 일정 제목
-    LocalDateTime startDate = schedule.getStartDate(); // 일정 시작 날짜
-    LocalDateTime endDate = schedule.getEndDate(); // 일정 종료 날짜
+    Instant startDate = schedule.getStartDate(); // 일정 시작 날짜
+    Instant endDate = schedule.getEndDate(); // 일정 종료 날짜
     String description = schedule.getDescription(); // 일정 설명
     if (endDate.isBefore(startDate)) {
       throw new IllegalArgumentException("종료 날짜는 시작 날짜보다 이후여야 합니다.");
@@ -105,7 +106,7 @@ public class ScheduleService {
 
     Schedule data = new Schedule();
 
-    data.setCourseId(courseId);
+    data.setCourse(courseId);
     data.setEventTitle(eventTitle);
     data.setStartDate(startDate);
     data.setEndDate(endDate);
@@ -123,10 +124,10 @@ public class ScheduleService {
       throw new RuntimeException("해당 이름의 강의실을 찾을 수 없습니다.");
     }
 
-    Long courseId = courseOptional.get().getId(); // 강의 ID 추출
+    Course course = courseOptional.get(); // 강의 ID 추출
     String eventTitle = schedule.getEventTitle(); // 일정 제목
-    LocalDateTime startDate = schedule.getStartDate(); // 일정 시작 날짜
-    LocalDateTime endDate = schedule.getEndDate(); // 일정 종료 날짜
+    Instant startDate = schedule.getStartDate(); // 일정 시작 날짜
+    Instant endDate = schedule.getEndDate(); // 일정 종료 날짜
     String description = schedule.getDescription(); // 일정 설명
     if (endDate.isBefore(startDate)) {
       throw new IllegalArgumentException("종료 날짜는 시작 날짜보다 이후여야 합니다.");
@@ -143,7 +144,7 @@ public class ScheduleService {
     Schedule data = scheduleOptional.get(); // Optional에서 Schedule 추출
 
     // Schedule 데이터를 업데이트
-    data.setCourseId(courseId);
+    data.setCourse(course);
     data.setEventTitle(eventTitle);
     data.setStartDate(startDate);
     data.setEndDate(endDate);
