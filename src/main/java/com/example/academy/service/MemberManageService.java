@@ -89,7 +89,7 @@ public class MemberManageService {
 
     // 랜덤 ID에 해당하는 ProfileImage 가져오기
     AvatarImage avatarImage = profileImageRepository.findById((long) randomId)
-        .orElseThrow(() -> new RuntimeException("ProfileImage not found"));
+        .orElseThrow(() -> new RuntimeException("AvtarImage not found"));
 
     // member 객체에 profileImage 설정
     data.setAvatarImage(avatarImage);
@@ -170,24 +170,35 @@ public class MemberManageService {
     } else if (memberUpdateDTO.getMemberType().equals("ROLE_TEACHER")) {
       // 강사인 경우 과정 정보 업데이트
       Optional<Course> course = courseRepository.findByTitle(title); // 입력한 강의 정보
-      if (course.get().getTitle().equals(null)) {
-        throw new RuntimeException("해당 과정명은 배정된 강사가 있습니다");
+      if (course.isPresent() && course.get().getInstructor() != null) {
+        throw new RuntimeException("해당 과정명은 이미 배정된 강사가 있습니다.");
       }
+
       if (course.isPresent()) { // 코스 값이 존재하면 true
         List<Course> course1 = courseRepository.findByInstructor(member);
-        Course course11 = course1.get(0);// 기존 강사의 강의 정보
-        Course course2 = course.get(); // 입력한 강의 정보
-        if (course11.getTitle().equals(course2.getTitle())) {
-          System.out.println("동일 강의");
+
+        if (!course1.isEmpty()) { // 기존 강의가 존재하는 경우
+          Course beforeCourse = course1.get(0); // 기존 강사의 강의 정보
+          Course afterCourse = course.get(); // 입력한 강의 정보
+
+          if (beforeCourse.getTitle().equals(afterCourse.getTitle())) {
+            System.out.println("동일 강의");
+          } else {
+            afterCourse.setInstructor(member); // 강사 정보 업데이트
+            beforeCourse.setInstructor(null); // 기존 강의에서 강사 정보 제거
+            courseRepository.save(beforeCourse);
+            courseRepository.save(afterCourse); // 업데이트된 과정 저장
+          }
         } else {
-          course2.setInstructor(member); // 강사 정보 업데이트
-          course11.setInstructor(null); //기존 강의에서 강사 정보 제거
-          courseRepository.save(course11);
-          courseRepository.save(course.get()); // 업데이트된 과정 저장
+          // 기존 강의가 없을 때 강사 정보만 업데이트
+          Course afterCourse = course.get(); // 입력한 강의 정보
+          afterCourse.setInstructor(member);
+          courseRepository.save(afterCourse);
         }
       } else {
         throw new RuntimeException("해당 과정명을 찾을 수 없습니다.");
       }
+
     }
 
     // 업데이트된 회원 정보 저장

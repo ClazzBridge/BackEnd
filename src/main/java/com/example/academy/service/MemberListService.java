@@ -38,20 +38,20 @@ public class MemberListService {
     Member member = memberRepository.findById(memberId)
         .orElseThrow(() -> new NoSuchElementException("Member not found with ID: " + memberId));
 
-    String courseName = "";
+    String courseTitle = "";
     if(member.getMemberType().getType().equals("ROLE_STUDENT")) {
       // Member가 수강한 StudentCourse 조회
       List<StudentCourse> courses = studentCourseRepository.findByStudent(member);
-       courseName = courses.stream()
+       courseTitle = courses.stream()
           .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
           .map(studentCourse -> studentCourse.getCourse().getTitle())  // Course 이름 가져오기
-          .orElse("No course enrolled");
+          .orElse("");
     } else if(member.getMemberType().getType().equals("ROLE_TEACHER")){
       List<Course> courses = courseRepository.findByInstructor(member);
-       courseName = courses.stream()
+       courseTitle = courses.stream()
           .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
           .map(Course -> Course.getTitle())  // Course 이름 가져오기
-          .orElse("No course enrolled");
+          .orElse("");
     }else {
       // 멤버 타입이 STUDENT 또는 TEACHER가 아니면 예외 발생
       throw new UnsupportedOperationException("Unsupported member type for ID: " + memberId);
@@ -67,7 +67,7 @@ public class MemberListService {
         member.getPhone(),
         member.getMemberType().getType(),
         member.getAvatarImage(),
-        courseName
+        courseTitle
     );
 
     return getDetailMemberDTO;
@@ -75,25 +75,25 @@ public class MemberListService {
   public List<GetMemberDTO> getAllMembersWithCourses() {
     List<Member> members = memberRepository.findAll(); // 전체 멤버 조회
     List<GetMemberDTO> memberDTOs = new ArrayList<>();
-    String courseName;
+    String courseTitle;
     // 각 멤버에 대해 코스 정보 조회 및 DTO로 변환
     for (Member member : members) {
       if (member.getMemberType().getType().equals("ROLE_STUDENT")) {
         List<StudentCourse> studentCourses = studentCourseRepository.findByStudent(member);
 
         // 첫 번째 수강 코스의 이름을 가져오거나, 없으면 빈 문자열 반환
-         courseName = studentCourses.stream()
+         courseTitle = studentCourses.stream()
             .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
             .map(studentCourse -> studentCourse.getCourse().getTitle())
-            .orElse("No course enrolled");
+            .orElse("");
       }else if (member.getMemberType().getType().equals("ROLE_TEACHER")) {
         List<Course> courses = courseRepository.findByInstructor(member);
 
         // 첫 번째 수강 코스의 이름을 가져오거나, 없으면 빈 문자열 반환
-         courseName = courses.stream()
+         courseTitle = courses.stream()
             .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
             .map(studentCourse -> studentCourse.getTitle())
-            .orElse("No course enrolled");
+            .orElse("");
       }else {
         continue;
       }
@@ -107,7 +107,7 @@ public class MemberListService {
           member.getPhone(),
           member.getMemberType().getType(),
           member.getAvatarImage(),
-          courseName
+          courseTitle
       );
 
       // DTO 리스트에 추가
