@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import lombok.Data;
 
 @Data
@@ -15,8 +18,12 @@ public class MemberType {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+  @Column(name = "id", nullable = false)
+  private Long id;
 
-  @Column
-  String type;
+
+  @Size(max = 100)
+  @NotNull
+  @Column(name = "type", nullable = false, length = 100)
+  private String type;
 }

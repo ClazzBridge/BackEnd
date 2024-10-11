@@ -1,39 +1,60 @@
 package com.example.academy.domain.mysql;
 
-import javax.persistence.*;
-import java.util.Date;
-import lombok.Data;
+import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
-@Data
 @Table(name = "course")
 public class Course {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
+  private Long id;
 
-    @Column(nullable = false)
-    private String title;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "instructor_id")
+  private Member instructor;
 
-    @Column(nullable = false)
-    private String description;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "classroom_id")
+  private Classroom classroom;
 
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date startDate;
+  @Size(max = 100)
+  @NotNull
+  @Column(name = "title", nullable = false, length = 100)
+  private String title;
 
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date endDate;
+  @NotNull
+  @Lob
+  @Column(name = "description", nullable = false)
+  private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "instructor_id")
-    private Member instructor;
+  @NotNull
+  @Column(name = "start_date", nullable = false)
+  private LocalDate startDate;
 
-    @ManyToOne
-    @JoinColumn(name = "classroom_id")
-    private Classroom classroom;
+  @NotNull
+  @Column(name = "end_date", nullable = false)
+  private LocalDate endDate;
+
+  @Size(max = 255)
+  @Column(name = "layout_image_url")
+  private String layoutImageUrl;
 
 }

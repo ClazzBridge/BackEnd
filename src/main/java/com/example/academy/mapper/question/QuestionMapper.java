@@ -1,7 +1,5 @@
 package com.example.academy.mapper.question;
 
-import com.example.academy.domain.mysql.Member;
-import com.example.academy.domain.mysql.Question;
 import com.example.academy.dto.question.QuestionCreateDTO;
 import com.example.academy.dto.question.QuestionReadDTO;
 import org.mapstruct.Mapper;

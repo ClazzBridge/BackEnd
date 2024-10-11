@@ -3,6 +3,7 @@ package com.example.academy.domain.mysql;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,12 +37,13 @@ public class Member {
   private String phone;
 
   @ManyToOne
-  @JoinColumn(name = "member_type_id")
+  @JoinColumn(name = "member_type_id", nullable = false)
   private MemberType memberType;
 
   @ManyToOne
+  //(fetch = FetchType.LAZY)
   @JoinColumn(name = "avatar_image_id", nullable = false)
-  private AvatarImage avatarImageId;
+  private AvatarImage avatarImage;
 
   private String gitUrl;
   private String bio;

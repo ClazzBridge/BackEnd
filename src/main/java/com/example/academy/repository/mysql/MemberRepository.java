@@ -1,10 +1,8 @@
 package com.example.academy.repository.mysql;
 
 import com.example.academy.domain.mysql.Member;
-
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +22,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
   boolean existsByMemberId(String memberId);
 
   boolean existsByEmail(String email);
+
   @Query("SELECT CASE WHEN COUNT(m) > 0 THEN true ELSE false END FROM Member m WHERE m.memberId = :memberId AND m.id <> :id")
   boolean existsByMemberIdAndIdNot(@Param("memberId") String memberId, @Param("id") Long id);
 

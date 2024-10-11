@@ -1,24 +1,34 @@
 package com.example.academy.domain.mysql;
 
-import javax.persistence.*;
-import lombok.Data;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "classroom")
 public class Classroom {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
   private Long id;
 
-  @Column(unique = true, nullable = false)
-  private String name; //강의실 명
+  @Size(max = 100)
+  @NotNull
+  @Column(name = "name", nullable = false, length = 100)
+  private String name;
 
-  @Column(nullable = false)
-  private int capacity; // 수용 인원
+  @NotNull
+  @Column(name = "is_occupied", nullable = false)
+  private Boolean isOccupied = false;
 
-  private boolean isOccupied; //점유 여부
-
-  // Getters and Setters
 }
