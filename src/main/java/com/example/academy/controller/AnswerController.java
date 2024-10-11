@@ -3,7 +3,6 @@ package com.example.academy.controller;
 import com.example.academy.dto.answer.AnswerCreateDTO;
 import com.example.academy.dto.answer.AnswerReadDTO;
 import com.example.academy.dto.answer.AnswerUpdateDTO;
-import com.example.academy.service.AnswerService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

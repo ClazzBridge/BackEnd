@@ -1,5 +1,6 @@
 package com.example.academy.repository.mysql;
 
+import com.example.academy.domain.mysql.Question;
 import com.example.academy.dto.question.QuestionReadDTO;
 import java.util.List;
 import org.springframework.data.domain.Page;

@@ -1,6 +1,6 @@
 package com.example.academy.domain.mysql;
 
-import java.time.Instant;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,7 +38,7 @@ public class Question {
 
   @NotNull
   @Column(name = "created_at", nullable = false)
-  private Instant createdAt;
+  private Date createdAt;
 
   @Lob
   @Column(name = "ai_answer")
@@ -49,9 +49,9 @@ public class Question {
   private String teacherAnswer;
 
   @Column(name = "answered_at")
-  private Instant answeredAt;
+  private Date answeredAt;
 
   @Column(name = "is_recommended")
-  private Boolean isRecommended;
+  private boolean isRecommended;
 
 }
