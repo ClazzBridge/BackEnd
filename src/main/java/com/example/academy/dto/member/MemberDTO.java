@@ -15,18 +15,18 @@ public class MemberDTO {
   private String email;
   private String phone;
   private MemberType memberType;
-  private ProfileImage profileImage;
+  private String profileImageUrl;
   private String gitUrl;
   private String bio;
 
   public MemberDTO(String memberId, String name, String email, String phone, MemberType memberType,
-      ProfileImage profileImage, String gitUrl, String bio) {
+      String profileImageUrl, String gitUrl, String bio) {
     this.memberId = memberId;
     this.name = name;
     this.email = email;
     this.phone = phone;
     this.memberType = memberType;
-    this.profileImage = profileImage;
+    this.profileImageUrl = profileImageUrl;
     this.gitUrl = gitUrl;
     this.bio = bio;
 

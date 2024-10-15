@@ -66,10 +66,10 @@ VALUES ('자바 프로그래밍 기초', '자바 언어의 기초 문법과 객�
        ('소프트웨어 공학', '효율적인 소프트웨어 개발 방법론과 도구들을 배우는 강의입니다.', '2024-01-01', '2024-06-01', 9, 2);
 
 INSERT INTO seat (course_id, seat_number, is_exist, is_online, member_id)
-VALUES (1, 'A1', TRUE, TRUE, 3),
-       (1, 'A2', TRUE, TRUE, 1),
+VALUES (1, 'A1', TRUE, TRUE, NULL),
+       (1, 'A2', TRUE, TRUE, NULL),
        (1, 'A3', TRUE, FALSE, NULL),
-       (1, 'A4', TRUE, FALSE, NULL),
+       (1, 'A4', TRUE, FALSE, NULL);
        (2, 'B1', TRUE, TRUE, 2),
        (2, 'B2', TRUE, FALSE, NULL),
        (2, 'B3', TRUE, FALSE, 7),
