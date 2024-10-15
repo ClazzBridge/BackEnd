@@ -4,6 +4,8 @@ import com.example.academy.dto.question.QuestionDetailReadDTO;
 import com.example.academy.dto.question.TeacherAnswerCreateDTO;
 import com.example.academy.dto.question.TeacherAnswerUpdateDTO;
 import com.example.academy.service.QuestionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,12 +69,14 @@ public class TeacherAnswerController {
 //
 //    return ResponseEntity.ok(response);  // 응답을 반환
 //  }
+  @Operation(summary = "ID로 강사 답변 리스트 조회", security = {@SecurityRequirement(name = "bearerAuth")})
   @GetMapping("/{id}")
   public ResponseEntity<String> getTeacherAnswerById(@PathVariable("id") Long id) {
     String teacherAnswer = questionService.getTeacherAnswerById(id);
     return ResponseEntity.ok(teacherAnswer);
   }
 
+  @Operation(summary = "강사 답변 생성", security = {@SecurityRequirement(name = "bearerAuth")})
   @PostMapping
   public ResponseEntity<QuestionDetailReadDTO> createTeacherAnswer(
       @RequestBody TeacherAnswerCreateDTO teacherAnswerCreateDTO) {
@@ -81,6 +85,7 @@ public class TeacherAnswerController {
     return ResponseEntity.status(HttpStatus.CREATED).body(questionDetailReadDTO);
   }
 
+  @Operation(summary = "강사 답변 변경", security = {@SecurityRequirement(name = "bearerAuth")})
   @PutMapping()
   public ResponseEntity<QuestionDetailReadDTO> updateTeacherAnswer(
       @RequestBody TeacherAnswerUpdateDTO teacherAnswerUpdateDTO) {
@@ -89,6 +94,7 @@ public class TeacherAnswerController {
     return ResponseEntity.status(HttpStatus.OK).body(questionDetailReadDTO);
   }
 
+  @Operation(summary = "강사 답변 삭제", security = {@SecurityRequirement(name = "bearerAuth")})
   @DeleteMapping("/{id}")
   public ResponseEntity<QuestionDetailReadDTO> deleteTeacherAnswer(@PathVariable("id") Long id) {
     QuestionDetailReadDTO questionDetailReadDTO = questionService.deleteTeacherAnswer(id);

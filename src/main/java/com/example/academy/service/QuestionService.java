@@ -64,7 +64,9 @@ public class QuestionService {
         .orElseThrow(() -> new RuntimeException("User not found"));
     Course course = courseRepository.findById(questionCreateDTO.getCourseId())
         .orElseThrow(() -> new RuntimeException("Course not found"));
-    StudentCourse studentCourse = studentCourseRepository.findByStudentAndCourse(student, course);
+    StudentCourse studentCourse = studentCourseRepository.findByStudentIdAndCourseId(
+            student.getId(), course.getId())
+        .orElseThrow(() -> new RuntimeException("Student course not found"));
 
     Question newQuestion = questionMapper.questionCreateDTOToQuestion(questionCreateDTO,
         studentCourse);

@@ -6,6 +6,8 @@ import com.example.academy.dto.question.QuestionReadDTO;
 import com.example.academy.dto.question.QuestionToggleRecommendedDTO;
 import com.example.academy.dto.question.QuestionUpdateDTO;
 import com.example.academy.service.QuestionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -70,18 +72,21 @@ public class QuestionController {
 //
 //    return ResponseEntity.ok(response);  // 응답을 반환
 //  }
+  @Operation(summary = "전체 질문 리스트 반환", security = {@SecurityRequirement(name = "bearerAuth")})
   @GetMapping
   public ResponseEntity<List<QuestionReadDTO>> getAllQuestions() {
     List<QuestionReadDTO> questions = questionService.getAllQuestions();
     return ResponseEntity.ok(questions);
   }
 
+  @Operation(summary = "ID로 질문 상세 조회", security = {@SecurityRequirement(name = "bearerAuth")})
   @GetMapping("/{id}")
   public ResponseEntity<QuestionDetailReadDTO> getQuestionDetailById(@PathVariable("id") Long id) {
     QuestionDetailReadDTO questionDetailReadDTO = questionService.getQuestionDetailById(id);
     return ResponseEntity.ok(questionDetailReadDTO);
   }
 
+  @Operation(summary = "질문 생성", security = {@SecurityRequirement(name = "bearerAuth")})
   @PostMapping
   public ResponseEntity<QuestionReadDTO> createQuestion(
       @RequestBody QuestionCreateDTO createQuestionDTO) {
@@ -89,6 +94,7 @@ public class QuestionController {
     return ResponseEntity.status(HttpStatus.CREATED).body(newQuestionReadDTO);
   }
 
+  @Operation(summary = "질문 변경", security = {@SecurityRequirement(name = "bearerAuth")})
   @PutMapping()
   public ResponseEntity<QuestionReadDTO> updateQuestion(
       @RequestBody QuestionUpdateDTO questionUpdateDTO) {
@@ -96,12 +102,14 @@ public class QuestionController {
     return ResponseEntity.status(HttpStatus.OK).body(updatedQuestionReadDTO);
   }
 
+  @Operation(summary = "질문 삭제", security = {@SecurityRequirement(name = "bearerAuth")})
   @DeleteMapping("/{ids}")
   public ResponseEntity<?> deleteQuestion(@PathVariable("ids") List<Long> ids) {
     questionService.deleteQuestion(ids);
     return ResponseEntity.noContent().build();
   }
 
+  @Operation(summary = "질문 추천 상태 변경", security = {@SecurityRequirement(name = "bearerAuth")})
   @PutMapping("/recommended")
   public ResponseEntity<QuestionReadDTO> toggleQuestionRecommend(
       @RequestBody QuestionToggleRecommendedDTO questionToggleRecommendedDTO) {
