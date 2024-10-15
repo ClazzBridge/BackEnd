@@ -15,7 +15,7 @@ public class GetMemberDTO {
   private String name;
   private String email;
   private String phone;
-  private MemberType memberType;
+  private String memberType;
   private AvatarImage avatarImage;
   private String courseTitle;
 
@@ -23,7 +23,7 @@ public class GetMemberDTO {
   }
 
   public GetMemberDTO(Long id, String memberId, String password, String name, String email,
-      String phone, MemberType memberType, AvatarImage avatarImage, String courseTitle) {
+      String phone, String memberType, AvatarImage avatarImage, String courseTitle) {
     this.id = id;
     this.memberId = memberId;
     this.password = password;

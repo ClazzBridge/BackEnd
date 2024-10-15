@@ -6,7 +6,6 @@ import com.example.academy.domain.mysql.Member;
 import com.example.academy.domain.mysql.StudentCourse;
 import com.example.academy.dto.member.GetDetailMemberDTO;
 import com.example.academy.dto.member.GetMemberDTO;
-import com.example.academy.jwt.JwtUtil;
 import com.example.academy.repository.mysql.CourseRepository;
 import com.example.academy.repository.mysql.StudentCourseRepository;
 import com.example.academy.repository.mysql.MemberRepository;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -34,26 +32,29 @@ public class MemberListService {
     this.courseRepository = courseRepository;
   }
 
+  public String getCheckRole(Long id) {
+    return memberRepository.findById(id).get().getMemberType().getType();
+  }
 
   public GetDetailMemberDTO getMemberWithCourseInfo(Long memberId) {
     // Member 조회
     Member member = memberRepository.findById(memberId)
         .orElseThrow(() -> new NoSuchElementException("Member not found with ID: " + memberId));
 
-    String courseName = "";
-    if(member.getMemberType().equals(MemberType.ROLE_STUDENT)) {
+    String courseTitle = "";
+    if(member.getMemberType().getType().equals("ROLE_STUDENT")) {
       // Member가 수강한 StudentCourse 조회
       List<StudentCourse> courses = studentCourseRepository.findByStudent(member);
-       courseName = courses.stream()
+       courseTitle = courses.stream()
           .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
           .map(studentCourse -> studentCourse.getCourse().getTitle())  // Course 이름 가져오기
-          .orElse("No course enrolled");
-    } else if(member.getMemberType().equals(MemberType.ROLE_TEACHER)){
+          .orElse("");
+    } else if(member.getMemberType().getType().equals("ROLE_TEACHER")){
       List<Course> courses = courseRepository.findByInstructor(member);
-       courseName = courses.stream()
+       courseTitle = courses.stream()
           .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
           .map(Course -> Course.getTitle())  // Course 이름 가져오기
-          .orElse("No course enrolled");
+          .orElse("");
     }else {
       // 멤버 타입이 STUDENT 또는 TEACHER가 아니면 예외 발생
       throw new UnsupportedOperationException("Unsupported member type for ID: " + memberId);
@@ -67,9 +68,9 @@ public class MemberListService {
         member.getName(),
         member.getEmail(),
         member.getPhone(),
-        member.getMemberType(),
-        member.getProfileImage(),
-        courseName
+        member.getMemberType().getType(),
+        member.getAvatarImage(),
+        courseTitle
     );
 
     return getDetailMemberDTO;
@@ -77,25 +78,25 @@ public class MemberListService {
   public List<GetMemberDTO> getAllMembersWithCourses() {
     List<Member> members = memberRepository.findAll(); // 전체 멤버 조회
     List<GetMemberDTO> memberDTOs = new ArrayList<>();
-    String courseName;
+    String courseTitle;
     // 각 멤버에 대해 코스 정보 조회 및 DTO로 변환
     for (Member member : members) {
-      if (member.getMemberType().equals(MemberType.ROLE_STUDENT)) {
+      if (member.getMemberType().getType().equals("ROLE_STUDENT")) {
         List<StudentCourse> studentCourses = studentCourseRepository.findByStudent(member);
 
         // 첫 번째 수강 코스의 이름을 가져오거나, 없으면 빈 문자열 반환
-         courseName = studentCourses.stream()
+         courseTitle = studentCourses.stream()
             .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
             .map(studentCourse -> studentCourse.getCourse().getTitle())
-            .orElse("No course enrolled");
-      }else if (member.getMemberType().equals(MemberType.ROLE_TEACHER)) {
+            .orElse("");
+      }else if (member.getMemberType().getType().equals("ROLE_TEACHER")) {
         List<Course> courses = courseRepository.findByInstructor(member);
 
         // 첫 번째 수강 코스의 이름을 가져오거나, 없으면 빈 문자열 반환
-         courseName = courses.stream()
+         courseTitle = courses.stream()
             .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
             .map(studentCourse -> studentCourse.getTitle())
-            .orElse("No course enrolled");
+            .orElse("");
       }else {
         continue;
       }
@@ -107,9 +108,9 @@ public class MemberListService {
           member.getName(),
           member.getEmail(),
           member.getPhone(),
-          member.getMemberType(),
-          member.getProfileImage(),
-          courseName
+          member.getMemberType().getType(),
+          member.getAvatarImage(),
+          courseTitle
       );
 
       // DTO 리스트에 추가

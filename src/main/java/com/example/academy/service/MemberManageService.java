@@ -1,14 +1,16 @@
 package com.example.academy.service;
 
 
+import com.example.academy.domain.mysql.AvatarImage;
 import com.example.academy.domain.mysql.Course;
 import com.example.academy.domain.mysql.Member;
-import com.example.academy.domain.mysql.ProfileImage;
+import com.example.academy.domain.mysql.MemberType;
 import com.example.academy.domain.mysql.StudentCourse;
 import com.example.academy.dto.member.MemberSignUpDTO;
 import com.example.academy.dto.member.MemberUpdateDTO;
 import com.example.academy.repository.mysql.CourseRepository;
 
+import com.example.academy.repository.mysql.MemberTypeRepositoy;
 import com.example.academy.repository.mysql.StudentCourseRepository;
 import com.example.academy.repository.mysql.MemberRepository;
 import com.example.academy.repository.mysql.ProfileImageRepository;
@@ -28,16 +30,18 @@ public class MemberManageService {
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
   private final CourseRepository courseRepository;
   private final StudentCourseRepository studentCourseRepository;
-
+  private final MemberTypeRepositoy memberTypeRepositoy;
 
   public MemberManageService(MemberRepository memberRepository,
       ProfileImageRepository profileImageRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
-      CourseRepository courseRepository, StudentCourseRepository studentCourseRepository) {
+      CourseRepository courseRepository, StudentCourseRepository studentCourseRepository,
+      MemberTypeRepositoy memberTypeRepositoy) {
     this.memberRepository = memberRepository;
     this.profileImageRepository = profileImageRepository;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     this.courseRepository = courseRepository;
     this.studentCourseRepository = studentCourseRepository;
+    this.memberTypeRepositoy = memberTypeRepositoy;
   }
 
   public ResponseEntity<String> signUp(MemberSignUpDTO memberSignUpDTO) {
@@ -47,7 +51,7 @@ public class MemberManageService {
     String name = memberSignUpDTO.getName();
     String email = memberSignUpDTO.getEmail();
     String phone = memberSignUpDTO.getPhone();
-    MemberType memberType = memberSignUpDTO.getMemberType();
+    String memberType = memberSignUpDTO.getMemberType();
     String title = memberSignUpDTO.getCourseTitle();
 
     boolean isExistMember = memberRepository.existsByMemberId(memberId);
@@ -76,7 +80,7 @@ public class MemberManageService {
     data.setName(name);
     data.setEmail(email);
     data.setPhone(phone);
-    data.setMemberType(memberType);
+    data.setMemberType(memberTypeRepositoy.findByType(memberType).get());
     // ProfileImage 테이블의 총 레코드 수 가져오기
     long count = profileImageRepository.count();
 
@@ -84,11 +88,11 @@ public class MemberManageService {
     int randomId = (int) (Math.random() * count) + 1;
 
     // 랜덤 ID에 해당하는 ProfileImage 가져오기
-    ProfileImage profileImage = profileImageRepository.findById((long) randomId)
-        .orElseThrow(() -> new RuntimeException("ProfileImage not found"));
+    AvatarImage avatarImage = profileImageRepository.findById((long) randomId)
+        .orElseThrow(() -> new RuntimeException("AvtarImage not found"));
 
     // member 객체에 profileImage 설정
-    data.setProfileImage(profileImage);
+    data.setAvatarImage(avatarImage);
 
     Member saveMember = memberRepository.save(data);
 
@@ -96,7 +100,7 @@ public class MemberManageService {
 
     // 과정명 추가
     // 수강생은 student_course에 데이터 추가
-    if (memberType.equals(MemberType.ROLE_STUDENT)) {
+    if (memberType.equals("ROLE_STUDENT")) {
       Optional<Course> course = courseRepository.findByTitle(title);
       StudentCourse studentCourse = new StudentCourse();
 
@@ -147,11 +151,11 @@ public class MemberManageService {
     member.setEmail(memberUpdateDTO.getEmail());
     member.setPhone(memberUpdateDTO.getPhone());
 
-    member.setMemberType(memberUpdateDTO.getMemberType());
+    member.setMemberType(memberTypeRepositoy.findByType(memberUpdateDTO.getMemberType()).get());
 
     String title = memberUpdateDTO.getCourseTitle();
     // 과정명 업데이트 (수강생인 경우)
-    if (memberUpdateDTO.getMemberType().equals(MemberType.ROLE_STUDENT)) {
+    if (memberUpdateDTO.getMemberType().equals("ROLE_STUDENT")) {
       List<StudentCourse> studentCourses = studentCourseRepository.findByStudent(member);
       if (!studentCourses.isEmpty()) {
         // 학생이 수강하는 과정이 있을 경우 업데이트
@@ -163,27 +167,38 @@ public class MemberManageService {
       } else {
         throw new RuntimeException("해당 과정명을 찾을 수 없습니다.");
       }
-    } else if (memberUpdateDTO.getMemberType().equals(MemberType.ROLE_TEACHER)) {
+    } else if (memberUpdateDTO.getMemberType().equals("ROLE_TEACHER")) {
       // 강사인 경우 과정 정보 업데이트
       Optional<Course> course = courseRepository.findByTitle(title); // 입력한 강의 정보
-      if (course.get().getTitle().equals(null)) {
-        throw new RuntimeException("해당 과정명은 배정된 강사가 있습니다");
+      if (course.isPresent() && course.get().getInstructor() != null) {
+        throw new RuntimeException("해당 과정명은 이미 배정된 강사가 있습니다.");
       }
+
       if (course.isPresent()) { // 코스 값이 존재하면 true
         List<Course> course1 = courseRepository.findByInstructor(member);
-        Course course11 = course1.get(0);// 기존 강사의 강의 정보
-        Course course2 = course.get(); // 입력한 강의 정보
-        if (course11.getTitle().equals(course2.getTitle())) {
-          System.out.println("동일 강의");
+
+        if (!course1.isEmpty()) { // 기존 강의가 존재하는 경우
+          Course beforeCourse = course1.get(0); // 기존 강사의 강의 정보
+          Course afterCourse = course.get(); // 입력한 강의 정보
+
+          if (beforeCourse.getTitle().equals(afterCourse.getTitle())) {
+            System.out.println("동일 강의");
+          } else {
+            afterCourse.setInstructor(member); // 강사 정보 업데이트
+            beforeCourse.setInstructor(null); // 기존 강의에서 강사 정보 제거
+            courseRepository.save(beforeCourse);
+            courseRepository.save(afterCourse); // 업데이트된 과정 저장
+          }
         } else {
-          course2.setInstructor(member); // 강사 정보 업데이트
-          course11.setInstructor(null); //기존 강의에서 강사 정보 제거
-          courseRepository.save(course11);
-          courseRepository.save(course.get()); // 업데이트된 과정 저장
+          // 기존 강의가 없을 때 강사 정보만 업데이트
+          Course afterCourse = course.get(); // 입력한 강의 정보
+          afterCourse.setInstructor(member);
+          courseRepository.save(afterCourse);
         }
       } else {
         throw new RuntimeException("해당 과정명을 찾을 수 없습니다.");
       }
+
     }
 
     // 업데이트된 회원 정보 저장

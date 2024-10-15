@@ -2,6 +2,7 @@ package com.example.academy.dto.member;
 
 import com.example.academy.domain.mysql.MemberType;
 import com.example.academy.domain.mysql.AvatarImage;
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,12 +10,15 @@ import lombok.Setter;
 @Setter
 public class MemberSignUpDTO {
 
+  @NotBlank(message = "memberId cannot be blank")
   private String memberId;
+  @NotBlank(message = "Password cannot be blank")
   private String password;
+  @NotBlank(message = "name cannot be blank")
   private String name;
   private String email;
   private String phone;
-  private MemberType memberType;
+  private String memberType;
   private AvatarImage avatarImage;
   private String courseTitle;
 
@@ -22,7 +26,7 @@ public class MemberSignUpDTO {
   }
 
   public MemberSignUpDTO(String memberId, String password, String name, String email, String phone,
-      MemberType memberType, AvatarImage avatarImage, String courseTitle) {
+      String memberType, AvatarImage avatarImage, String courseTitle) {
     this.memberId = memberId;
     this.password = password;
     this.name = name;

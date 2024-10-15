@@ -11,14 +11,11 @@ public class GetClassroomDTO {
 
   private String name; //강의실 명
 
-  private int capacity; // 수용 인원
-
   private boolean isOccupied; //점유 여부
 
-  public GetClassroomDTO(Long id, String name, int capacity, boolean isOccupied) {
+  public GetClassroomDTO(Long id, String name, boolean isOccupied) {
     this.id = id;
     this.name = name;
-    this.capacity = capacity;
     this.isOccupied = isOccupied;
   }
 }
