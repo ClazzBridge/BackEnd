@@ -21,7 +21,7 @@ public class AuthController {
   private JwtUtil jwtUtil; // JwtUtil을 자동으로 주입받습니다.
 
   @PostMapping("/refresh")
-  @Operation(summary = "새로고침", security = {@SecurityRequirement(name = "bearerAuth")})
+  @Operation(summary = "새로고침")
   public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenDTO refreshToken) {
 
     // refreshToken이 null이거나 유효하지 않은 경우

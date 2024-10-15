@@ -52,7 +52,7 @@ public class SecurityConfig {
         .formLogin().disable()
         .httpBasic().disable()
         .authorizeHttpRequests(auth -> auth
-            .regexMatchers("/api/login", "/auth/.*", "/swagger-ui.*", "/v3/api-docs.*").permitAll()
+            .regexMatchers("/api/login", "/api/auth.*", "/swagger-ui.*", "/v3/api-docs.*").permitAll()
             .regexMatchers("/api/.*","/admin").hasAnyRole("ADMIN", "STUDENT", "TEACHER")
             .anyRequest().authenticated());
 
