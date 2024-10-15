@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 public class ChatRoomCreateDTO {
 
-  private String name;
+  private String roomName;
   private List<String> memberIds;
+  private boolean isGroup;
 }

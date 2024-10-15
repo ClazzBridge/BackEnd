@@ -12,7 +12,6 @@ import lombok.Setter;
 @Setter
 public class ChatRoomReadDTO {
 
-  private String id;
-  private String name;
+  private String roomName;
   private List<String> memberIds;
 }
