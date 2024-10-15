@@ -17,47 +17,45 @@ import org.springframework.stereotype.Service;
 public class ClassroomService {
 
 
-  private final ClassroomRepository classroomRepository;
+    private final ClassroomRepository classroomRepository;
 
 
-  public ClassroomService(ClassroomRepository classroomRepository) {
-    this.classroomRepository = classroomRepository;
-  }
-
-  public void addClassroom(AddClassroomDTO addClassroomDTO) {
-    String name =  addClassroomDTO.getName();
-    int capacity =  addClassroomDTO.getCapacity();
-
-    Classroom classroom = new Classroom();
-    classroom.setName(name);
-    classroom.setCapacity(capacity);
-    classroom.setOccupied(FALSE);
-
-    classroomRepository.save(classroom);
-  }
-
-
-  public List<ClassroomNameDTO> getClassroomName(){
-    List<ClassroomNameDTO> classroomNameDTOS =  classroomRepository.findAll().stream()
-        .map(classroom -> new ClassroomNameDTO(classroom.getName())) // ClassroomNameDTO로 변환
-        .collect(Collectors.toList()); // List로 수집
-    return classroomNameDTOS;
-  }
-
-  public List<Classroom> getAllClassroom(){
-    return classroomRepository.findAll();
-  }
-
-  public Optional<Classroom> getClassroom(Long id)  {
-    Optional<Classroom> classroom =classroomRepository.findById(id);
-    if (!classroom.isPresent()) {
-      return Optional.empty();
+    public ClassroomService(ClassroomRepository classroomRepository) {
+        this.classroomRepository = classroomRepository;
     }
-    return classroomRepository.findById(id);
-  }
+
+    public void addClassroom(AddClassroomDTO addClassroomDTO) {
+        String name = addClassroomDTO.getName();
+        int capacity = addClassroomDTO.getCapacity();
+
+        Classroom classroom = new Classroom();
+        classroom.setName(name);
+
+        classroomRepository.save(classroom);
+    }
 
 
-  public void deleteClassroom(Long id){
-    classroomRepository.deleteById(id);
-  }
+    public List<ClassroomNameDTO> getClassroomName() {
+        List<ClassroomNameDTO> classroomNameDTOS = classroomRepository.findAll().stream()
+            .map(classroom -> new ClassroomNameDTO(classroom.getName())) // ClassroomNameDTO로 변환
+            .collect(Collectors.toList()); // List로 수집
+        return classroomNameDTOS;
+    }
+
+    public List<Classroom> getAllClassroom() {
+        return classroomRepository.findAll();
+    }
+
+    public Optional<Classroom> getClassroom(Long id) {
+        Optional<Classroom> classroom = classroomRepository.findById(id);
+        if (!classroom.isPresent()) {
+            return Optional.empty();
+        }
+        return classroomRepository.findById(id);
+    }
+
+
+    public void deleteClassroom(Long id) {
+        classroomRepository.deleteById(id);
+    }
 }

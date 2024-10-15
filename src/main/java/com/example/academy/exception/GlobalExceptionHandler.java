@@ -1,5 +1,7 @@
 package com.example.academy.exception;
 
+import com.example.academy.exception.common.NotFoundException;
+import com.example.academy.exception.common.UnauthorizedException;
 import com.example.academy.exception.post.PostBadRequestException;
 import com.example.academy.exception.post.PostEmptyException;
 import com.example.academy.exception.post.PostEmptyTitleException;
@@ -12,6 +14,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // =============== 공용 ===============
+    // 권한 없음
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<String> handlePostNotFoundException(UnauthorizedException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> NotFoundException(NotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+
+    // =============== Post ===============
     @ExceptionHandler(PostNotFoundException.class)
     public ResponseEntity<String> handlePostNotFoundException(PostNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -31,4 +47,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handlePostEmptyException(PostEmptyException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+
 }
