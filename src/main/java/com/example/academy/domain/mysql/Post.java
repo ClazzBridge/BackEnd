@@ -1,5 +1,7 @@
 package com.example.academy.domain.mysql;
 
+import com.example.academy.common.BaseTimeEntity;
+import java.sql.Date;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,39 +23,55 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "post")
-public class Post {
+public class Post extends BaseTimeEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "classroom_id")
-  private Course classroom;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
+    private Course course;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "board_type_id", nullable = false)
-  private BoardType boardType;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "board_type_id", nullable = false)
+    private BoardType boardType;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "author_id", nullable = false)
-  private Member author;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "author_id", nullable = false)
+    private Member author;
 
-  @Size(max = 100)
-  @NotNull
-  @Column(name = "title", nullable = false, length = 100)
-  private String title;
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "title", nullable = false, length = 100)
+    private String title;
 
-  @NotNull
-  @Lob
-  @Column(name = "content", nullable = false)
-  private String content;
+    @NotNull
+    @Lob
+    @Column(name = "content", nullable = false)
+    private String content;
 
-  @NotNull
-  @Column(name = "created_at", nullable = false)
-  private Instant createdAt;
+    public Post() {
+    }
+
+    @Builder
+    public Post(Course course, BoardType boardType, Member author, String title, String content) {
+        this.course = course;
+        this.boardType = boardType;
+        this.author = author;
+        this.title = title;
+        this.content = content;
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 
 }
