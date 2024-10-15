@@ -7,6 +7,7 @@ import com.example.academy.dto.classroom.ClassroomNameDTO;
 import com.example.academy.dto.classroom.UpdateClassroomDTO;
 import com.example.academy.service.ClassroomService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,28 +31,28 @@ public class ClassroomController {
   private ClassroomService classroomService;
 
   @GetMapping("/name")
-  @Operation(summary = "강의실명 전체 조회")
+  @Operation(summary = "강의실명 전체 조회", security = {@SecurityRequirement(name = "bearerAuth")})
   public List<ClassroomNameDTO> getClassroomName(){
     List<ClassroomNameDTO> classroomNameDTOS = classroomService.getClassroomName();
     return classroomNameDTOS;
   }
 
   @PostMapping
-  @Operation(summary = "강의실 추가")
+  @Operation(summary = "강의실 추가", security = {@SecurityRequirement(name = "bearerAuth")})
   public ResponseEntity<String> addClassroom(@RequestBody AddClassroomDTO addClassroomDTO){
     classroomService.addClassroom(addClassroomDTO);
     return ResponseEntity.ok("추가완료");
   }
 
   @GetMapping
-  @Operation(summary = "강의실 전체 조회")
+  @Operation(summary = "강의실 전체 조회", security = {@SecurityRequirement(name = "bearerAuth")})
   public ResponseEntity<List<?>> getAllClassroom(){
     List<Classroom> name = classroomService.getAllClassroom();
     return ResponseEntity.ok(name);
   }
 
   @GetMapping("{id}")
-  @Operation(summary = "강의실 조회")
+  @Operation(summary = "강의실 조회", security = {@SecurityRequirement(name = "bearerAuth")})
   public ResponseEntity<Optional<?>> getClassroom(@PathVariable Long id){
     Optional<Classroom> name = classroomService.getClassroom(id);
     if (name.isEmpty()) {
@@ -61,14 +62,14 @@ public class ClassroomController {
   }
 
   @DeleteMapping
-  @Operation(summary = "강의실 삭제")
+  @Operation(summary = "강의실 삭제", security = {@SecurityRequirement(name = "bearerAuth")})
   public ResponseEntity<?> deleteClassroom(Long id){
     classroomService.deleteClassroom(id);
     return ResponseEntity.ok("삭제 성공");
   }
 
   @PutMapping
-  @Operation(summary = "강의실 변경")
+  @Operation(summary = "강의실 변경", security = {@SecurityRequirement(name = "bearerAuth")})
   public ResponseEntity<?> updateClassroom(@RequestBody UpdateClassroomDTO updateClassroomDTO){
     try {
       classroomService.updateClassroom(updateClassroomDTO);

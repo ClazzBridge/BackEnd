@@ -40,7 +40,7 @@ public class MemberController {
   }
 
   @PostMapping
-  @Operation(summary = "회원 등록")
+  @Operation(summary = "회원 등록", security = {@SecurityRequirement(name = "bearerAuth")})
   public ResponseEntity<String> signUp(@RequestBody MemberSignUpDTO memberSignUpDTO) {
     try {
       memberManageService.signUp(memberSignUpDTO);
@@ -60,13 +60,13 @@ public class MemberController {
     return ResponseEntity.ok(memberDTO);
   }
 
-  @Operation(summary = "전체 회원 조회")
+  @Operation(summary = "전체 회원 조회", security = {@SecurityRequirement(name = "bearerAuth")})
   @GetMapping
   public ResponseEntity<List<GetMemberDTO>> getAllMembersWithCoursesInfo() {
     List<GetMemberDTO> memberDTOs = memberListService.getAllMembersWithCourses();
     return ResponseEntity.ok(memberDTOs);
   }
-  @Operation(summary = "회원 변경")
+  @Operation(summary = "회원 변경", security = {@SecurityRequirement(name = "bearerAuth")})
   @PutMapping
   public ResponseEntity<String> updateMember(@RequestBody MemberUpdateDTO updateDTO) {
     try {
@@ -80,7 +80,7 @@ public class MemberController {
     }
   }
 
-  @Operation(summary = "회원 삭제")
+  @Operation(summary = "회원 삭제", security = {@SecurityRequirement(name = "bearerAuth")})
   @DeleteMapping("/{id}")
   public ResponseEntity<String> deleteMembers(@PathVariable Long id) {
     memberListService.deleteMember(id);
