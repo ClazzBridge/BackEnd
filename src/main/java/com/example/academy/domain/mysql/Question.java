@@ -1,6 +1,6 @@
 package com.example.academy.domain.mysql;
 
-import java.time.Instant;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Getter
 @Setter
@@ -36,9 +37,9 @@ public class Question {
   @Column(name = "content", nullable = false)
   private String content;
 
-  @NotNull
+  @CreationTimestamp
   @Column(name = "created_at", nullable = false)
-  private Instant createdAt;
+  private Date createdAt;
 
   @Lob
   @Column(name = "ai_answer")
@@ -49,9 +50,21 @@ public class Question {
   private String teacherAnswer;
 
   @Column(name = "answered_at")
-  private Instant answeredAt;
+  private Date answeredAt;
 
   @Column(name = "is_recommended")
-  private Boolean isRecommended;
+  private boolean isRecommended;
+
+  public void updateContent(String content) {
+    this.content = content;
+  }
+
+  public void toggleRecommended(boolean isRecommended) {
+    this.isRecommended = isRecommended;
+  }
+
+  public void updateTeacherAnswer(String teacherAnswer) {
+    this.teacherAnswer = teacherAnswer;
+  }
 
 }
