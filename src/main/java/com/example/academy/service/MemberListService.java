@@ -32,6 +32,9 @@ public class MemberListService {
     this.courseRepository = courseRepository;
   }
 
+  public String getCheckRole(Long id) {
+    return memberRepository.findById(id).get().getMemberType().getType();
+  }
 
   public GetDetailMemberDTO getMemberWithCourseInfo(Long memberId) {
     // Member 조회

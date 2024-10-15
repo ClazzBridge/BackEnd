@@ -52,8 +52,8 @@ public class SecurityConfig {
         .formLogin().disable()
         .httpBasic().disable()
         .authorizeHttpRequests(auth -> auth
-            .regexMatchers("/api/.*", "/auth/.*", "/swagger-ui.*", "/v3/api-docs.*").permitAll()
-            .regexMatchers("/admin").hasAnyRole("ADMIN", "STUDENT", "TEACHER")
+            .regexMatchers("/api/login", "/auth/.*", "/swagger-ui.*", "/v3/api-docs.*").permitAll()
+            .regexMatchers("/api/.*","/admin").hasAnyRole("ADMIN", "STUDENT", "TEACHER")
             .anyRequest().authenticated());
 
     // JwtFilter에 memberTypeRepositoy 주입

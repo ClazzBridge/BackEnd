@@ -7,6 +7,7 @@ import com.example.academy.dto.member.MemberUpdateDTO;
 import com.example.academy.service.MemberManageService;
 import com.example.academy.service.MemberListService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -32,8 +33,14 @@ public class MemberController {
     this.memberManageService = memberManageService;
   }
 
+  @GetMapping("/check/{userId}")
+  @Operation(summary = "권한 확인", security = {@SecurityRequirement(name = "bearerAuth")})
+  public ResponseEntity<?> roleCheck(@PathVariable Long userId) {
+    return ResponseEntity.ok(memberListService.getCheckRole(userId));
+  }
+
   @PostMapping
-  @Operation(summary = "회원 등록") //과정명 등록 필요
+  @Operation(summary = "회원 등록")
   public ResponseEntity<String> signUp(@RequestBody MemberSignUpDTO memberSignUpDTO) {
     try {
       memberManageService.signUp(memberSignUpDTO);
@@ -46,7 +53,7 @@ public class MemberController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
     }
   }
-  @Operation(summary = "회원 조회")
+  @Operation(summary = "회원 조회", security = {@SecurityRequirement(name = "bearerAuth")})
   @GetMapping("/{id}")
   public ResponseEntity<GetDetailMemberDTO> getMemberWithCourseInfo(@PathVariable Long id) {
     GetDetailMemberDTO memberDTO = memberListService.getMemberWithCourseInfo(id);
