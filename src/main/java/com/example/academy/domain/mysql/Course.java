@@ -57,4 +57,18 @@ public class Course {
   @Column(name = "layout_image_url")
   private String layoutImageUrl;
 
+  public Course() {
+  }
+
+  public Course(Long id, Member instructor, Classroom classroom, String title, String description,
+      LocalDate startDate, LocalDate endDate, String layoutImageUrl) {
+    this.id = id;
+    this.instructor = instructor;
+    this.classroom = classroom;
+    this.title = title;
+    this.description = description;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.layoutImageUrl = layoutImageUrl;
+  }
 }

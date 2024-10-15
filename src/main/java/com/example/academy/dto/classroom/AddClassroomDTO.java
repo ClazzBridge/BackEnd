@@ -7,10 +7,11 @@ public class AddClassroomDTO {
 
   private String name; //강의실 명
 
-  private int capacity; // 수용 인원
 
-  public AddClassroomDTO(String name, int capacity) {
+  public AddClassroomDTO(String name) {
     this.name = name;
-    this.capacity = capacity;
   }
+  public AddClassroomDTO() {
+  }
+
 }

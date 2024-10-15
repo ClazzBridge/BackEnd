@@ -5,6 +5,7 @@ import com.example.academy.dto.schedule.ScheduleAddDTO;
 import com.example.academy.dto.schedule.ScheduleListDTO;
 import com.example.academy.service.ScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class ScheduleController {
   @Autowired
   private ScheduleService scheduleService;
 
-  @Operation(summary = "모든 일정 리스트 반환")
+  @Operation(summary = "모든 일정 리스트 반환", security = {@SecurityRequirement(name = "bearerAuth")})
   @GetMapping
   public ResponseEntity<List<ScheduleListDTO>> getAllSchedules() {
     List<ScheduleListDTO> scheduleList = scheduleService.getScheduleAll();
@@ -39,7 +40,7 @@ public class ScheduleController {
     return ResponseEntity.status(HttpStatus.OK).body(scheduleList);
   }
 
-  @Operation(summary = "선택한 일정 정보 반환")
+  @Operation(summary = "선택한 일정 정보 반환", security = {@SecurityRequirement(name = "bearerAuth")})
   @GetMapping("/{id}")
   public ResponseEntity<ScheduleListDTO> getScheduleById(@PathVariable("id") Long id) {
     Optional<ScheduleListDTO> scheduleAddDTOOptional = scheduleService.getScheduleById(id);
@@ -54,7 +55,7 @@ public class ScheduleController {
   }
 
 
-  @Operation(summary = "일정 정보 추가")
+  @Operation(summary = "일정 정보 추가", security = {@SecurityRequirement(name = "bearerAuth")})
   @PostMapping
   public ResponseEntity<?> addSchedule(@RequestBody ScheduleAddDTO addDTO) {
     try {
@@ -70,7 +71,7 @@ public class ScheduleController {
     }
   }
 
-  @Operation(summary = "일정 정보 변경")
+  @Operation(summary = "일정 정보 변경", security = {@SecurityRequirement(name = "bearerAuth")})
   @PutMapping
   public ResponseEntity<ScheduleListDTO> updateSchedule(@RequestBody ScheduleListDTO updateDTO) {
     System.out.println("업데이트");
@@ -78,7 +79,7 @@ public class ScheduleController {
     return ResponseEntity.status(HttpStatus.OK).body(updateDTO);
   }
 
-  @Operation(summary = "일정 정보 삭제")
+  @Operation(summary = "일정 정보 삭제", security = {@SecurityRequirement(name = "bearerAuth")})
   @DeleteMapping("/{id}")
   public ResponseEntity<String> deleteSchedule(@PathVariable Long id) {
     try {

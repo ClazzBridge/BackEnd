@@ -29,6 +29,6 @@ public class Classroom {
 
   @NotNull
   @Column(name = "is_occupied", nullable = false)
-  private Boolean isOccupied = false;
+  private Boolean isOccupied;
 
 }
