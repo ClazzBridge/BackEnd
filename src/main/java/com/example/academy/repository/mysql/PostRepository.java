@@ -1,5 +1,6 @@
 package com.example.academy.repository.mysql;
 
+import com.example.academy.domain.mysql.Course;
 import com.example.academy.domain.mysql.Post;
 import java.util.List;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-  @EntityGraph(attributePaths = {"author", "board", "board.boardType", "course"})
-  List<Post> findAll();
+    @EntityGraph(attributePaths = {"author", "boardType", "course"})
+    List<Post> findAll();
 
+    List<Post> findByCourse(Course course);
 
+    Post findSinglePostByCourse(Course course);
 }
