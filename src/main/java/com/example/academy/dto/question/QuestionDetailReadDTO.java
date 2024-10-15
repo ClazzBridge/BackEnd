@@ -6,11 +6,15 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class QuestionReadDTO {
+public class QuestionDetailReadDTO {
 
   private Long id;
   private String studentName;
+  private String teacherName;
   private String content;
   private boolean isRecommended;
   private Date createdAt;
+  private Date answeredAt;
+  private String aiAnswer;
+  private String teacherAnswer;
 }
