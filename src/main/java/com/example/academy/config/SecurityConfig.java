@@ -20,53 +20,50 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final AuthenticationConfiguration authenticationConfiguration;
-    private final JwtUtil jwtUtil;
-    private final MemberTypeRepositoy memberTypeRepositoy; // MemberTypeRepositoy 주입 추가
+  private final AuthenticationConfiguration authenticationConfiguration;
+  private final JwtUtil jwtUtil;
+  private final MemberTypeRepositoy memberTypeRepositoy; // MemberTypeRepositoy 주입 추가
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,
-        JwtUtil jwtUtil,
-        MemberTypeRepositoy memberTypeRepositoy) {
-        this.authenticationConfiguration = authenticationConfiguration;
-        this.jwtUtil = jwtUtil;
-        this.memberTypeRepositoy = memberTypeRepositoy; // 주입된 MemberTypeRepositoy 저장
-    }
+  public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,
+      JwtUtil jwtUtil,
+      MemberTypeRepositoy memberTypeRepositoy) {
+    this.authenticationConfiguration = authenticationConfiguration;
+    this.jwtUtil = jwtUtil;
+    this.memberTypeRepositoy = memberTypeRepositoy; // 주입된 MemberTypeRepositoy 저장
+  }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
-        throws Exception {
-        return configuration.getAuthenticationManager();
-    }
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
+      throws Exception {
+    return configuration.getAuthenticationManager();
+  }
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .cors()
-            .and()
-            .csrf().disable()
-            .formLogin().disable()
-            .httpBasic().disable()
-            .authorizeHttpRequests(auth -> auth
-                .regexMatchers("/api/login", "/auth/.*", "/swagger-ui.*", "/v3/api-docs.*")
-                .permitAll()
-                .regexMatchers("/api/posts/.*").authenticated()
-                .regexMatchers("/admin").hasAnyRole("ADMIN", "STUDENT", "TEACHER")
-                .anyRequest().authenticated());
-// "/api/.*",
-        // JwtFilter에 memberTypeRepositoy 주입
-        http.addFilterBefore(new JwtFilter(jwtUtil, memberTypeRepositoy), LoginFilter.class);
-        http.addFilterAt(
-            new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
-            UsernamePasswordAuthenticationFilter.class);
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        .cors()
+        .and()
+        .csrf().disable()
+        .formLogin().disable()
+        .httpBasic().disable()
+        .authorizeHttpRequests(auth -> auth
+            .regexMatchers("/api/login", "/api/auth.*", "/swagger-ui.*", "/v3/api-docs.*").permitAll()
+            .regexMatchers("/api/.*","/admin").hasAnyRole("ADMIN", "STUDENT", "TEACHER")
+            .anyRequest().authenticated());
 
-        http.sessionManagement(session -> session
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    // JwtFilter에 memberTypeRepositoy 주입
+    http.addFilterBefore(new JwtFilter(jwtUtil, memberTypeRepositoy), LoginFilter.class);
+    http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
+        UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+    http.sessionManagement(session -> session
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+    return http.build();
+  }
 }

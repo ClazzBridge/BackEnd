@@ -4,6 +4,7 @@ import com.example.academy.dto.auth.LoginRequestDTO;
 import com.example.academy.dto.auth.LoginResponseDTO;
 import com.example.academy.service.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
