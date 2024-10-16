@@ -147,7 +147,7 @@ public class MemberManageService {
     }
     // DTO의 값으로 기존 데이터를 업데이트
     member.setMemberId(memberUpdateDTO.getMemberId());
-    if(memberUpdateDTO.getPassword() != null || !memberUpdateDTO.getPassword().equals("")) {
+    if(!memberUpdateDTO.getPassword().equals("") && !memberUpdateDTO.getPassword().isEmpty()) {
       member.setPassword(bCryptPasswordEncoder.encode(memberUpdateDTO.getPassword())); // 비밀번호 인코딩
     }
     member.setName(memberUpdateDTO.getName());
