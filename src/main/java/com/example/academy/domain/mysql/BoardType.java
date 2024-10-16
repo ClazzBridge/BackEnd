@@ -17,14 +17,20 @@ import lombok.Setter;
 @Table(name = "board_type")
 public class BoardType {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-  @Size(max = 100)
-  @NotNull
-  @Column(name = "type", nullable = false, length = 100)
-  private String type;
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "type", nullable = false, length = 100)
+    private String type;
 
+    public BoardType() {
+    }
+
+    public BoardType(String type) {
+        this.type = type;
+    }
 }

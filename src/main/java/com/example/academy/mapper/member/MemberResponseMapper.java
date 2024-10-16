@@ -12,7 +12,7 @@ public class MemberResponseMapper {
             .id(member.getId())
             .email(member.getEmail())
             .name(member.getName())
-            .memberType(member.getMemberType())
+            .memberType(member.getMemberType().toString())
             .gitUrl(member.getGitUrl())
             .profileImageUrl(member.getAvatarImage().getAvatarImageUrl())
             .build();
