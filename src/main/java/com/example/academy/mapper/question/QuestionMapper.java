@@ -18,7 +18,7 @@ public interface QuestionMapper {
   @Mapping(source = "question.id", target = "id")
   @Mapping(source = "question.studentCourse.student.name", target = "studentName")
   @Mapping(source = "question.recommended", target = "isRecommended")
-  QuestionReadDTO questionToQuestionReadDTO(Question question);
+  QuestionReadDTO questionToQuestionReadDTO(Question question, boolean isSolved);
 
 
   // DTO do Domain

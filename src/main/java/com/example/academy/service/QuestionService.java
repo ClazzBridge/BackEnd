@@ -47,32 +47,36 @@ public class QuestionService {
     List<Question> questions = questionRepository.findAll();
     List<QuestionReadDTO> questionReadDTOs = new ArrayList<>();
     for (Question question : questions) {
-      questionReadDTOs.add(questionMapper.questionToQuestionReadDTO(question));
+      questionReadDTOs.add(questionMapper.questionToQuestionReadDTO(question,
+          question.getTeacherAnswer() != null));
     }
     return questionReadDTOs;
   }
 
   public QuestionDetailReadDTO getQuestionDetailById(Long id) {
     Question question = questionRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Question not found"));
+        .orElseThrow(() -> new RuntimeException("존재하지 않는 질문입니다 ID: " + id));
 
     return questionMapper.questionToQuestionDetailReadDTO(question);
   }
 
   public QuestionReadDTO createQuestion(QuestionCreateDTO questionCreateDTO) {
     Member student = memberRepository.findById(questionCreateDTO.getMemberId())
-        .orElseThrow(() -> new RuntimeException("User not found"));
+        .orElseThrow(
+            () -> new RuntimeException("존재하지 않는 회원입니다 ID: " + questionCreateDTO.getMemberId()));
     Course course = courseRepository.findById(questionCreateDTO.getCourseId())
-        .orElseThrow(() -> new RuntimeException("Course not found"));
+        .orElseThrow(
+            () -> new RuntimeException("존재하지 않는 강의입니다 ID: " + questionCreateDTO.getCourseId()));
     StudentCourse studentCourse = studentCourseRepository.findByStudentIdAndCourseId(
             student.getId(), course.getId())
-        .orElseThrow(() -> new RuntimeException("Student course not found"));
+        .orElseThrow(() -> new RuntimeException("회원이 수강"));
 
     Question newQuestion = questionMapper.questionCreateDTOToQuestion(questionCreateDTO,
         studentCourse);
     Question savedQuestion = questionRepository.save(newQuestion);
 
-    return questionMapper.questionToQuestionReadDTO(savedQuestion);
+    return questionMapper.questionToQuestionReadDTO(savedQuestion,
+        savedQuestion.getTeacherAnswer() != null);
   }
 
   public QuestionReadDTO updateQuestion(QuestionUpdateDTO questionUpdateDTO) {
@@ -82,7 +86,8 @@ public class QuestionService {
     existingQuestion.updateContent(questionUpdateDTO.getContent());
     questionRepository.save(existingQuestion);
 
-    return questionMapper.questionToQuestionReadDTO(existingQuestion);
+    return questionMapper.questionToQuestionReadDTO(existingQuestion,
+        existingQuestion.getTeacherAnswer() != null);
   }
 
   public QuestionReadDTO recommendQuestion(
@@ -93,7 +98,8 @@ public class QuestionService {
     existingQuestion.toggleRecommended(questionToggleRecommendedDTO.isRecommended());
     questionRepository.save(existingQuestion);
 
-    return questionMapper.questionToQuestionReadDTO(existingQuestion);
+    return questionMapper.questionToQuestionReadDTO(existingQuestion,
+        existingQuestion.getTeacherAnswer() != null);
   }
 
   public void deleteQuestion(List<Long> ids) {
