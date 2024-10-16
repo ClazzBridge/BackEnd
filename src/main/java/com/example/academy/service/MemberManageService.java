@@ -146,7 +146,9 @@ public class MemberManageService {
     }
     // DTO의 값으로 기존 데이터를 업데이트
     member.setMemberId(memberUpdateDTO.getMemberId());
-    member.setPassword(bCryptPasswordEncoder.encode(memberUpdateDTO.getPassword())); // 비밀번호 인코딩
+    if(memberUpdateDTO.getPassword() != null || !memberUpdateDTO.getPassword().equals("")) {
+      member.setPassword(bCryptPasswordEncoder.encode(memberUpdateDTO.getPassword())); // 비밀번호 인코딩
+    }
     member.setName(memberUpdateDTO.getName());
     member.setEmail(memberUpdateDTO.getEmail());
     member.setPhone(memberUpdateDTO.getPhone());
@@ -203,19 +205,7 @@ public class MemberManageService {
 
     // 업데이트된 회원 정보 저장
     memberRepository.save(member);
-
     return ResponseEntity.status(HttpStatus.OK).body("회원 정보 업데이트 성공");
   }
 
-
 }
-
-
-
-
-
-
-
-
-
-
