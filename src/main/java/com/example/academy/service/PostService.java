@@ -4,6 +4,7 @@ import com.example.academy.domain.mysql.BoardType;
 import com.example.academy.domain.mysql.Course;
 import com.example.academy.domain.mysql.Member;
 import com.example.academy.domain.mysql.Post;
+import com.example.academy.domain.mysql.StudentCourse;
 import com.example.academy.dto.member.CustomUserDetails;
 import com.example.academy.dto.post.PostCreateDTO;
 import com.example.academy.dto.post.PostResponseDTO;
@@ -80,7 +81,7 @@ public class PostService {
 
         if (!posts.isEmpty()) {
             return postResponseMapper.toDtoList(posts).stream()
-                .filter(post -> BoardTypes.NOTICES.getDescription().equals(post.getBoardType()))
+                .filter(post -> BoardTypes.공지사항.name().equals(post.getBoardType()))
                 .sorted(Comparator.comparing(PostResponseDTO::getId).reversed())
                 .toList();
         } else {
@@ -97,7 +98,7 @@ public class PostService {
 
         if (!posts.isEmpty()) {
             return postResponseMapper.toDtoList(posts).stream()
-                .filter(post -> BoardTypes.FREE.getDescription().equals(post.getBoardType()))
+                .filter(post -> BoardTypes.일반.name().equals(post.getBoardType()))
                 .sorted(Comparator.comparing(PostResponseDTO::getId).reversed())
                 .toList();
         } else {
@@ -108,7 +109,7 @@ public class PostService {
     public List<PostResponseDTO> findAllFreePosts() {
         List<Post> posts = postRepository.findAll()
             .stream()
-            .filter(post -> post.getBoardType().getType().equals("일반"))
+            .filter(post -> post.getBoardType().getType().equals(BoardTypes.일반.name()))
             .toList();
 
         return postResponseMapper.toDtoList(posts);
@@ -117,7 +118,7 @@ public class PostService {
     public List<PostResponseDTO> findAllNotificationPosts() {
         List<Post> posts = postRepository.findAll()
             .stream()
-            .filter(post -> post.getBoardType().getType().equals("공지사항"))
+            .filter(post -> post.getBoardType().getType().equals(BoardTypes.공지사항.name()))
             .toList();
         return postResponseMapper.toDtoList(posts);
     }
@@ -133,14 +134,19 @@ public class PostService {
             .orElseThrow(PostBadRequestException::new);
 
         Course course = null;
-        if (postDTO.getCourseId() != null) {
-            course = courseRepository.findById(postDTO.getCourseId())
-                .orElseThrow(PostBadRequestException::new);
+
+        // 학생 강의 조회, 관리자의 경우 강의가 없을 수 있음
+        if (!member.isAdmin()) {
+            StudentCourse studentCourse = studentCourseRepository.findByStudentId(member.getId());
+            if (studentCourse != null) {
+                course = studentCourse.getCourse();
+            }
         }
 
-        if (boardType.getType().equals("공지사항") && !member.getMemberType().getType()
-            .equals("ROLE_ADMIN")) {
-            throw new PostBadRequestException();
+        if (boardType.getType().equals(BoardTypes.공지사항.name()) && !member.getMemberType()
+            .getType()
+            .equals(MemberRole.ROLE_ADMIN.name())) {
+            throw new UnauthorizedException();
         }
 
         Post savedPost = postCreateMapper.toEntity(postDTO, member, boardType, course);
@@ -172,11 +178,18 @@ public class PostService {
         }
 
         // 강의 정보가 있을 경우 강의 유효성 체크
-        if (postDTO.getCourseId() != null) {
-            Course course = courseRepository.findById(postDTO.getCourseId())
-                .orElseThrow(() -> new NotFoundException(
-                    "존재하지 않는 강의입니다 ID: " + postDTO.getCourseId()));
+        Course course = null;
 
+        if (!member.isAdmin()) {
+            // 학생 강의 조회
+            StudentCourse studentCourse = studentCourseRepository.findByStudentId(member.getId());
+            if (studentCourse != null) {
+                course = studentCourse.getCourse();
+            }
+        }
+
+        // 관리자가 아닌 사용자의 경우, 게시글 작성자가 수강 중인 강의인지 확인
+        if (course != null) {
             studentCourseRepository.findByStudentIdAndCourseId(updatedPost.getAuthor().getId(),
                     course.getId())
                 .orElseThrow(() -> new NotFoundException("회원이 수강 중인 강의번호와 일치하지 않습니다"));
