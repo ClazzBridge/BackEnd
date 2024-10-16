@@ -1,4 +1,4 @@
-INSERT INTO profile_image (picture_url)
+INSERT INTO avatar_image (avatar_image_url)
 VALUES ('https://www.moti.co.kr/data/item/1701766013/thumb-64iE64Sk652g64Sk_7I2464Sk7J28_01_600x600.png'),
        ('https://kubakery.co.kr/wp-content/uploads/2015/02/bbang-0053.jpg'),
        ('https://upload.wikimedia.org/wikipedia/commons/b/b2/누네띠네_사진.jpg'),

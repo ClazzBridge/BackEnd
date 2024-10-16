@@ -135,8 +135,8 @@ public class MemberListService {
         member.getName(),
         member.getEmail(),
         member.getPhone(),
-        member.getMemberType(),
-        member.getProfileImage(),
+        member.getMemberType() != null ? MemberType.valueOf(member.getMemberType().getType()) : null,
+        member.getAvatarImage() != null ? member.getAvatarImage().getAvatarImageUrl() : null, // AvatarImage URL만 전달
         courseName
     );
 
@@ -175,8 +175,8 @@ public class MemberListService {
           member.getName(),
           member.getEmail(),
           member.getPhone(),
-          member.getMemberType(),
-          member.getProfileImage(),
+          member.getMemberType() != null ? MemberType.valueOf(member.getMemberType().getType()) : null,
+          member.getAvatarImage() != null ? member.getAvatarImage().getAvatarImageUrl() : null,
           courseName
       );
 

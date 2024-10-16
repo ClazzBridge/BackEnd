@@ -1,12 +1,13 @@
 package com.example.academy.service;
 
 import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.MemberType;
 import com.example.academy.domain.mysql.Seat;
 import com.example.academy.dto.member.MemberDTO;
 import com.example.academy.dto.seat.SeatDTO;
-import com.example.academy.repository.SeatRepository;
+import com.example.academy.repository.mysql.MemberTypeRepository;
+import com.example.academy.repository.mysql.SeatRepository;
 import com.example.academy.repository.mysql.MemberRepository;
-import com.example.academy.type.MemberType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,15 @@ public class SeatService {
 
   private final SeatRepository seatRepository;
   private final MemberRepository memberRepository;
+  private final MemberTypeRepository memberTypeRepository;
+
   private static final String TEACHER_SEAT_NUMBER = "T";
 
   @Autowired
-  public SeatService(SeatRepository seatRepository, MemberRepository memberRepository) {
+  public SeatService(SeatRepository seatRepository, MemberRepository memberRepository, MemberTypeRepository memberTypeRepository) {
     this.seatRepository = seatRepository;
     this.memberRepository = memberRepository;
+    this.memberTypeRepository = memberTypeRepository;
   }
 
   public List<SeatDTO> getAllSeat() {
@@ -90,7 +94,12 @@ public class SeatService {
 
     if (teacherSeat.getMember() != null) {
       Member oldTeacher = teacherSeat.getMember();
-      oldTeacher.setMemberType(MemberType.valueOf("ROLE_STUDENT"));
+
+      // 데이터베이스에서 ROLE_STUDENT에 해당하는 MemberType을 가져오기
+      MemberType studentRoleType = memberTypeRepository.findByType("ROLE_STUDENT")
+          .orElseThrow(() -> new IllegalArgumentException("ROLE_STUDENT 타입이 없습니다."));
+
+      oldTeacher.setMemberType(studentRoleType);
       memberRepository.save(oldTeacher);
       teacherSeat.setMember(null);
     }
@@ -112,13 +121,16 @@ public class SeatService {
     MemberDTO memberDTO = null;
 
     if (member != null) {
+      // member.getMemberType().getType()을 사용하여 String으로 변환
+      com.example.academy.type.MemberType dtoMemberType = com.example.academy.type.MemberType.valueOf(member.getMemberType().getType());
+
       memberDTO = new MemberDTO(
           member.getMemberId(),
           member.getName(),
           member.getEmail(),
           member.getPhone(),
-          member.getMemberType(),
-          member.getProfileImage() != null ? member.getProfileImage().getPictureUrl() : null,
+          dtoMemberType, // 변환된 MemberType 사용
+          member.getAvatarImage() != null ? member.getAvatarImage().getAvatarImageUrl() : null,
           member.getGitUrl(),
           member.getBio()
       );

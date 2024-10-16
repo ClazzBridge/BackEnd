@@ -1,7 +1,15 @@
 package com.example.academy.domain.mysql;
 
-import com.example.academy.type.MemberType;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.Data;
 
 @Data
@@ -28,17 +36,20 @@ public class Member {
   @Column(unique = true, nullable = false)
   private String phone;
 
-
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
+  @ManyToOne
+  @JoinColumn(name = "member_type_id", nullable = false)
   private MemberType memberType;
 
-
-    @ManyToOne
-    @JoinColumn(name = "profile_image_id", nullable = false)
-    private ProfileImage profileImage;
+  @ManyToOne
+  //(fetch = FetchType.LAZY)
+  @JoinColumn(name = "avatar_image_id", nullable = false)
+  private AvatarImage avatarImage;
 
   private String gitUrl;
   private String bio;
+
+  public boolean isAdmin() {
+    return "ROLE_ADMIN".equalsIgnoreCase(this.memberType.getType());
+  }
 
 }

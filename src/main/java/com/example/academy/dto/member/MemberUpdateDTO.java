@@ -1,13 +1,13 @@
 package com.example.academy.dto.member;
 
+import com.example.academy.domain.mysql.MemberType;
 import com.example.academy.domain.mysql.AvatarImage;
-import com.example.academy.type.MemberType;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class GetDetailMemberDTO {
+public class MemberUpdateDTO {
 
   private Long id;
   private String memberId;
@@ -16,14 +16,14 @@ public class GetDetailMemberDTO {
   private String email;
   private String phone;
   private MemberType memberType;
-  private String avatarImage;
+  private AvatarImage avatarImage;
   private String courseTitle;
 
-  public GetDetailMemberDTO() {
+  public MemberUpdateDTO() {
   }
 
-  public GetDetailMemberDTO(Long id, String memberId, String password, String name, String email,
-      String phone, MemberType memberType, String avatarImage, String courseTitle) {
+  public MemberUpdateDTO(Long id, String memberId, String password, String name, String email,
+      String phone, MemberType memberType, AvatarImage avatarImage, String courseTitle) {
     this.id = id;
     this.memberId = memberId;
     this.password = password;

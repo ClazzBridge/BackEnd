@@ -15,10 +15,6 @@ public class Post extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "board_id")
-    private Board board;
-
-    @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
 
@@ -37,10 +33,9 @@ public class Post extends BaseTimeEntity {
     }
 
     @Builder
-    public Post(Long id, Board board, Course course, Member author, String title,
+    public Post(Long id, Course course, Member author, String title,
         String content) {
         this.id = id;
-        this.board = board;
         this.course = course;
         this.author = author;
         this.title = title;
@@ -48,9 +43,8 @@ public class Post extends BaseTimeEntity {
     }
 
     @Builder
-    public Post(Board board, Course course, Member author, String title,
+    public Post(Course course, Member author, String title,
         String content) {
-        this.board = board;
         this.course = course;
         this.author = author;
         this.title = title;
