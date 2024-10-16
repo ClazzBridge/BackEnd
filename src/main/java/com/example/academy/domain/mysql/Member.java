@@ -1,9 +1,10 @@
-package com.example.academy.domain;
+package com.example.academy.domain.mysql;
 
 
 import com.example.academy.enums.MemberRole;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;

@@ -1,5 +1,6 @@
 package com.example.academy.service;
 
+import com.example.academy.domain.mysql.StudentCourse;
 import com.example.academy.dto.member.CustomUserDetails;
 import com.example.academy.repository.mysql.StudentCourseRepository;
 import org.springframework.stereotype.Service;

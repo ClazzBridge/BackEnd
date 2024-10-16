@@ -1,5 +1,7 @@
-package com.example.academy.domain;
+package com.example.academy.domain.mysql;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -17,8 +20,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "seat")
-public class Seat {
+@Table(name = "schedule")
+public class Schedule {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,24 +30,24 @@ public class Seat {
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "classroom_id", nullable = false)
-  private Course classroom;
+  @JoinColumn(name = "course_id", nullable = false)
+  private Course course;
 
-  @Size(max = 10)
+  @Size(max = 100)
   @NotNull
-  @Column(name = "seat_number", nullable = false, length = 10)
-  private String seatNumber;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "member_id")
-  private Member member;
+  @Column(name = "event_title", nullable = false, length = 100)
+  private String eventTitle;
 
   @NotNull
-  @Column(name = "is_exist", nullable = false)
-  private Boolean isExist = false;
+  @Column(name = "start_date", nullable = false)
+  private LocalDateTime startDate;
 
   @NotNull
-  @Column(name = "is_online", nullable = false)
-  private Boolean isOnline = false;
+  @Column(name = "end_date", nullable = false)
+  private LocalDateTime endDate;
+
+  @Lob
+  @Column(name = "description")
+  private String description;
 
 }

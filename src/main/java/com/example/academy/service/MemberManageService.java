@@ -1,10 +1,10 @@
 package com.example.academy.service;
 
 
-import com.example.academy.domain.AvatarImage;
-import com.example.academy.domain.Course;
-import com.example.academy.domain.Member;
-import com.example.academy.domain.StudentCourse;
+import com.example.academy.domain.mysql.AvatarImage;
+import com.example.academy.domain.mysql.Course;
+import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.StudentCourse;
 import com.example.academy.dto.member.MemberSignUpDTO;
 import com.example.academy.dto.member.MemberUpdateDTO;
 import com.example.academy.repository.mysql.CourseRepository;
@@ -142,17 +142,15 @@ public class MemberManageService {
                 errorMessage += "email 중복. ";
             }
 
-      System.out.println(errorMessage);
-      throw new DataIntegrityViolationException(errorMessage);
-    }
-    // DTO의 값으로 기존 데이터를 업데이트
-    member.setMemberId(memberUpdateDTO.getMemberId());
-    if(memberUpdateDTO.getPassword() != null || !memberUpdateDTO.getPassword().equals("")) {
-      member.setPassword(bCryptPasswordEncoder.encode(memberUpdateDTO.getPassword())); // 비밀번호 인코딩
-    }
-    member.setName(memberUpdateDTO.getName());
-    member.setEmail(memberUpdateDTO.getEmail());
-    member.setPhone(memberUpdateDTO.getPhone());
+            System.out.println(errorMessage);
+            throw new DataIntegrityViolationException(errorMessage);
+        }
+        // DTO의 값으로 기존 데이터를 업데이트
+        member.setMemberId(memberUpdateDTO.getMemberId());
+        member.setPassword(bCryptPasswordEncoder.encode(memberUpdateDTO.getPassword())); // 비밀번호 인코딩
+        member.setName(memberUpdateDTO.getName());
+        member.setEmail(memberUpdateDTO.getEmail());
+        member.setPhone(memberUpdateDTO.getPhone());
 
         member.setMemberType(memberTypeRepositoy.findByType(memberUpdateDTO.getMemberType()).get());
 

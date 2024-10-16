@@ -1,6 +1,6 @@
-package com.example.academy.domain;
+package com.example.academy.domain.mysql;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,13 +19,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "schedule")
-public class Schedule {
+@Table(name = "vote")
+public class Vote {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
-  private Long id;
+  private Integer id;
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -34,19 +34,22 @@ public class Schedule {
 
   @Size(max = 100)
   @NotNull
-  @Column(name = "event_title", nullable = false, length = 100)
-  private String eventTitle;
-
-  @NotNull
-  @Column(name = "start_date", nullable = false)
-  private LocalDateTime startDate;
-
-  @NotNull
-  @Column(name = "end_date", nullable = false)
-  private LocalDateTime endDate;
+  @Column(name = "title", nullable = false, length = 100)
+  private String title;
 
   @Lob
   @Column(name = "description")
   private String description;
+
+  @NotNull
+  @Column(name = "start_date", nullable = false)
+  private Instant startDate;
+
+  @NotNull
+  @Column(name = "end_date", nullable = false)
+  private Instant endDate;
+
+  @Column(name = "is_expired")
+  private Boolean isExpired;
 
 }

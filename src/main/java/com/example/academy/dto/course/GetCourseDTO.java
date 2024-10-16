@@ -1,5 +1,7 @@
 package com.example.academy.dto.course;
 
+import com.example.academy.domain.mysql.Classroom;
+import com.example.academy.domain.mysql.Member;
 import java.time.LocalDate;
 import lombok.Data;
 

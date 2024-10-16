@@ -1,4 +1,4 @@
-package com.example.academy.domain;
+package com.example.academy.domain.mysql;
 
 import java.util.Date;
 import javax.persistence.Column;

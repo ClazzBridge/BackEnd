@@ -1,6 +1,6 @@
 package com.example.academy.repository.mysql;
 
-import com.example.academy.domain.Classroom;
+import com.example.academy.domain.mysql.Classroom;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

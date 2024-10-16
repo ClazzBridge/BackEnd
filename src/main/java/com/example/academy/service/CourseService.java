@@ -1,9 +1,11 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.Course;
+import com.example.academy.domain.mysql.Course;
 import com.example.academy.dto.course.CourseTitleDTO;
 import com.example.academy.dto.course.GetCourseDTO;
 import com.example.academy.repository.mysql.CourseRepository;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -39,9 +41,6 @@ public class CourseService {
         .collect(Collectors.toList());
   }
 
-  public void deleteCourse(Long id){
-    courseRepository.deleteById(id);
-  }
 
 
 }
