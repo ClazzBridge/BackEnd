@@ -1,9 +1,9 @@
 package com.example.academy.service;
 
 
-import com.example.academy.domain.mysql.Course;
-import com.example.academy.domain.mysql.Member;
-import com.example.academy.domain.mysql.StudentCourse;
+import com.example.academy.domain.Course;
+import com.example.academy.domain.Member;
+import com.example.academy.domain.StudentCourse;
 import com.example.academy.dto.member.GetDetailMemberDTO;
 import com.example.academy.dto.member.GetMemberDTO;
 import com.example.academy.repository.mysql.CourseRepository;

@@ -1,7 +1,7 @@
 package com.example.academy.repository.mysql;
 
-import com.example.academy.domain.mysql.Course;
-import com.example.academy.domain.mysql.Post;
+import com.example.academy.domain.Course;
+import com.example.academy.domain.Post;
 import java.util.List;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;

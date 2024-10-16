@@ -1,8 +1,6 @@
 package com.example.academy.dto.post;
 
-import com.example.academy.domain.mysql.BoardType;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.Instant;
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;

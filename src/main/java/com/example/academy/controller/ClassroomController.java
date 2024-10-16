@@ -1,7 +1,7 @@
 package com.example.academy.controller;
 
 
-import com.example.academy.domain.mysql.Classroom;
+import com.example.academy.domain.Classroom;
 import com.example.academy.dto.classroom.AddClassroomDTO;
 import com.example.academy.dto.classroom.ClassroomNameDTO;
 import com.example.academy.dto.classroom.UpdateClassroomDTO;

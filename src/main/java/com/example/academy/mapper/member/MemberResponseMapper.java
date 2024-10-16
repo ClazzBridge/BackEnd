@@ -1,6 +1,6 @@
 package com.example.academy.mapper.member;
 
-import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.Member;
 import com.example.academy.dto.auth.AuthResponseDTO;
 import org.springframework.stereotype.Component;
 

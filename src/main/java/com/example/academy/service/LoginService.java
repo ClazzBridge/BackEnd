@@ -1,14 +1,11 @@
 package com.example.academy.service;
 
 
-import com.example.academy.domain.mysql.Member;
-import com.example.academy.dto.auth.AuthResponseDTO;
+import com.example.academy.domain.Member;
 import com.example.academy.dto.auth.LoginResponseDTO;
 import com.example.academy.jwt.JwtUtil;
 import com.example.academy.mapper.member.MemberResponseMapper;
-import com.example.academy.repository.mysql.CourseRepository;
 import com.example.academy.repository.mysql.MemberRepository;
-import com.example.academy.repository.mysql.StudentCourseRepository;
 import java.util.Optional;
 import javax.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;

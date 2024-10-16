@@ -1,4 +1,4 @@
-package com.example.academy.domain.mysql;
+package com.example.academy.domain;
 
 import java.util.Objects;
 import javax.persistence.Column;
