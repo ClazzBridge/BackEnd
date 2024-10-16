@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MemberResponseMapper {
 
-    public static AuthResponseDTO ToDTO(Member member) {
+    public static AuthResponseDTO toDTO(Member member) {
         return AuthResponseDTO.builder()
             .id(member.getId())
             .email(member.getEmail())

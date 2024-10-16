@@ -4,6 +4,7 @@ package com.example.academy.service;
 import com.example.academy.domain.mysql.Member;
 import com.example.academy.dto.auth.LoginResponseDTO;
 import com.example.academy.jwt.JwtUtil;
+import com.example.academy.mapper.member.MemberResponseMapper;
 import com.example.academy.repository.mysql.CourseRepository;
 import com.example.academy.repository.mysql.MemberRepository;
 import com.example.academy.repository.mysql.StudentCourseRepository;
@@ -58,12 +59,13 @@ public class LoginService {
         refreshTokenCookie.setSecure(false);
         // HTTPS에서만 전송 = true(HTTPS 환경에서 권장)
         refreshTokenCookie.setPath("/");       // 쿠키가 유효한 경로
-        refreshTokenCookie.setMaxAge(2);  // 2분 유효
+//        refreshTokenCookie.setMaxAge(2);  // 2분 유효
         // 쿠키를 응답에 추가
         System.out.println("refreshTokenCookie = " + refreshTokenCookie);
 
         // LoginResponseDTO 객체를 생성하고 반환합니다.
-        LoginResponseDTO response = new LoginResponseDTO(accessToken, refreshTokenCookie);
+        LoginResponseDTO response = new LoginResponseDTO(accessToken, refreshTokenCookie,
+            MemberResponseMapper.toDTO(member.get()));
         return ResponseEntity.ok(response);
       } else {
         System.out.println("Password does not match"); // 비밀번호 불일치 로그

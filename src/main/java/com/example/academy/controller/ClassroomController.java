@@ -61,9 +61,9 @@ public class ClassroomController {
     return ResponseEntity.status(HttpStatus.OK).body(name);
   }
 
-  @DeleteMapping
+  @DeleteMapping("{id}")
   @Operation(summary = "강의실 삭제", security = {@SecurityRequirement(name = "bearerAuth")})
-  public ResponseEntity<?> deleteClassroom(Long id){
+  public ResponseEntity<?> deleteClassroom(@PathVariable Long id){
     classroomService.deleteClassroom(id);
     return ResponseEntity.ok("삭제 성공");
   }

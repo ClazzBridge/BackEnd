@@ -27,7 +27,6 @@ public class ClassroomService {
 
   public void addClassroom(AddClassroomDTO addClassroomDTO) {
     String name =  addClassroomDTO.getName();
-
     Classroom classroom = new Classroom();
     classroom.setName(name);
     classroom.setIsOccupied(false);
