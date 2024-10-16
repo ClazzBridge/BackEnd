@@ -1,4 +1,4 @@
-package com.example.academy.domain.mysql;
+package com.example.academy.domain;
 
 import java.time.LocalDate;
 import javax.persistence.Column;

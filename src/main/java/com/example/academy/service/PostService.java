@@ -1,10 +1,10 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.mysql.BoardType;
-import com.example.academy.domain.mysql.Course;
-import com.example.academy.domain.mysql.Member;
-import com.example.academy.domain.mysql.Post;
-import com.example.academy.domain.mysql.StudentCourse;
+import com.example.academy.domain.BoardType;
+import com.example.academy.domain.Course;
+import com.example.academy.domain.Member;
+import com.example.academy.domain.Post;
+import com.example.academy.domain.StudentCourse;
 import com.example.academy.dto.member.CustomUserDetails;
 import com.example.academy.dto.post.PostCreateDTO;
 import com.example.academy.dto.post.PostResponseDTO;
@@ -26,7 +26,6 @@ import com.example.academy.repository.mysql.StudentCourseRepository;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,11 +1,8 @@
 package com.example.academy.service;
 
-import static java.lang.Boolean.FALSE;
-
-import com.example.academy.domain.mysql.Classroom;
+import com.example.academy.domain.Classroom;
 import com.example.academy.dto.classroom.AddClassroomDTO;
 import com.example.academy.dto.classroom.ClassroomNameDTO;
-import com.example.academy.dto.classroom.GetClassroomDTO;
 import com.example.academy.dto.classroom.UpdateClassroomDTO;
 import com.example.academy.repository.mysql.ClassroomRepository;
 import java.util.List;
@@ -27,7 +24,6 @@ public class ClassroomService {
 
   public void addClassroom(AddClassroomDTO addClassroomDTO) {
     String name =  addClassroomDTO.getName();
-
     Classroom classroom = new Classroom();
     classroom.setName(name);
     classroom.setIsOccupied(false);

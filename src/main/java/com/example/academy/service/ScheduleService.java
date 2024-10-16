@@ -1,7 +1,7 @@
 package com.example.academy.service;
 
-import com.example.academy.domain.mysql.Course;
-import com.example.academy.domain.mysql.Schedule;
+import com.example.academy.domain.Course;
+import com.example.academy.domain.Schedule;
 import com.example.academy.dto.schedule.ScheduleAddDTO;
 import com.example.academy.dto.schedule.ScheduleListDTO;
 import com.example.academy.repository.mysql.CourseRepository;
