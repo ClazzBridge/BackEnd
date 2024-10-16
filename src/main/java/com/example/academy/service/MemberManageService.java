@@ -174,7 +174,9 @@ public class MemberManageService {
             // 강사인 경우 과정 정보 업데이트
             Optional<Course> course = courseRepository.findByTitle(title); // 입력한 강의 정보
             if (course.isPresent() && course.get().getInstructor() != null) {
-                throw new RuntimeException("해당 과정명은 이미 배정된 강사가 있습니다.");
+                if(course.get().getInstructor().getMemberId() != memberUpdateDTO.getMemberId()) {
+                    throw new RuntimeException("해당 과정명은 이미 배정된 강사가 있습니다.");
+                }
             }
 
             if (course.isPresent()) { // 코스 값이 존재하면 true
