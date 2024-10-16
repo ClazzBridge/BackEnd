@@ -1,6 +1,7 @@
 package com.example.academy.domain.mysql;
 
 
+import com.example.academy.enums.MemberRole;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,7 +50,7 @@ public class Member {
     private String bio;
 
     public boolean isAdmin() {
-        return "ROLE_ADMIN".equalsIgnoreCase(this.memberType.getType());
+        return MemberRole.ROLE_ADMIN.toString().equalsIgnoreCase(this.memberType.getType());
     }
 
 }
