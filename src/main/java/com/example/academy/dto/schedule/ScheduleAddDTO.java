@@ -1,6 +1,7 @@
 package com.example.academy.dto.schedule;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import lombok.Data;
 

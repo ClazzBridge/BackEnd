@@ -1,12 +1,7 @@
 package com.example.academy.repository.mysql;
 
 import com.example.academy.domain.mysql.Question;
-import com.example.academy.dto.question.QuestionReadDTO;
-import java.util.List;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,31 +11,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-
-  @Query("select "
-      + "new com.example.academy.dto.question.QuestionReadDTO("
-      + "q.id,"
-      + " m.name,"
-      + " q.content,"
-      + " q.isSolved,"
-      + " q.isRecommended,"
-      + " q.createdAt,"
-      + " q.updatedAt) "
-      + "from Question q, Member m "
-      + "where q.member = m")
-  List<QuestionReadDTO> findAllQuestionReadDTOs();
-
-  @Query("select "
-      + "new com.example.academy.dto.question.QuestionReadDTO("
-      + "q.id,"
-      + " m.name,"
-      + " q.content,"
-      + " q.isSolved,"
-      + " q.isRecommended,"
-      + " q.createdAt,"
-      + " q.updatedAt) "
-      + "from Question q, Member m "
-      + "where q.member = m")
-  Page<QuestionReadDTO> findAllQuestionReadDTOs(Pageable pageable);
 
 }

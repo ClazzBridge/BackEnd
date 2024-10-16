@@ -52,7 +52,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
   // 인증 성공 시 호출되는 메서드
   @Override
-  protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+  protected void successfulAuthentication(HttpServletRequest request,
+      HttpServletResponse response,
       FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
     // 인증 결과에서 사용자 세부 정보를 가져옴
@@ -65,11 +66,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     GrantedAuthority auth = iterator.next();
     String role = auth.getAuthority();
 
-    // 인증된 사용자에 대한 JWT 토큰 생성, 3600 * 20 => 72000 => 720초
-    String token = jwtUtil.createJWT(userId, role, 60 * 60 * 20L);
+    // 인증된 사용자에 대한 JWT 토큰 생성, 3600 * 200 => 720000 => 720초
+    String token = jwtUtil.createJWT(userId, role, 60 * 60 * 200L);
 
-    // 인증된 사용자에 대한 Refresh Token 및 쿠키 생성 720000 => 7200초
-    String refreshToken = jwtUtil.createRefreshJWT(userId, role, 60 * 60 * 200L);
+    // 인증된 사용자에 대한 Refresh Token 및 쿠키 생성 7200000 => 7200초
+    String refreshToken = jwtUtil.createRefreshJWT(userId, role, 60 * 60 * 2000L);
     Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
     // 클라이언트 JavaScript에서 접근 불가
     refreshTokenCookie.setSecure(true);

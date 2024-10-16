@@ -3,7 +3,7 @@ package com.example.academy.jwt;
 import com.example.academy.domain.mysql.Member;
 import com.example.academy.domain.mysql.MemberType;
 import com.example.academy.dto.member.CustomUserDetails;
-import com.example.academy.repository.mysql.MemberTypeRepository;
+import com.example.academy.repository.mysql.MemberTypeRepositoy;
 import java.io.IOException;
 import java.util.Optional;
 import javax.servlet.FilterChain;
@@ -19,14 +19,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
   private final JwtUtil jwtUtil;
 
-  private MemberTypeRepository memberTypeRepository;
+  private MemberTypeRepositoy memberTypeRepositoy;
 
   // JwtUtil 클래스를 사용하기 위해 필드로 주입받는 생성자
 
 
-  public JwtFilter(JwtUtil jwtUtil, MemberTypeRepository memberTypeRepositoy) {
+  public JwtFilter(JwtUtil jwtUtil, MemberTypeRepositoy memberTypeRepositoy) {
     this.jwtUtil = jwtUtil;
-    this.memberTypeRepository = memberTypeRepositoy;
+    this.memberTypeRepositoy = memberTypeRepositoy;
   }
 
   // doFilterInternal: HTTP 요청이 올 때마다 실행되는 필터 메소드
@@ -64,7 +64,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     // 6. UserList 객체 생성 및 사용자 이름, 역할 설정 (임시 비밀번호로 설정)
     Member member = new Member();
-    Optional<MemberType> memberTypeOptional = memberTypeRepository.findByType(role.toUpperCase());
+    Optional<MemberType> memberTypeOptional = memberTypeRepositoy.findByType(role.toUpperCase());
 
     if (memberTypeOptional.isPresent()) {
       MemberType memberType = memberTypeOptional.get();

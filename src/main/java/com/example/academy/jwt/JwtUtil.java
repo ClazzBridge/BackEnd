@@ -4,12 +4,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import javax.crypto.SecretKey;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JwtUtil {
@@ -27,6 +26,11 @@ public class JwtUtil {
 
   public String getRole(String token) {
     Claims claims = parseClaims(token);
+//
+//    MemberType role = (MemberType) claims.get("role");
+//
+//    return role.getType();
+
     return claims.get("role", String.class);
   }
 
@@ -81,7 +85,7 @@ public class JwtUtil {
 
     Long userId = getUserId(refreshToken);
     String role = getRole(refreshToken);
-    return createJWT(userId, role, 60 * 60 * 20L); // 7200 => 7.2초
+    return createJWT(userId, role, 60 * 60 * 200L); // 72000 => 72초
   }
 
   private Claims parseClaims(String token) {

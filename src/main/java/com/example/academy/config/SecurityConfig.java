@@ -4,7 +4,7 @@ package com.example.academy.config;
 import com.example.academy.jwt.JwtFilter;
 import com.example.academy.jwt.JwtUtil;
 import com.example.academy.jwt.LoginFilter;
-import com.example.academy.repository.mysql.MemberTypeRepository;
+import com.example.academy.repository.mysql.MemberTypeRepositoy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,14 +22,14 @@ public class SecurityConfig {
 
   private final AuthenticationConfiguration authenticationConfiguration;
   private final JwtUtil jwtUtil;
-  private final MemberTypeRepository memberTypeRepository; // MemberTypeRepositoy 주입 추가
+  private final MemberTypeRepositoy memberTypeRepositoy; // MemberTypeRepositoy 주입 추가
 
   public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,
       JwtUtil jwtUtil,
-      MemberTypeRepository memberTypeRepository) {
+      MemberTypeRepositoy memberTypeRepositoy) {
     this.authenticationConfiguration = authenticationConfiguration;
     this.jwtUtil = jwtUtil;
-    this.memberTypeRepository = memberTypeRepository; // 주입된 MemberTypeRepositoy 저장
+    this.memberTypeRepositoy = memberTypeRepositoy; // 주입된 MemberTypeRepositoy 저장
   }
 
   @Bean
@@ -52,12 +52,12 @@ public class SecurityConfig {
         .formLogin().disable()
         .httpBasic().disable()
         .authorizeHttpRequests(auth -> auth
-            .regexMatchers("/api/.*", "/auth/.*", "/swagger-ui.*", "/v3/api-docs.*").permitAll()
-            .regexMatchers("/admin").hasAnyRole("ADMIN", "STUDENT", "TEACHER")
+            .regexMatchers("/api/login", "/api/auth.*", "/swagger-ui.*", "/v3/api-docs.*").permitAll()
+            .regexMatchers("/api/.*","/admin").hasAnyRole("ADMIN", "STUDENT", "TEACHER")
             .anyRequest().authenticated());
 
-    // JwtFilter에 memberTypeRepository 주입
-    http.addFilterBefore(new JwtFilter(jwtUtil, memberTypeRepository), LoginFilter.class);
+    // JwtFilter에 memberTypeRepositoy 주입
+    http.addFilterBefore(new JwtFilter(jwtUtil, memberTypeRepositoy), LoginFilter.class);
     http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
         UsernamePasswordAuthenticationFilter.class);
 

@@ -2,13 +2,11 @@ package com.example.academy.dto.question;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @AllArgsConstructor
-public class QuestionToggleSolvedDTO {
+public class TeacherAnswerUpdateDTO {
 
-  private Long id;
-  private boolean isSolved;
+  private Long questionId;
+  private String teacherAnswer;
 }

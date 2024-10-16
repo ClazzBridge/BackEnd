@@ -1,30 +1,50 @@
 package com.example.academy.domain.mysql;
 
-import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "submission")
 public class Submission {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @EmbeddedId
+  private SubmissionId id;
 
-    @ManyToOne
-    @JoinColumn(name = "assignment_id")
-    private Assignment assignment;
+  @MapsId("assignmentId")
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "assignment_id", nullable = false)
+  private Assignment assignment;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private Member student;
+  @MapsId("studentCourseId")
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "student_course_id", nullable = false)
+  private StudentCourse studentCourse;
 
-    private String submissionUrl;
+  @NotNull
+  @Lob
+  @Column(name = "content", nullable = false)
+  private String content;
 
-    @Temporal(TemporalType.DATE)
-    private Date submissionDate;
+  @Size(max = 255)
+  @Column(name = "submission_url")
+  private String submissionUrl;
 
-    private Double grade;
+  @NotNull
+  @Column(name = "submission_date", nullable = false)
+  private LocalDate submissionDate;
 
-    // Getters and Setters
 }

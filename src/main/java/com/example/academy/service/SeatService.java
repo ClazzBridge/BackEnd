@@ -45,13 +45,24 @@ public class SeatService {
         .findFirst()
         .ifPresent(teacherSeat -> seatDTOList.add(convertSeatToDTO(teacherSeat)));
 
-    // 나머지 좌석 추가 (번호 순으로 정렬)
+    // 나머지 좌석 추가 (문자 및 숫자 순으로 정렬)
     seatList.stream()
         .filter(seat -> !TEACHER_SEAT_NUMBER.equals(seat.getSeatNumber()))
         .sorted((s1, s2) -> {
-          int n1 = Integer.parseInt(s1.getSeatNumber());
-          int n2 = Integer.parseInt(s2.getSeatNumber());
-          return Integer.compare(n1, n2);
+          String seatNumber1 = s1.getSeatNumber();
+          String seatNumber2 = s2.getSeatNumber();
+
+          // 문자 부분 추출
+          String prefix1 = seatNumber1.replaceAll("\\d", "");
+          String prefix2 = seatNumber2.replaceAll("\\d", "");
+
+          // 숫자 부분 추출
+          int number1 = Integer.parseInt(seatNumber1.replaceAll("\\D", ""));
+          int number2 = Integer.parseInt(seatNumber2.replaceAll("\\D", ""));
+
+          // 문자 부분이 같다면 숫자 부분으로 정렬, 다르다면 문자 부분으로 정렬
+          int prefixComparison = prefix1.compareTo(prefix2);
+          return prefixComparison != 0 ? prefixComparison : Integer.compare(number1, number2);
         })
         .forEach(seat -> seatDTOList.add(convertSeatToDTO(seat)));
 
@@ -121,15 +132,12 @@ public class SeatService {
     MemberDTO memberDTO = null;
 
     if (member != null) {
-      // member.getMemberType().getType()을 사용하여 String으로 변환
-      com.example.academy.type.MemberType dtoMemberType = com.example.academy.type.MemberType.valueOf(member.getMemberType().getType());
-
       memberDTO = new MemberDTO(
           member.getMemberId(),
           member.getName(),
           member.getEmail(),
           member.getPhone(),
-          dtoMemberType, // 변환된 MemberType 사용
+          member.getMemberType(),
           member.getAvatarImage() != null ? member.getAvatarImage().getAvatarImageUrl() : null,
           member.getGitUrl(),
           member.getBio()
