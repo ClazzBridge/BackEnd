@@ -1,6 +1,6 @@
 package com.example.academy.mapper.post;
 
-import com.example.academy.domain.mysql.Post;
+import com.example.academy.domain.Post;
 import com.example.academy.dto.post.PostResponseDTO;
 import java.util.List;
 import java.util.stream.Collectors;

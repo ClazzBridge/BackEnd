@@ -1,4 +1,4 @@
-package com.example.academy.domain.mysql;
+package com.example.academy.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,15 +10,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "seat")
-public class Seat {
+@Table(name = "vote_response")
+public class VoteResponse {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,24 +26,17 @@ public class Seat {
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "classroom_id", nullable = false)
-  private Course classroom;
-
-  @Size(max = 10)
-  @NotNull
-  @Column(name = "seat_number", nullable = false, length = 10)
-  private String seatNumber;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "member_id")
-  private Member member;
+  @JoinColumn(name = "vote_id", nullable = false)
+  private Vote vote;
 
   @NotNull
-  @Column(name = "is_exist", nullable = false)
-  private Boolean isExist = false;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "student_course_id", nullable = false)
+  private StudentCourse studentCourse;
 
   @NotNull
-  @Column(name = "is_online", nullable = false)
-  private Boolean isOnline = false;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "vote_option_id", nullable = false)
+  private VoteOption voteOption;
 
 }
