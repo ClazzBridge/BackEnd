@@ -20,13 +20,10 @@ public class StudentCourseService {
     }
 
 
-    public Long getCoureseId() {
+    public Long getCourseId() {
         CustomUserDetails user = authService.getAuthenticatedUser();
 
-        Long courseId = studentCourseRepository.findByStudentId(user.getUserId()).getCourse()
+        return studentCourseRepository.findByStudentId(user.getUserId()).getCourse()
             .getId();
-
-        System.out.println(courseId + "====================================================");
-        return courseId;
     }
 }
