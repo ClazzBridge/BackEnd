@@ -11,6 +11,7 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
 
   Optional<Classroom> findByName(String name); // 강의실 이름으로 조회
 
+  boolean existsByName(String Name);
 
   List<Classroom> findAll();
 
