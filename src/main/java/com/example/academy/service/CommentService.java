@@ -6,7 +6,9 @@ import com.example.academy.domain.Post;
 import com.example.academy.dto.comment.CommentRequestDTO;
 import com.example.academy.dto.comment.CommentResponseDTO;
 import com.example.academy.dto.member.CustomUserDetails;
+import com.example.academy.enums.MemberRole;
 import com.example.academy.exception.common.NotFoundException;
+import com.example.academy.exception.common.UnauthorizedException;
 import com.example.academy.mapper.comment.CommentRequestMapper;
 import com.example.academy.mapper.comment.CommentResponseMapper;
 import com.example.academy.repository.mysql.CommentRepository;
@@ -14,6 +16,7 @@ import com.example.academy.repository.mysql.MemberRepository;
 import com.example.academy.repository.mysql.PostRepository;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,5 +75,23 @@ public class CommentService {
         commentRepository.save(comment);
 
         return CommentResponseMapper.toDTO(comment);
+    }
+
+
+    @Transactional
+    public void delete(Long id) {
+        CustomUserDetails user = authService.getAuthenticatedUser();
+
+        Comment comment = commentRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("댓글이 존재하지 않습니다."));
+
+        // 관리자가 아니고, 작성자가 본인이 아닌 경우 권한 에러 발생
+        if (!Objects.equals(comment.getAuthor().getId(), user.getUserId()) && !user.getUserType()
+            .equals(MemberRole.ROLE_ADMIN)) {
+            throw new UnauthorizedException("삭제 권한이 없습니다.");
+        }
+
+        commentRepository.delete(comment);
+
     }
 }

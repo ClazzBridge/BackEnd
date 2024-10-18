@@ -13,16 +13,16 @@ public class PostResponseMapper {
         if (post == null) {
             return null;
         }
-
-        return new PostResponseDTO(
-            post.getId(),
-            post.getTitle(),
-            post.getContent(),
-            post.getAuthor().getName(),
-            post.getBoardType().getType(),
-            post.getCourse() != null ? post.getCourse().getTitle() : null,
-            post.getCreatedAt()
-        );
+        return PostResponseDTO.builder()
+            .id(post.getId())
+            .authorId(post.getAuthor().getId())
+            .authorName(post.getAuthor().getName())
+            .title(post.getTitle())
+            .content(post.getContent())
+            .boardType(post.getBoardType().getType())
+            .courseTitle(post.getCourse() != null ? post.getCourse().getTitle() : null)
+            .createdAt(post.getCreatedAt())
+            .build();
     }
 
     public List<PostResponseDTO> toDtoList(List<Post> posts) {
