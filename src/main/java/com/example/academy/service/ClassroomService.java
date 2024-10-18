@@ -43,7 +43,6 @@ public class ClassroomService {
 
     Long id = updateClassroomDTO.getId();
     String name = updateClassroomDTO.getName();
-    Boolean isOccupied = updateClassroomDTO.getIsOccupied();
 
 
     Optional<Classroom> classroom = classroomRepository.findById(id);
@@ -54,7 +53,6 @@ public class ClassroomService {
 
     newClassroom.setId(id);
     newClassroom.setName(name);
-    newClassroom.setIsOccupied(isOccupied);
 
     return classroomRepository.save(newClassroom);
   }
@@ -70,8 +68,10 @@ public class ClassroomService {
     LocalDate now = LocalDate.now();
     List<Course> courses =   courseRepository.findAll();
     for (Course cours1 : courses) {
-      if (now.isAfter(cours1.getEndDate()) && now.isAfter(cours1.getStartDate()) ) {
-        // 현재 > 종료날짜 , 현재 > 시작날짜
+      if (now.isAfter(cours1.getEndDate()) && now.isAfter(cours1.getStartDate())
+          // 현재 > 종료날짜 , 현재 > 시작날짜
+      || now.isBefore(cours1.getStartDate())) {
+          // 현재 < 시작날짜
         cours1.getClassroom().setIsOccupied(false);
       }
       courseRepository.save(cours1);
