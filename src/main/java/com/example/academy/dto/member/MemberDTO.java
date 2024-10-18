@@ -10,22 +10,23 @@ import lombok.Setter;
 @Setter
 public class MemberDTO {
 
-  private String memberId;
+  private Long id;
   private String name;
   private String email;
   private String phone;
-  private MemberType memberType;
+  private String memberType;
   private String avatarImageUrl;
   private String gitUrl;
   private String bio;
 
-  public MemberDTO(String memberId, String name, String email, String phone, MemberType memberType,
+  public MemberDTO(Long id, String name, String email, String phone, MemberType memberType,
       String avatarImageUrl, String gitUrl, String bio) {
-    this.memberId = memberId;
+
+    this.id = id;
     this.name = name;
     this.email = email;
     this.phone = phone;
-    this.memberType = memberType;
+    this.memberType = memberType.getType();
     this.avatarImageUrl = avatarImageUrl;
     this.gitUrl = gitUrl;
     this.bio = bio;

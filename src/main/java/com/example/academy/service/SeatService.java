@@ -3,8 +3,11 @@ package com.example.academy.service;
 import com.example.academy.domain.mysql.Member;
 import com.example.academy.domain.mysql.MemberType;
 import com.example.academy.domain.mysql.Seat;
+import com.example.academy.dto.member.CustomUserDetails;
 import com.example.academy.dto.member.MemberDTO;
-import com.example.academy.dto.seat.SeatDTO;
+import com.example.academy.dto.seat.SeatUpdateDTO;
+import com.example.academy.dto.seat.SeatListDTO;
+import com.example.academy.exception.common.NotFoundException;
 import com.example.academy.repository.mysql.MemberTypeRepository;
 import com.example.academy.repository.mysql.SeatRepository;
 import com.example.academy.repository.mysql.MemberRepository;
@@ -28,22 +31,19 @@ public class SeatService {
 
   private static final String TEACHER_SEAT_NUMBER = "T";
 
+  private final AuthService authService;
+
   @Autowired
-  public SeatService(SeatRepository seatRepository, MemberRepository memberRepository, MemberTypeRepository memberTypeRepository) {
+  public SeatService(SeatRepository seatRepository, MemberRepository memberRepository, MemberTypeRepository memberTypeRepository, AuthService authService) {
     this.seatRepository = seatRepository;
     this.memberRepository = memberRepository;
+    this.authService = authService;
     this.memberTypeRepository = memberTypeRepository;
   }
 
-  public List<SeatDTO> getAllSeat() {
+  public List<SeatListDTO> getAllSeat() {
     List<Seat> seatList = seatRepository.findAll();
-    List<SeatDTO> seatDTOList = new ArrayList<>();
-
-    // 강사 좌석을 먼저 추가
-    seatList.stream()
-        .filter(seat -> TEACHER_SEAT_NUMBER.equals(seat.getSeatNumber()))
-        .findFirst()
-        .ifPresent(teacherSeat -> seatDTOList.add(convertSeatToDTO(teacherSeat)));
+    List<SeatListDTO> seatListDTO = new ArrayList<>();
 
     // 나머지 좌석 추가 (문자 및 숫자 순으로 정렬)
     seatList.stream()
@@ -64,36 +64,48 @@ public class SeatService {
           int prefixComparison = prefix1.compareTo(prefix2);
           return prefixComparison != 0 ? prefixComparison : Integer.compare(number1, number2);
         })
-        .forEach(seat -> seatDTOList.add(convertSeatToDTO(seat)));
+        .forEach(seat -> seatListDTO.add(convertSeatToDTO(seat)));
 
-    return seatDTOList;
+    return seatListDTO;
   }
 
   @Transactional
-  public Optional<SeatDTO> assignSeatToMember(SeatDTO seatDTO) {
-    Long seatId = seatDTO.getId();
-    String memberId = seatDTO.getMemberDTO().getMemberId();
+  public Optional<SeatListDTO> assignSeatToMember(SeatUpdateDTO seatUpdateDTO) {
+    CustomUserDetails user = authService.getAuthenticatedUser();
+    Member member = memberRepository.findById(user.getUserId()).orElseThrow(() -> new NotFoundException("해당 회원이 없습니다."));
 
-    Member member = memberRepository.findByMemberId(memberId)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
+    System.out.println("Received seatDTO: " + seatUpdateDTO);
 
-    Optional<Seat> occupiedSeat = seatRepository.findByMember_Id(member.getId());
+    Long seatId = seatUpdateDTO.getId();
+
+    System.out.println("Assigning seat with ID: " + seatId + " to member with ID: " + member.getId());
+
+    System.out.println("Found member: " + member);
+
+    Optional<Seat> occupiedSeat = seatRepository.findByMemberId(member.getId());
     if (occupiedSeat.isPresent()) {
+      System.out.println("Member already occupies another seat: " + occupiedSeat.get());
       return Optional.empty();
     }
 
-    if ("ROLE_TEACHER".equals(member.getMemberType())) {
-      return Optional.of(assignOrUpdateTeacherSeat(member));
-    }
-
     Seat seat = seatRepository.findById(seatId)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Seat not found"));
+        .orElseThrow(() -> {
+          System.out.println("Seat not found with ID: " + seatId);
+          return new ResponseStatusException(HttpStatus.NOT_FOUND, "Seat not found");
+        });
+
+    System.out.println("Found seat: " + seat);
 
     seat.setMember(member);
-    return Optional.of(convertSeatToDTO(seatRepository.save(seat)));
+    Seat savedSeat = seatRepository.save(seat);
+    System.out.println("Seat successfully assigned to member: " + savedSeat);
+
+    return Optional.of(convertSeatToDTO(savedSeat));
   }
 
-  private SeatDTO assignOrUpdateTeacherSeat(Member teacher) {
+  private SeatListDTO assignOrUpdateTeacherSeat(Member teacher) {
+    System.out.println("Finding or creating seat for teacher");
+
     Seat teacherSeat = seatRepository.findBySeatNumber(TEACHER_SEAT_NUMBER)
         .orElseGet(() -> {
           Seat newSeat = new Seat();
@@ -105,8 +117,8 @@ public class SeatService {
 
     if (teacherSeat.getMember() != null) {
       Member oldTeacher = teacherSeat.getMember();
+      System.out.println("Teacher seat already occupied by " + oldTeacher.getMemberId() + ", reassigning...");
 
-      // 데이터베이스에서 ROLE_STUDENT에 해당하는 MemberType을 가져오기
       MemberType studentRoleType = memberTypeRepository.findByType("ROLE_STUDENT")
           .orElseThrow(() -> new IllegalArgumentException("ROLE_STUDENT 타입이 없습니다."));
 
@@ -116,10 +128,14 @@ public class SeatService {
     }
 
     teacherSeat.setMember(teacher);
-    return convertSeatToDTO(seatRepository.save(teacherSeat));
+    Seat savedTeacherSeat = seatRepository.save(teacherSeat);
+    System.out.println("Teacher seat successfully reassigned to " + teacher.getMemberId());
+
+    return convertSeatToDTO(savedTeacherSeat);
   }
 
-  public SeatDTO removeMemberFromSeat(Long seatId) {
+  public SeatListDTO removeMemberFromSeat(Long seatId) {
+
     Seat seat = seatRepository.findById(seatId)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Seat not found"));
 
@@ -127,13 +143,13 @@ public class SeatService {
     return convertSeatToDTO(seatRepository.save(seat));
   }
 
-  private SeatDTO convertSeatToDTO(Seat seat) {
+  private SeatListDTO convertSeatToDTO(Seat seat) {
     Member member = seat.getMember();
     MemberDTO memberDTO = null;
 
     if (member != null) {
       memberDTO = new MemberDTO(
-          member.getMemberId(),
+          member.getId(),
           member.getName(),
           member.getEmail(),
           member.getPhone(),
@@ -143,11 +159,11 @@ public class SeatService {
           member.getBio()
       );
     }
-    return new SeatDTO(seat.getId(), seat.getSeatNumber(), seat.getIsExist(), seat.getIsOnline(), memberDTO);
+    return new SeatListDTO(seat.getId(), seat.getSeatNumber(), seat.getIsExist(), seat.getIsOnline(), memberDTO);
   }
 
   @Transactional
-  public SeatDTO assignTeacherSeat(String memberId) {
+  public SeatListDTO assignTeacherSeat(String memberId) {
     Member member = memberRepository.findByMemberId(memberId)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
 
@@ -159,12 +175,12 @@ public class SeatService {
   }
 
   @Transactional
-  public List<SeatDTO> registerSeats(int seatCount) {
+  public List<SeatListDTO> registerSeats(int seatCount) {
     if (seatCount <= 0) {
       throw new IllegalArgumentException("좌석 수는 1 이상이어야 합니다.");
     }
 
-    List<SeatDTO> createdSeats = new ArrayList<>();
+    List<SeatListDTO> createdSeats = new ArrayList<>();
 
     // 강사 좌석 처리
     Seat teacherSeat = seatRepository.findBySeatNumber(TEACHER_SEAT_NUMBER)
@@ -198,7 +214,7 @@ public class SeatService {
   }
 
   @Transactional
-  public List<SeatDTO> modifySeats(int newSeatCount) {
+  public List<SeatListDTO> modifySeats(int newSeatCount) {
     if (newSeatCount < 0) {
       throw new IllegalArgumentException("좌석 수는 0 이상이어야 합니다.");
     }
