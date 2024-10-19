@@ -5,6 +5,7 @@ import com.example.academy.domain.Member;
 import com.example.academy.domain.Post;
 import com.example.academy.dto.comment.CommentRequestDTO;
 import com.example.academy.dto.comment.CommentResponseDTO;
+import com.example.academy.dto.comment.CommentUpdateDTO;
 import com.example.academy.dto.member.CustomUserDetails;
 import com.example.academy.enums.MemberRole;
 import com.example.academy.exception.common.NotFoundException;
@@ -92,6 +93,24 @@ public class CommentService {
         }
 
         commentRepository.delete(comment);
+
+    }
+
+    @Transactional
+    public CommentResponseDTO update(CommentUpdateDTO commentUpdateDTO) {
+        CustomUserDetails user = authService.getAuthenticatedUser();
+
+        Comment comment = commentRepository.findById(commentUpdateDTO.getId())
+            .orElseThrow(() -> new NotFoundException("해당 댓글이 존재하지 않습니다."));
+
+        if (!Objects.equals(comment.getAuthor().getId(), user.getUserId())) {
+            throw new NotFoundException("업데이트 권한이 없습니다.");
+        }
+
+        comment.updateComment(commentUpdateDTO.getComment());
+        commentRepository.save(comment);
+
+        return CommentResponseMapper.toDTO(comment);
 
     }
 }
