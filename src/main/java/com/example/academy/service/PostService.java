@@ -268,4 +268,41 @@ public class PostService {
             return Collections.emptyList(); // 빈 리스트 반환
         }
     }
+
+    public List<PostResponseDTO> getUserCourseFreePosts() {
+        CustomUserDetails user = authService.getAuthenticatedUser();
+
+        StudentCourse studentCourse = studentCourseRepository.findByStudentId(user.getUserId());
+
+        if (studentCourse != null) {
+            List<Post> freePosts = postRepository.findByCourse(studentCourse.getCourse());
+
+            if (!freePosts.isEmpty()) {
+                return postResponseMapper.toDtoList(freePosts).stream()
+                    .filter(freePost -> freePost.getBoardType().equals(BoardTypes.일반.name()))
+                    .sorted(Comparator.comparing(PostResponseDTO::getId).reversed())
+                    .toList();
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    public List<PostResponseDTO> getUserCourseNotifications() {
+        CustomUserDetails user = authService.getAuthenticatedUser();
+
+        StudentCourse studentCourse = studentCourseRepository.findByStudentId(user.getUserId());
+
+        if (studentCourse != null) {
+            List<Post> notifications = postRepository.findByCourse(studentCourse.getCourse());
+
+            if (!notifications.isEmpty()) {
+                return postResponseMapper.toDtoList(notifications).stream()
+                    .filter(
+                        notification -> notification.getBoardType().equals(BoardTypes.공지사항.name()))
+                    .sorted(Comparator.comparing(PostResponseDTO::getId).reversed())
+                    .toList();
+            }
+        }
+        return Collections.emptyList();
+    }
 }

@@ -23,6 +23,8 @@ public class CommentResponseDTO {
 
     private String postTitle;
 
+    private Long authorId;
+    
     private String author;
 
     private String profileImageUrl;

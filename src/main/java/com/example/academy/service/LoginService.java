@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     private static final long ACCESS_TOKEN_EXPIRATION = 60 * 15 * 1000L; // 15분
-    private static final long REFRESH_TOKEN_EXPIRATION = 60 * 15 * 1000L; // 15분
+    private static final long REFRESH_TOKEN_EXPIRATION = 60 * 15 * 10000L; // 15분
 
 
     @Autowired

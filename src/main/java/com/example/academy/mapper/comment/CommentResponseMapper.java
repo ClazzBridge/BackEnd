@@ -17,6 +17,7 @@ public class CommentResponseMapper {
         return CommentResponseDTO.builder()
             .id(comment.getId())
             .postTitle(comment.getPost().getTitle())
+            .authorId(comment.getAuthor().getId())
             .author(comment.getAuthor().getName())
             .profileImageUrl(comment.getAuthor().getAvatarImage().getAvatarImageUrl())
             .content(comment.getContent())
