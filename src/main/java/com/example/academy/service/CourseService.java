@@ -1,5 +1,6 @@
 package com.example.academy.service;
 
+import com.example.academy.domain.Classroom;
 import com.example.academy.domain.Course;
 import com.example.academy.dto.course.CourseAddDTO;
 import com.example.academy.dto.course.CourseTitleDTO;
@@ -82,46 +83,60 @@ public class CourseService {
     String message = "";
     while (true) {
       if (courseRepository.existsByTitle(courseAddDTO.getTitle())) {
+        //강의명이 존재하면
         message += "이미 존재하는 강의명입니다.";
       }
+      System.out.println("courseAdd========>" + courseAddDTO.getClassroomName());
+      System.out.println("courseAdd========>" + courseAddDTO.getTitle());
       if (classroomRepository.existsByName(courseAddDTO.getClassroomName())) {
-        if (classroomRepository.findByName(courseAddDTO.getClassroomName()).get().getIsOccupied()) {
-          message += " 해당 강의실은 사용 중입니다.";
+        //입력한 값이 클래스룸에 존재한다면
+        Optional<Classroom> optionalClassroom = classroomRepository.findByName(
+            courseAddDTO.getClassroomName());
+
+        if (optionalClassroom.isPresent()) {
+          // Classroom이 존재하면 `isOccupied` 여부 확인
+          if (optionalClassroom.get().getIsOccupied()) {
+            message += " 해당 강의실은 사용 중입니다.";
+          }
+        } else {
+          // Classroom이 존재하지 않으면 처리 (필요에 따라 에러 메시지 추가)
+          message += "해당 강의실은 존재하지 않습니다.";
+
         }
-      }else {
-        message += " 해당 강의실은 존재하지 않습니다.";
       }
-      if (message.equals("")) {
-        break;
-      } else {
+      if (message.length() > 5) {
         throw new Exception(message);
+      } else {
+        break;
       }
     }
-      Course course = new Course();
-      course.setClassroom(classroomRepository.findByName(courseAddDTO.getClassroomName()).get());
-      course.setTitle(courseAddDTO.getTitle());
-      course.setDescription(courseAddDTO.getDescription());
-      course.setStartDate(courseAddDTO.getStartDate());
-      course.setEndDate(courseAddDTO.getEndDate());
-      course.setLayoutImageUrl(courseAddDTO.getLayoutImageUrl());
-      courseRepository.save(course);
+    Course course = new Course();
+    course.setClassroom(classroomRepository.findByName(courseAddDTO.getClassroomName()).get());
+    course.setTitle(courseAddDTO.getTitle());
+    course.setDescription(courseAddDTO.getDescription());
+    course.setStartDate(courseAddDTO.getStartDate());
+    course.setEndDate(courseAddDTO.getEndDate());
+    course.setLayoutImageUrl(courseAddDTO.getLayoutImageUrl());
+    courseRepository.save(course);
   }
 
-  public void updateCourse(CourseUpdateDTO courseUpdateDTO) throws Exception{
+  public void updateCourse(CourseUpdateDTO courseUpdateDTO) throws Exception {
 
     Course course = courseRepository.findById(courseUpdateDTO.getId()).get();
 
     String message = "";
     while (true) {
-      if (!course.getTitle().equals(courseUpdateDTO.getTitle()) && courseRepository.existsByTitle(courseUpdateDTO.getTitle())) {
+      if (!course.getTitle().equals(courseUpdateDTO.getTitle()) && courseRepository.existsByTitle(
+          courseUpdateDTO.getTitle())) {
         message += "이미 존재하는 강의명입니다.";
       }
       if (classroomRepository.existsByName(courseUpdateDTO.getClassroomName())) {
         if (!course.getClassroom().getName().equals(courseUpdateDTO.getClassroomName())
-            && classroomRepository.findByName(courseUpdateDTO.getClassroomName()).get().getIsOccupied()) {
+            && classroomRepository.findByName(courseUpdateDTO.getClassroomName()).get()
+            .getIsOccupied()) {
           message += " 해당 강의실은 사용 중입니다.";
         }
-      }else {
+      } else {
         message += " 해당 강의실은 존재하지 않습니다.";
       }
       if (message.equals("")) {
