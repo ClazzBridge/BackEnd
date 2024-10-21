@@ -3,6 +3,7 @@ package com.example.academy.controller;
 
 import com.example.academy.dto.course.CourseTitleDTO;
 import com.example.academy.dto.course.GetCourseDTO;
+import com.example.academy.dto.course.SelectCourseDTO;
 import com.example.academy.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -34,6 +35,12 @@ public class CourseController {
   @GetMapping
   public ResponseEntity<List<GetCourseDTO>> getAllCourse(){
     return ResponseEntity.ok(courseService.getAllCourse());
+  }
+
+  @Operation(summary = "강의실 강의 선택")
+  @GetMapping("/select")
+  public ResponseEntity<List<SelectCourseDTO>> SeatAllCourse(){
+    return ResponseEntity.ok(courseService.seatAllCourse());
   }
 
 }

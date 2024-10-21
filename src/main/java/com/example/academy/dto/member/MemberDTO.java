@@ -11,6 +11,7 @@ import lombok.Setter;
 public class MemberDTO {
 
   private Long id;
+  private String memberId;
   private String name;
   private String email;
   private String phone;
@@ -19,10 +20,11 @@ public class MemberDTO {
   private String gitUrl;
   private String bio;
 
-  public MemberDTO(Long id, String name, String email, String phone, MemberType memberType,
+  public MemberDTO(Long id, String memberId, String name, String email, String phone, MemberType memberType,
       String avatarImageUrl, String gitUrl, String bio) {
 
     this.id = id;
+    this.memberId = memberId;
     this.name = name;
     this.email = email;
     this.phone = phone;

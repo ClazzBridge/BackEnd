@@ -3,6 +3,7 @@ package com.example.academy.service;
 import com.example.academy.domain.mysql.Course;
 import com.example.academy.dto.course.CourseTitleDTO;
 import com.example.academy.dto.course.GetCourseDTO;
+import com.example.academy.dto.course.SelectCourseDTO;
 import com.example.academy.repository.mysql.CourseRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,6 +39,16 @@ public class CourseService {
             course.getStartDate(),
             course.getEndDate(),
             course.getLayoutImageUrl()))
+        .collect(Collectors.toList());
+  }
+
+  public List<SelectCourseDTO> seatAllCourse() {
+    List<Course> courses = courseRepository.findAll();
+
+    return courses.stream()
+        .map(course -> new SelectCourseDTO(
+            course.getId(),
+            course.getTitle()))
         .collect(Collectors.toList());
   }
 

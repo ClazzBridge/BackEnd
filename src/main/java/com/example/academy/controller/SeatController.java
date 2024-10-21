@@ -1,6 +1,7 @@
 package com.example.academy.controller;
 
 
+import com.example.academy.dto.seat.SeatManagementDTO;
 import com.example.academy.dto.seat.SeatUpdateDTO;
 import com.example.academy.dto.seat.SeatListDTO;
 import com.example.academy.service.SeatService;
@@ -46,6 +47,27 @@ public class SeatController {
   public ResponseEntity<SeatListDTO> removeMemberFromSeat(@PathVariable Long id) {
     SeatListDTO updatedSeat = seatService.removeMemberFromSeat(id);
     return ResponseEntity.ok(updatedSeat);
+  }
+
+  @Operation(summary = "좌석 생성", description = "매니저가 좌석을 생성합니다.")
+  @PostMapping("/register")
+  public ResponseEntity<List<SeatListDTO>> registerSeats(@RequestParam int seatCount, @RequestParam Long courseId) {
+    List<SeatListDTO> createdSeats = seatService.registerSeats(seatCount, courseId);
+    return ResponseEntity.ok(createdSeats);
+  }
+
+  @Operation(summary = "좌석 수정", description = "매니저가 좌석을 수정합니다.")
+  @PostMapping("/modify")
+  public ResponseEntity<List<SeatListDTO>> modifySeats(@RequestParam int newSeatCount, @RequestParam Long courseId) {
+    List<SeatListDTO> modifiedSeats = seatService.modifySeats(newSeatCount, courseId);
+    return ResponseEntity.ok(modifiedSeats);
+  }
+
+  @Operation(summary = "특정 강의의 좌석 리스트 반환")
+  @GetMapping("/course/{courseId}")
+  public ResponseEntity<List<SeatListDTO>> getSeatsByCourse(@PathVariable Long courseId) {
+    List<SeatListDTO> seats = seatService.getSeatsByCourse(courseId);
+    return ResponseEntity.ok(seats);
   }
 }
 

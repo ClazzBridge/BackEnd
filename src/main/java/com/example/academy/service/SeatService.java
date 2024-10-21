@@ -1,5 +1,6 @@
 package com.example.academy.service;
 
+import com.example.academy.domain.mysql.Course;
 import com.example.academy.domain.mysql.Member;
 import com.example.academy.domain.mysql.MemberType;
 import com.example.academy.domain.mysql.Seat;
@@ -8,9 +9,13 @@ import com.example.academy.dto.member.MemberDTO;
 import com.example.academy.dto.seat.SeatUpdateDTO;
 import com.example.academy.dto.seat.SeatListDTO;
 import com.example.academy.exception.common.NotFoundException;
+import com.example.academy.repository.mysql.CourseRepository;
 import com.example.academy.repository.mysql.MemberTypeRepository;
 import com.example.academy.repository.mysql.SeatRepository;
 import com.example.academy.repository.mysql.MemberRepository;
+import java.util.Comparator;
+import java.util.stream.IntStream;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,17 +33,19 @@ public class SeatService {
   private final SeatRepository seatRepository;
   private final MemberRepository memberRepository;
   private final MemberTypeRepository memberTypeRepository;
+  private final CourseRepository courseRepository;
 
   private static final String TEACHER_SEAT_NUMBER = "T";
 
   private final AuthService authService;
 
   @Autowired
-  public SeatService(SeatRepository seatRepository, MemberRepository memberRepository, MemberTypeRepository memberTypeRepository, AuthService authService) {
+  public SeatService(SeatRepository seatRepository, MemberRepository memberRepository, MemberTypeRepository memberTypeRepository, CourseRepository courseRepository, AuthService authService) {
     this.seatRepository = seatRepository;
     this.memberRepository = memberRepository;
     this.authService = authService;
     this.memberTypeRepository = memberTypeRepository;
+    this.courseRepository = courseRepository;
   }
 
   public List<SeatListDTO> getAllSeat() {
@@ -150,6 +157,7 @@ public class SeatService {
     if (member != null) {
       memberDTO = new MemberDTO(
           member.getId(),
+          member.getMemberId(),
           member.getName(),
           member.getEmail(),
           member.getPhone(),
@@ -175,30 +183,19 @@ public class SeatService {
   }
 
   @Transactional
-  public List<SeatListDTO> registerSeats(int seatCount) {
+  public List<SeatListDTO> registerSeats(int seatCount, Long courseId) {
     if (seatCount <= 0) {
       throw new IllegalArgumentException("좌석 수는 1 이상이어야 합니다.");
     }
 
     List<SeatListDTO> createdSeats = new ArrayList<>();
 
-    // 강사 좌석 처리
-    Seat teacherSeat = seatRepository.findBySeatNumber(TEACHER_SEAT_NUMBER)
-        .orElseGet(() -> {
-          Seat newSeat = new Seat();
-          newSeat.setSeatNumber(TEACHER_SEAT_NUMBER);
-          newSeat.setIsExist(true);
-          newSeat.setIsOnline(false);
-          return seatRepository.save(newSeat);
-        });
-    createdSeats.add(convertSeatToDTO(teacherSeat));
+    // 코스 조회
+    Course course = courseRepository.findById(courseId)
+        .orElseThrow(() -> new EntityNotFoundException("Course not found"));
 
-    // 기존 일반 좌석 삭제
-    seatRepository.deleteAll(
-        seatRepository.findAll().stream()
-            .filter(seat -> !TEACHER_SEAT_NUMBER.equals(seat.getSeatNumber()))
-            .collect(Collectors.toList())
-    );
+    // 기존 좌석 모두 삭제
+    seatRepository.deleteAll();
 
     // 새 좌석 생성
     for (int i = 1; i <= seatCount; i++) {
@@ -206,6 +203,7 @@ public class SeatService {
       seat.setSeatNumber(String.valueOf(i));
       seat.setIsExist(true);
       seat.setIsOnline(false);
+      seat.setCourse(course);  // 코스 설정
       Seat savedSeat = seatRepository.save(seat);
       createdSeats.add(convertSeatToDTO(savedSeat));
     }
@@ -214,68 +212,60 @@ public class SeatService {
   }
 
   @Transactional
-  public List<SeatListDTO> modifySeats(int newSeatCount) {
+  public List<SeatListDTO> modifySeats(int newSeatCount, Long courseId) {
     if (newSeatCount < 0) {
       throw new IllegalArgumentException("좌석 수는 0 이상이어야 합니다.");
     }
 
+    // 코스 조회
+    Course course = courseRepository.findById(courseId)
+        .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+
     List<Seat> currentSeats = seatRepository.findAll();
+    int currentSeatCount = currentSeats.size();
 
-    // 강사 좌석 찾기
-    Seat teacherSeat = currentSeats.stream()
-        .filter(seat -> TEACHER_SEAT_NUMBER.equals(seat.getSeatNumber()))
-        .findFirst()
-        .orElse(null);
-
-    // 학생 좌석만 필터링
-    List<Seat> studentSeats = currentSeats.stream()
-        .filter(seat -> !TEACHER_SEAT_NUMBER.equals(seat.getSeatNumber()))
-        .collect(Collectors.toList());
-
-    int currentStudentSeatCount = studentSeats.size();
-
-    // 좌석 번호 재할당
-    for (int i = 0; i < Math.min(newSeatCount, currentStudentSeatCount); i++) {
-      studentSeats.get(i).setSeatNumber(String.valueOf(i + 1));
-      seatRepository.save(studentSeats.get(i));
+    for (int i = 0; i < Math.min(newSeatCount, currentSeatCount); i++) {
+      currentSeats.get(i).setSeatNumber(String.valueOf(i + 1));
+      currentSeats.get(i).setCourse(course);  // 코스 설정
+      seatRepository.save(currentSeats.get(i));
     }
 
-    if (newSeatCount > currentStudentSeatCount) {
-      // 좌석 추가
-      for (int i = currentStudentSeatCount + 1; i <= newSeatCount; i++) {
+    if (newSeatCount > currentSeatCount) {
+      for (int i = currentSeatCount + 1; i <= newSeatCount; i++) {
         Seat seat = new Seat();
         seat.setSeatNumber(String.valueOf(i));
         seat.setIsExist(true);
         seat.setIsOnline(false);
+        seat.setCourse(course);  // 코스 설정
         seatRepository.save(seat);
       }
-    } else if (newSeatCount < currentStudentSeatCount) {
-      // 좌석 제거 (사용 중인 좌석은 제거하지 않음)
-      List<Seat> seatsToRemove = studentSeats.subList(newSeatCount, currentStudentSeatCount);
+    } else if (newSeatCount < currentSeatCount) {
+      List<Seat> seatsToRemove = currentSeats.subList(newSeatCount, currentSeatCount);
       for (Seat seat : seatsToRemove) {
         if (seat.getMember() == null) {
           seatRepository.delete(seat);
         } else {
-          // 사용 중인 좌석은 번호만 제거
-          seat.setSeatNumber(null);
+          seat.setIsExist(false);
           seatRepository.save(seat);
         }
       }
     }
 
-    // 강사 좌석 처리
-    if (teacherSeat != null) {
-      teacherSeat.setSeatNumber(TEACHER_SEAT_NUMBER);
-      seatRepository.save(teacherSeat);
-    } else {
-      // 강사 좌석이 없으면 생성
-      Seat newTeacherSeat = new Seat();
-      newTeacherSeat.setSeatNumber(TEACHER_SEAT_NUMBER);
-      newTeacherSeat.setIsExist(true);
-      newTeacherSeat.setIsOnline(false);
-      seatRepository.save(newTeacherSeat);
-    }
-
-    return getAllSeat();
+    return seatRepository.findAll().stream()
+        .map(this::convertSeatToDTO)
+        .collect(Collectors.toList());
   }
+
+  public List<SeatListDTO> getSeatsByCourse(Long courseId) {
+    Course course = courseRepository.findById(courseId)
+        .orElseThrow(() -> new NotFoundException("Course not found"));
+
+    List<Seat> seats = seatRepository.findByCourse(course);
+    return seats.stream()
+        .map(this::convertSeatToDTO)
+        .collect(Collectors.toList());
+  }
+
+
+
 }
