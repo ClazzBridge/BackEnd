@@ -103,8 +103,8 @@ public class QuestionController {
   }
 
   @Operation(summary = "질문 삭제", security = {@SecurityRequirement(name = "bearerAuth")})
-  @DeleteMapping("/{ids}")
-  public ResponseEntity<?> deleteQuestion(@PathVariable("ids") List<Long> ids) {
+  @DeleteMapping("/qnas/questions")
+  public ResponseEntity<?> deleteQuestion(@RequestBody List<Long> ids) {
     questionService.deleteQuestion(ids);
     return ResponseEntity.noContent().build();
   }
