@@ -57,7 +57,7 @@ public class CourseController {
 
   @PostMapping
   @Operation(summary = "강의 추가", security = {@SecurityRequirement(name = "bearerAuth")})
-  public ResponseEntity<?> addCourse(CourseAddDTO courseAddDTO) {
+  public ResponseEntity<?> addCourse(@RequestBody CourseAddDTO courseAddDTO) {
     try {
       courseService.addCourse(courseAddDTO);
       return ResponseEntity.ok().body("추가 성공");
@@ -68,7 +68,7 @@ public class CourseController {
 
   @PutMapping
   @Operation(summary = "강의 변경", security = {@SecurityRequirement(name = "bearerAuth")})
-  public ResponseEntity<?> updateCourse(CourseUpdateDTO courseUpdateDTO) {
+  public ResponseEntity<?> updateCourse(@RequestBody CourseUpdateDTO courseUpdateDTO) {
     try {
       courseService.updateCourse(courseUpdateDTO);
       return ResponseEntity.ok().body("변경 성공");
