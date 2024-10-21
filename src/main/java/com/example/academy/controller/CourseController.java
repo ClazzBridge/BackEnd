@@ -66,7 +66,7 @@ public class CourseController {
     }
   }
 
-  @PutMapping
+  @PutMapping()
   @Operation(summary = "강의 변경", security = {@SecurityRequirement(name = "bearerAuth")})
   public ResponseEntity<?> updateCourse(@RequestBody CourseUpdateDTO courseUpdateDTO) {
     try {
