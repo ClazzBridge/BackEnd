@@ -39,6 +39,8 @@ public class CourseController {
     List<CourseTitleDTO> title = courseService.getCourseTitle();
     return ResponseEntity.ok(title);
   }
+
+
   @Operation(summary = "강의 전체 조회", security = {@SecurityRequirement(name = "bearerAuth")})
   @GetMapping
   public ResponseEntity<List<GetCourseDTO>> getAllCourse(){

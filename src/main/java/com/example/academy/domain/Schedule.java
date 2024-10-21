@@ -27,7 +27,7 @@ public class Schedule {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @NotNull
+
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "course_id", nullable = false)
   private Course course;

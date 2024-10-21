@@ -33,7 +33,14 @@ public class MemberListService {
   }
 
   public String getCheckRole(Long id) {
-    return memberRepository.findById(id).get().getMemberType().getType();
+    String type = memberRepository.findById(id).get().getMemberType().getType();
+    if (type.equals("ROLE_STUDENT")) {
+      List<StudentCourse> courseTitle = studentCourseRepository.findByStudent(memberRepository.findById(id).get());
+      return courseTitle.get(0).getCourse().getTitle();
+    } else {
+      List<Course> courseTitle = courseRepository.findByInstructor(memberRepository.findById(id).get());
+      return courseTitle.get(0).getTitle();
+    }
   }
 
   public GetDetailMemberDTO getMemberWithCourseInfo(Long memberId) {

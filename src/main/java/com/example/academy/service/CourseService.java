@@ -38,7 +38,7 @@ public class CourseService {
     return courses.stream()
         .map(course -> new GetCourseDTO(
             course.getId(),
-            course.getInstructor() != null ? course.getInstructor().getName() : "No Instructor",
+            course.getInstructor() != null ? course.getInstructor().getName() : "",
             // null 체크
             course.getClassroom() != null ? course.getClassroom().getName() : "No Classroom",
             // null 체크
