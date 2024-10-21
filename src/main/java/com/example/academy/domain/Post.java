@@ -64,6 +64,14 @@ public class Post extends BaseTimeEntity {
         this.content = content;
     }
 
+    @Builder
+    public Post(BoardType boardType, Member author, String title, String content) {
+        this.boardType = boardType;
+        this.author = author;
+        this.title = title;
+        this.content = content;
+    }
+
     public void updateTitle(String title) {
         this.title = title;
     }

@@ -133,22 +133,33 @@ public class PostService {
             .orElseThrow(PostBadRequestException::new);
 
         Course course = null;
+        Post savedPost;
 
-        // 학생 강의 조회, 관리자의 경우 강의가 없을 수 있음
-        if (!member.isAdmin()) {
-            StudentCourse studentCourse = studentCourseRepository.findByStudentId(member.getId());
-            if (studentCourse != null) {
-                course = studentCourse.getCourse();
+        // 코스 ID가 없을 경우 전체 게시글로 저장
+        if (postDTO.getCourseId() != null && postDTO.getCourseId() != 0) {
+            // 학생 강의 조회, 관리자의 경우 강의가 없을 수 있음
+            if (!member.isAdmin()) {
+                StudentCourse studentCourse = studentCourseRepository.findByStudentId(
+                    member.getId());
+                if (studentCourse != null) {
+                    course = studentCourse.getCourse();
+                }
+            } else {
+                course = courseRepository.findById(postDTO.getCourseId())
+                    .orElseThrow(() -> new NotFoundException("해당 과정이 존재하지 않습니다."));
             }
+
+            if (boardType.getType().equals(BoardTypes.공지사항.name()) && !member.getMemberType()
+                .getType()
+                .equals(MemberRole.ROLE_ADMIN.name())) {
+                throw new UnauthorizedException();
+            }
+            savedPost = postCreateMapper.toEntity(postDTO, member, boardType, course);
+        } else {
+            // courseId가 0인 경우 전체 게시글로 저장
+            savedPost = postCreateMapper.toEntity(postDTO, member, boardType);
         }
 
-        if (boardType.getType().equals(BoardTypes.공지사항.name()) && !member.getMemberType()
-            .getType()
-            .equals(MemberRole.ROLE_ADMIN.name())) {
-            throw new UnauthorizedException();
-        }
-
-        Post savedPost = postCreateMapper.toEntity(postDTO, member, boardType, course);
         postRepository.save(savedPost);
 
         return postResponseMapper.toDto(savedPost);
