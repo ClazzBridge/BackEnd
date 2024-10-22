@@ -184,23 +184,19 @@ public class SeatService {
 
   @Transactional
   public List<SeatListDTO> registerSeats(int seatCount, Long courseId) {
-    if (seatCount <= 0) {
-      throw new IllegalArgumentException("좌석 수는 1 이상이어야 합니다.");
-    }
-
-    List<SeatListDTO> createdSeats = new ArrayList<>();
-
-    // 코스 조회
+    // 등록 시, 해당 강의에 대한 기존 좌석 모두 삭제
     Course course = courseRepository.findById(courseId)
         .orElseThrow(() -> new EntityNotFoundException("Course not found"));
 
-    // 기존 좌석 모두 삭제
-    seatRepository.deleteAll();
+    List<Seat> existingSeats = seatRepository.findByCourse(course);
 
-    // 새 좌석 생성
+    // 기존 좌석 모두 삭제 (멤버 포함)
+    seatRepository.deleteAll(existingSeats);
+
+    List<SeatListDTO> createdSeats = new ArrayList<>();
     for (int i = 1; i <= seatCount; i++) {
       Seat seat = new Seat();
-      seat.setSeatNumber(String.valueOf(i));
+      seat.setSeatNumber(String.valueOf(i)); // 좌석 번호를 1부터 시작하여 순차적으로 설정
       seat.setIsExist(true);
       seat.setIsOnline(false);
       seat.setCourse(course);  // 코스 설정
@@ -212,48 +208,15 @@ public class SeatService {
   }
 
   @Transactional
-  public List<SeatListDTO> modifySeats(int newSeatCount, Long courseId) {
-    if (newSeatCount < 0) {
-      throw new IllegalArgumentException("좌석 수는 0 이상이어야 합니다.");
-    }
-
-    // 코스 조회
+  public void deleteAllSeatsByCourse(Long courseId) {
+    // 해당 코스에 있는 모든 좌석 삭제
     Course course = courseRepository.findById(courseId)
         .orElseThrow(() -> new EntityNotFoundException("Course not found"));
 
-    List<Seat> currentSeats = seatRepository.findAll();
-    int currentSeatCount = currentSeats.size();
+    List<Seat> seats = seatRepository.findByCourse(course);
 
-    for (int i = 0; i < Math.min(newSeatCount, currentSeatCount); i++) {
-      currentSeats.get(i).setSeatNumber(String.valueOf(i + 1));
-      currentSeats.get(i).setCourse(course);  // 코스 설정
-      seatRepository.save(currentSeats.get(i));
-    }
-
-    if (newSeatCount > currentSeatCount) {
-      for (int i = currentSeatCount + 1; i <= newSeatCount; i++) {
-        Seat seat = new Seat();
-        seat.setSeatNumber(String.valueOf(i));
-        seat.setIsExist(true);
-        seat.setIsOnline(false);
-        seat.setCourse(course);  // 코스 설정
-        seatRepository.save(seat);
-      }
-    } else if (newSeatCount < currentSeatCount) {
-      List<Seat> seatsToRemove = currentSeats.subList(newSeatCount, currentSeatCount);
-      for (Seat seat : seatsToRemove) {
-        if (seat.getMember() == null) {
-          seatRepository.delete(seat);
-        } else {
-          seat.setIsExist(false);
-          seatRepository.save(seat);
-        }
-      }
-    }
-
-    return seatRepository.findAll().stream()
-        .map(this::convertSeatToDTO)
-        .collect(Collectors.toList());
+    // 좌석 삭제
+    seatRepository.deleteAll(seats);
   }
 
   public List<SeatListDTO> getSeatsByCourse(Long courseId) {

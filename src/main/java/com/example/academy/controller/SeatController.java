@@ -56,11 +56,11 @@ public class SeatController {
     return ResponseEntity.ok(createdSeats);
   }
 
-  @Operation(summary = "좌석 수정", description = "매니저가 좌석을 수정합니다.")
-  @PostMapping("/modify")
-  public ResponseEntity<List<SeatListDTO>> modifySeats(@RequestParam int newSeatCount, @RequestParam Long courseId) {
-    List<SeatListDTO> modifiedSeats = seatService.modifySeats(newSeatCount, courseId);
-    return ResponseEntity.ok(modifiedSeats);
+  @Operation(summary = "좌석 삭제", description = "모든 좌석을 삭제합니다.")
+  @DeleteMapping("/deleteAllSeats")
+  public ResponseEntity<String> deleteAllSeats(@RequestParam Long courseId) {
+    seatService.deleteAllSeatsByCourse(courseId);
+    return ResponseEntity.ok("모든 좌석이 성공적으로 삭제되었습니다.");
   }
 
   @Operation(summary = "특정 강의의 좌석 리스트 반환")
