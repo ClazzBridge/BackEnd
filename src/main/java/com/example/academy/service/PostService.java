@@ -67,9 +67,13 @@ public class PostService {
     }
 
     public List<PostResponseDTO> findAllPosts() {
-        List<Post> posts = postRepository.findAll();
-        return postResponseMapper.toDtoList(posts).stream()
-            .sorted(Comparator.comparing(PostResponseDTO::getId).reversed()).toList();
+//        List<Post> posts = postRepository.findAll();
+
+        List<Post> posts = postRepository.findAllPostsOrderByBoardType();
+
+//        return postResponseMapper.toDtoList(posts).stream()
+//            .sorted(Comparator.comparing(PostResponseDTO::getId).reversed()).toList();
+        return postResponseMapper.toDtoList(posts);
     }
 
     public List<PostResponseDTO> getCourseNotices(Long courseId) {

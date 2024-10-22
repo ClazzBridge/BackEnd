@@ -19,32 +19,33 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "submission")
+// 과제 제출 정보 (학생)
 public class Submission {
 
-  @EmbeddedId
-  private SubmissionId id;
+    @EmbeddedId
+    private SubmissionId id;
 
-  @MapsId("assignmentId")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "assignment_id", nullable = false)
-  private Assignment assignment;
+    @MapsId("assignmentId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "assignment_id", nullable = false)
+    private Assignment assignment;
 
-  @MapsId("studentCourseId")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "student_course_id", nullable = false)
-  private StudentCourse studentCourse;
+    @MapsId("studentCourseId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "student_course_id", nullable = false)
+    private StudentCourse studentCourse;
 
-  @NotNull
-  @Lob
-  @Column(name = "content", nullable = false)
-  private String content;
+    @NotNull
+    @Lob
+    @Column(name = "content", nullable = false)
+    private String content;
 
-  @Size(max = 255)
-  @Column(name = "submission_url")
-  private String submissionUrl;
+    @Size(max = 255)
+    @Column(name = "submission_url")
+    private String submissionUrl;
 
-  @NotNull
-  @Column(name = "submission_date", nullable = false)
-  private LocalDate submissionDate;
+    @NotNull
+    @Column(name = "submission_date", nullable = false)
+    private LocalDate submissionDate;
 
 }

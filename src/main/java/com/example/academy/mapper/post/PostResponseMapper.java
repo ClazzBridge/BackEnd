@@ -26,9 +26,7 @@ public class PostResponseMapper {
     }
 
     public List<PostResponseDTO> toDtoList(List<Post> posts) {
-        if (posts.isEmpty()) {
-            return null;
-        }
+       
         return posts.stream()
             .map(todo -> toDto(todo))
             .collect(Collectors.toList());

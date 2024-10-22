@@ -20,30 +20,31 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "assignment")
+// 과제 정보
 public class Assignment {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "course_id", nullable = false)
-  private Course course;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
 
-  @Size(max = 100)
-  @NotNull
-  @Column(name = "title", nullable = false, length = 100)
-  private String title;
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "title", nullable = false, length = 100)
+    private String title;
 
-  @NotNull
-  @Lob
-  @Column(name = "description", nullable = false)
-  private String description;
+    @NotNull
+    @Lob
+    @Column(name = "description", nullable = false)
+    private String description;
 
-  @NotNull
-  @Column(name = "due_date", nullable = false)
-  private LocalDate dueDate;
+    @NotNull
+    @Column(name = "due_date", nullable = false)
+    private LocalDate dueDate;
 
 }

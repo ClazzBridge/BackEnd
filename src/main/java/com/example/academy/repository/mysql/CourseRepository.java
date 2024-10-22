@@ -5,12 +5,14 @@ import com.example.academy.domain.Member;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-  List<Course> findByInstructor(Member instructor);
+    List<Course> findByInstructor(Member instructor);
 
-  Optional<Course> findByTitle(String title);
+    Optional<Course> findByTitle(String title);
 
-  boolean existsByTitle(String title);
+    boolean existsByTitle(String title);
 }
