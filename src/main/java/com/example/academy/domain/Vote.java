@@ -1,6 +1,6 @@
 package com.example.academy.domain;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,13 +43,14 @@ public class Vote {
 
   @NotNull
   @Column(name = "start_date", nullable = false)
-  private Instant startDate;
+  private LocalDate startDate;
 
   @NotNull
   @Column(name = "end_date", nullable = false)
-  private Instant endDate;
+  private LocalDate endDate;
 
-  @Column(name = "is_expired")
+  @NotNull
+  @Column(name = "is_expired", nullable = false)
   private Boolean isExpired;
 
 }
