@@ -22,14 +22,14 @@ import lombok.Setter;
 @Table(name = "course")
 public class Course {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "instructor_id")
-  private Member instructor;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "instructor_id")
+    private Member instructor;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "classroom_id")

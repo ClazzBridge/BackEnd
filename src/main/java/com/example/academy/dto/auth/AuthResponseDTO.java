@@ -14,5 +14,4 @@ public class AuthResponseDTO {
     private String gitUrl; // Git URL
     private String profileImageUrl; // 프로필 이미지 URL
 
-
 }

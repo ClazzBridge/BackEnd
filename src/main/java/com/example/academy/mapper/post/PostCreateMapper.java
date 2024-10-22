@@ -20,6 +20,15 @@ public class PostCreateMapper {
             .build();
     }
 
+    public Post toEntity(PostCreateDTO postDTO, Member member, BoardType boardType) {
+        return Post.builder()
+            .boardType(boardType)
+            .author(member)
+            .title(postDTO.getTitle())
+            .content(postDTO.getContent())
+            .build();
+    }
+
 //    public List<Post> toEntityList(List<PostCreateDTO> postDTOList) {
 //        if (postDTOList == null) {
 //            return null;
