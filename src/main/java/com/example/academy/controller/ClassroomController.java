@@ -64,8 +64,12 @@ public class ClassroomController {
   @DeleteMapping("{id}")
   @Operation(summary = "강의실 삭제", security = {@SecurityRequirement(name = "bearerAuth")})
   public ResponseEntity<?> deleteClassroom(@PathVariable Long id){
-    classroomService.deleteClassroom(id);
-    return ResponseEntity.ok("삭제 성공");
+    try {
+      classroomService.deleteClassroom(id);
+      return ResponseEntity.ok("삭제 성공");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
   }
 
   @PutMapping

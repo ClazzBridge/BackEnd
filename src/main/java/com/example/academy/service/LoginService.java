@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     private static final long ACCESS_TOKEN_EXPIRATION = 60 * 15 * 1000L; // 15분
-    private static final long REFRESH_TOKEN_EXPIRATION = 60 * 15 * 1000L; // 15분
+    private static final long REFRESH_TOKEN_EXPIRATION = 60 * 15 * 10000L; // 150분
 
 
     @Autowired
@@ -41,8 +41,6 @@ public class LoginService {
         // 사용자가 존재하는 경우
         if (member.isPresent()) {
             Long userId = member.get().getId(); // 이 부분을 isPresent() 확인 후에 위치시킵니다.
-            System.out.println("User found: " + member.get().getMemberId()); // 디버깅을 위한 로그
-
             System.out.println("User found: " + member.get().getMemberId()); // 디버깅을 위한 로그
 
             // 비밀번호가 일치하는지 확인합니다.
@@ -69,6 +67,29 @@ public class LoginService {
                 // LoginResponseDTO 객체를 생성하고 반환합니다.
                 LoginResponseDTO response = new LoginResponseDTO(accessToken, refreshTokenCookie,
                     MemberResponseMapper.toDTO(member.get()));
+                return ResponseEntity.ok(response);
+            } else {
+                System.out.println("Password does not match"); // 비밀번호 불일치 로그
+            }
+        } else {
+            System.out.println("Member not found"); // 사용자 미발견 로그
+        }
+        // 로그인 실패 시 빈 Optional을 반환합니다.
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 사용자 미발견 시 404 상태 코드 반환
+    }
+
+    public ResponseEntity<LoginResponseDTO> updateUserInfo(String memberId, String password) {
+        // 사용자 이름으로 사용자 정보를 검색합니다.
+        Optional<Member> member = memberRepository.findByMemberId(memberId);
+        // 사용자가 존재하는 경우
+        if (member.isPresent()) {
+            Long userId = member.get().getId(); // 이 부분을 isPresent() 확인 후에 위치시킵니다.
+            System.out.println("User found: " + member.get().getMemberId()); // 디버깅을 위한 로그
+
+            // 비밀번호가 일치하는지 확인합니다.
+            if (passwordEncoder.matches(password, member.get().getPassword())) {
+
+                LoginResponseDTO response = new LoginResponseDTO(MemberResponseMapper.toDTO(member.get()));
                 return ResponseEntity.ok(response);
             } else {
                 System.out.println("Password does not match"); // 비밀번호 불일치 로그

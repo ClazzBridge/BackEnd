@@ -31,7 +31,7 @@ public class Course {
   @JoinColumn(name = "instructor_id")
   private Member instructor;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "classroom_id")
   private Classroom classroom;
 
