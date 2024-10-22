@@ -31,44 +31,44 @@ public class Course {
     @JoinColumn(name = "instructor_id")
     private Member instructor;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "classroom_id")
-    private Classroom classroom;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "classroom_id")
+  private Classroom classroom;
 
-    @Size(max = 100)
-    @NotNull
-    @Column(name = "title", nullable = false, length = 100)
-    private String title;
+  @Size(max = 100)
+  @NotNull
+  @Column(name = "title", nullable = false, length = 100)
+  private String title;
 
-    @NotNull
-    @Lob
-    @Column(name = "description", nullable = false)
-    private String description;
+  @NotNull
+  @Lob
+  @Column(name = "description", nullable = false)
+  private String description;
 
-    @NotNull
-    @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+  @NotNull
+  @Column(name = "start_date", nullable = false)
+  private LocalDate startDate;
 
-    @NotNull
-    @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
+  @NotNull
+  @Column(name = "end_date", nullable = false)
+  private LocalDate endDate;
 
-    @Size(max = 255)
-    @Column(name = "layout_image_url")
-    private String layoutImageUrl;
+  @Size(max = 255)
+  @Column(name = "layout_image_url")
+  private String layoutImageUrl;
 
-    public Course() {
-    }
+  public Course() {
+  }
 
-    public Course(Long id, Member instructor, Classroom classroom, String title, String description,
-        LocalDate startDate, LocalDate endDate, String layoutImageUrl) {
-        this.id = id;
-        this.instructor = instructor;
-        this.classroom = classroom;
-        this.title = title;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.layoutImageUrl = layoutImageUrl;
-    }
+  public Course(Long id, Member instructor, Classroom classroom, String title, String description,
+      LocalDate startDate, LocalDate endDate, String layoutImageUrl) {
+    this.id = id;
+    this.instructor = instructor;
+    this.classroom = classroom;
+    this.title = title;
+    this.description = description;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.layoutImageUrl = layoutImageUrl;
+  }
 }
