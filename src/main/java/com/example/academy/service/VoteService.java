@@ -1,11 +1,14 @@
 package com.example.academy.service;
 
+import com.example.academy.domain.Classroom;
 import com.example.academy.domain.Course;
 import com.example.academy.domain.Vote;
 import com.example.academy.dto.vote.AddVoteDTO;
+import com.example.academy.dto.vote.GetVoteDTO;
 import com.example.academy.repository.mysql.CourseRepository;
 import com.example.academy.repository.mysql.VoteRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -18,18 +21,18 @@ public class VoteService {
   private final VoteRepository voteRepository;
   private final CourseRepository courseRepository;
 
-  public VoteService(VoteRepository voteRepository,
-      CourseRepository courseRepository) {
+  public VoteService(VoteRepository voteRepository, CourseRepository courseRepository) {
     this.voteRepository = voteRepository;
     this.courseRepository = courseRepository;
   }
 
   public void addVote(AddVoteDTO addVoteDTO) {
-    String title =  addVoteDTO.getTitle();
     Vote vote = new Vote();
-    vote.setTitle(title);
-    vote.setIsExpired(false);
-
+    vote.setCourse(courseRepository.findByTitle(addVoteDTO.getCourseTitle()).get());
+    vote.setTitle(addVoteDTO.getTitle());
+    vote.setDescription(addVoteDTO.getDescription());
+    vote.setStartDate(addVoteDTO.getStartDate());
+    vote.setEndDate(addVoteDTO.getEndDate());
     voteRepository.save(vote);
   }
 
@@ -51,8 +54,8 @@ public class VoteService {
 //    return voteRepository.save(newvVote);
 //  }
 
-  public List<Vote> getAllVote(){
-    LocalDate now = LocalDate.now();
+  public List<GetVoteDTO> getAllVote(){
+    LocalDateTime now = LocalDateTime.now();
     List<Vote> votes = voteRepository.findAll();
     for (Vote vote1 : votes) {
       if (now.isAfter(vote1.getEndDate()) && now.isAfter(vote1.getStartDate())
@@ -73,15 +76,33 @@ public class VoteService {
     }
   //투표 시작날짜가 현재보다 빠르고 종료날짜가 느린 값들은 Ture 아니면 false;
 
-    return voteRepository.findAll();
+    return votes.stream()
+        .map(vote -> new GetVoteDTO(
+            vote.getId(),
+            vote.getCourse().getTitle(),
+            vote.getTitle(),
+            vote.getDescription(),
+            vote.getStartDate(),
+            vote.getEndDate(),
+            vote.getIsExpired()))
+        .collect(Collectors.toList());
   }
 
-  public Optional<Vote> getVote(Long id)  {
-    Optional<Vote> vote =voteRepository.findById(id);
-    if (!vote.isPresent()) {
-      return Optional.empty();
-    }
-    return voteRepository.findById(id);
+  public List<GetVoteDTO> getVote(Long id)  {
+    Optional<Vote> votes = voteRepository.findById(id);
+//    if (votes.isPresent()) {
+//      throw new Exception("조회된 투표가 없습니다.");
+//    }
+    return votes.stream()
+        .map(vote -> new GetVoteDTO(
+            vote.getId(),
+            vote.getCourse().getTitle(),
+            vote.getTitle(),
+            vote.getDescription(),
+            vote.getStartDate(),
+            vote.getEndDate(),
+            vote.getIsExpired()))
+        .collect(Collectors.toList());
   }
 
 

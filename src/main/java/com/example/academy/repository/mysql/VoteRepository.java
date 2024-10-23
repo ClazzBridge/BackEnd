@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long> {
 
-  Optional<Vote> findByTitle(String title); // 강의실 이름으로 조회
+  Optional<Vote> findByTitle(String title); // 투표 제목으로 조회
 
   boolean existsByTitle(String title);
 

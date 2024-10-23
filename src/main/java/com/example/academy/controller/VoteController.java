@@ -27,35 +27,43 @@ import org.springframework.web.bind.annotation.RestController;
 public class VoteController {
 
   @Autowired
-  private VoteService voteService;
+  private final VoteService voteService;
 
-  @PostMapping
-  @Operation(summary = "투표 추가", security = {@SecurityRequirement(name = "bearerAuth")})
-  public ResponseEntity<String> addVote(@RequestBody AddVoteDTO addVoteDTO){
-    voteService.addVote(addVoteDTO);
-    return ResponseEntity.ok("추가완료");
+  public VoteController(VoteService voteService) {
+    this.voteService = voteService;
   }
 
-  @GetMapping
   @Operation(summary = "투표 전체 조회", security = {@SecurityRequirement(name = "bearerAuth")})
-  public ResponseEntity<List<?>> getAllVote(){
-    List<Vote> title = voteService.getAllVote();
-    return ResponseEntity.ok(title);
+  @GetMapping
+  public ResponseEntity<List<?>> getAllVote() {
+    List<GetVoteDTO> name = voteService.getAllVote();
+    return ResponseEntity.ok(name);
   }
 
   @GetMapping("{id}")
   @Operation(summary = "투표 조회", security = {@SecurityRequirement(name = "bearerAuth")})
-  public ResponseEntity<Optional<?>> getVote(@PathVariable Long id){
-    Optional<Vote> title = voteService.getVote(id);
+  public ResponseEntity<?> getVote(@PathVariable Long id) {
+    List<GetVoteDTO> title = voteService.getVote(id);
     if (title.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
     return ResponseEntity.status(HttpStatus.OK).body(title);
   }
 
+  @PostMapping
+  @Operation(summary = "투표 추가", security = {@SecurityRequirement(name = "bearerAuth")})
+  public ResponseEntity<String> addVote(@RequestBody AddVoteDTO addVoteDTO) {
+    try {
+      voteService.addVote(addVoteDTO);
+      return ResponseEntity.ok("추가완료");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+  }
+
   @DeleteMapping("{id}")
   @Operation(summary = "투표 삭제", security = {@SecurityRequirement(name = "bearerAuth")})
-  public ResponseEntity<?> deleteVote(@PathVariable Long id){
+  public ResponseEntity<?> deleteVote(@PathVariable Long id) {
     try {
       voteService.deleteVote(id);
       return ResponseEntity.ok("삭제 성공");

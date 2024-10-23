@@ -1,6 +1,7 @@
 package com.example.academy.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,7 +26,7 @@ public class Vote {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
-  private Integer id;
+  private Long id;
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -43,11 +44,11 @@ public class Vote {
 
   @NotNull
   @Column(name = "start_date", nullable = false)
-  private LocalDate startDate;
+  private LocalDateTime startDate;
 
   @NotNull
   @Column(name = "end_date", nullable = false)
-  private LocalDate endDate;
+  private LocalDateTime endDate;
 
   @NotNull
   @Column(name = "is_expired", nullable = false)
