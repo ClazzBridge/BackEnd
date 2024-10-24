@@ -8,8 +8,8 @@ import lombok.Data;
 public class GetVoteDTO {
 
   private Long id;
-  private String title;
   private String courseTitle;
+  private String title;
   private String description;
   private LocalDateTime startDate;
   private LocalDateTime endDate;
@@ -18,10 +18,10 @@ public class GetVoteDTO {
   public GetVoteDTO() {
   }
 
-  public GetVoteDTO(Long id, String title, String courseTitle, String description, LocalDateTime startDate, LocalDateTime endDate, Boolean isExpired) {
+  public GetVoteDTO(Long id, String courseTitle, String title, String description, LocalDateTime startDate, LocalDateTime endDate, Boolean isExpired) {
     this.id = id;
-    this.title = title;
     this.courseTitle = courseTitle;
+    this.title = title;
     this.description = description;
     this.startDate = startDate;
     this.endDate = endDate;

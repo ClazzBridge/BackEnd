@@ -2,10 +2,17 @@ package com.example.academy.service;
 
 import com.example.academy.domain.Classroom;
 import com.example.academy.domain.Course;
+import com.example.academy.domain.Member;
+import com.example.academy.domain.StudentCourse;
 import com.example.academy.domain.Vote;
+import com.example.academy.dto.member.CustomUserDetails;
 import com.example.academy.dto.vote.AddVoteDTO;
 import com.example.academy.dto.vote.GetVoteDTO;
+import com.example.academy.enums.MemberRole;
+import com.example.academy.exception.common.NotFoundException;
+import com.example.academy.exception.post.PostBadRequestException;
 import com.example.academy.repository.mysql.CourseRepository;
+import com.example.academy.repository.mysql.MemberRepository;
 import com.example.academy.repository.mysql.VoteRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,19 +27,38 @@ public class VoteService {
 
   private final VoteRepository voteRepository;
   private final CourseRepository courseRepository;
+  private final MemberRepository memberRepository;
 
-  public VoteService(VoteRepository voteRepository, CourseRepository courseRepository) {
+  // 로그인된 유저 정보에 접근할 수 있는 서비스
+  private final AuthService authService;
+
+  public VoteService(VoteRepository voteRepository, CourseRepository courseRepository, AuthService authService, MemberRepository memberRepository) {
     this.voteRepository = voteRepository;
     this.courseRepository = courseRepository;
+    this.authService = authService;
+    this.memberRepository = memberRepository;
   }
 
   public void addVote(AddVoteDTO addVoteDTO) {
+    CustomUserDetails user = authService.getAuthenticatedUser();
+
+    Member member = memberRepository.findById(user.getUserId())
+        .orElseThrow(PostBadRequestException::new);
+
+    if (!member.getMemberType().getType().equalsIgnoreCase(MemberRole.ROLE_TEACHER.toString())) {
+      throw new PostBadRequestException("강사만 투표를 추가할 수 있습니다.");
+    }
+
+    Course course = courseRepository.findById(addVoteDTO.getCourseId())
+        .orElseThrow(() -> new NotFoundException("해당 과정이 존재하지 않습니다."));
+
     Vote vote = new Vote();
-    vote.setCourse(courseRepository.findByTitle(addVoteDTO.getCourseTitle()).get());
+    vote.setCourse(course);
     vote.setTitle(addVoteDTO.getTitle());
     vote.setDescription(addVoteDTO.getDescription());
     vote.setStartDate(addVoteDTO.getStartDate());
     vote.setEndDate(addVoteDTO.getEndDate());
+    vote.setIsExpired(false);
     voteRepository.save(vote);
   }
 
