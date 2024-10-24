@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-deployment
+  labels:
+    app: back
+spec:
+  replicas: 2  # 원하는 복제본 수에 맞게 조정
+  selector:
+    matchLabels:
+      app: back
+  template:
+    metadata:
+      labels:
+        app: back
+    spec:
+      containers:
+        - name: back
+          image: contest78.kr.ncr.ntruss.com/back:latest  # 푸시한 Docker 이미지
+          ports:
+            - containerPort: 8080  # 컨테이너가 노출할 포트
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"  # 필요한 환경 변수를 여기에 추가
