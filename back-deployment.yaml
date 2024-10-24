@@ -22,3 +22,5 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"  # 필요한 환경 변수를 여기에 추가
+      imagePullSecrets:  # Secret 추가
+        - name: regcred  # 생성한 Secret 이름
