@@ -49,7 +49,7 @@ public class VoteService {
       throw new PostBadRequestException("강사만 투표를 추가할 수 있습니다.");
     }
 
-    // 동인 코드 추가 시작
+    // 강사 강의 중복 방지
     Course course;
     List<Course> courses = courseRepository.findByInstructor(member);
     if (courses.isEmpty()) {
@@ -59,11 +59,6 @@ public class VoteService {
     } else {
       course = courses.get(0);
     }
-
-    // 동인 코드 추가 종료
-
-    //Course course = courseRepository.findById(addVoteDTO.getCourseId())
-    //    .orElseThrow(() -> new NotFoundException("해당 과정이 존재하지 않습니다."));
 
     Vote vote = new Vote();
     vote.setCourse(course);
