@@ -2,12 +2,14 @@ package com.example.academy.service;
 
 
 import com.example.academy.domain.mysql.Member;
+import com.example.academy.domain.mysql.Seat;
 import com.example.academy.dto.auth.AuthResponseDTO;
 import com.example.academy.dto.auth.LoginResponseDTO;
 import com.example.academy.jwt.JwtUtil;
 import com.example.academy.mapper.member.MemberResponseMapper;
 import com.example.academy.repository.mysql.CourseRepository;
 import com.example.academy.repository.mysql.MemberRepository;
+import com.example.academy.repository.mysql.SeatRepository;
 import com.example.academy.repository.mysql.StudentCourseRepository;
 import java.util.Optional;
 import javax.servlet.http.Cookie;
@@ -27,13 +29,15 @@ public class LoginService {
 
     @Autowired
     private final MemberRepository memberRepository;
+    private final SeatService seatService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
 
-    public LoginService(MemberRepository memberRepository,
+    public LoginService(MemberRepository memberRepository, SeatService seatService,
         BCryptPasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.memberRepository = memberRepository;
+        this.seatService = seatService;  // 추가
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
@@ -69,6 +73,9 @@ public class LoginService {
                 // 쿠키를 응답에 추가
                 System.out.println("refreshTokenCookie = " + refreshTokenCookie);
 
+                // 좌석의 온라인 상태 업데이트
+                seatService.setSeatOnlineForCurrentUser(member.get());
+
                 // LoginResponseDTO 객체를 생성하고 반환합니다.
                 LoginResponseDTO response = new LoginResponseDTO(accessToken, refreshTokenCookie,
                     MemberResponseMapper.toDTO(member.get()));
@@ -82,4 +89,7 @@ public class LoginService {
         // 로그인 실패 시 빈 Optional을 반환합니다.
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 사용자 미발견 시 404 상태 코드 반환
     }
+
+
+
 }

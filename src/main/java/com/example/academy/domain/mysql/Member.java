@@ -47,6 +47,7 @@ public class Member {
     private AvatarImage avatarImage;
 
     private String gitUrl;
+
     private String bio;
 
     public boolean isAdmin() {

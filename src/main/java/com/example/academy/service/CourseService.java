@@ -4,6 +4,9 @@ import com.example.academy.domain.mysql.Course;
 import com.example.academy.dto.course.CourseTitleDTO;
 import com.example.academy.dto.course.GetCourseDTO;
 import com.example.academy.dto.course.SelectCourseDTO;
+import com.example.academy.dto.member.CustomUserDetails;
+import com.example.academy.enums.MemberRole;
+import com.example.academy.exception.common.NotFoundException;
 import com.example.academy.repository.mysql.CourseRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,9 +18,11 @@ import org.springframework.stereotype.Service;
 public class CourseService {
 
   private final CourseRepository courseRepository;
+  private final AuthService authService;
 
-  public CourseService(CourseRepository courseRepository) {
+  public CourseService(CourseRepository courseRepository,  AuthService authService) {
     this.courseRepository = courseRepository;
+    this.authService = authService;
   }
 
   public List<CourseTitleDTO> getCourseTitle(){
@@ -53,5 +58,15 @@ public class CourseService {
   }
 
 
+  public Long getTeacherByCourseId() {
+    CustomUserDetails user = authService.getAuthenticatedUser();
 
+    if (user.getUserType().equals(MemberRole.ROLE_TEACHER)) {
+      Course course = courseRepository.findByInstructorId(user.getUserId())
+          .orElseThrow(() -> new NotFoundException("해당 강의가 존재하지 않습니다."));
+
+      return course.getId();
+    }
+      return null;
+  }
 }

@@ -19,11 +19,15 @@ public class studentCourseController {
 
 
     @GetMapping("")
-    public ResponseEntity<Long> getCoureseId() {
+    public ResponseEntity<Long> getCourseId() {
         Long courseId = studentCourseService.getCoureseId();
 
         return ResponseEntity.ok().body(courseId);
     }
+
+
+
+
 
 
 }

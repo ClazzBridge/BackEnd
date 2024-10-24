@@ -43,4 +43,13 @@ public class CourseController {
     return ResponseEntity.ok(courseService.seatAllCourse());
   }
 
+  @Operation(summary = "강의 번호 반환")
+  @GetMapping("/teacher")
+  public ResponseEntity<Long> getTeacherByCourseId(){
+    return ResponseEntity.ok(courseService.getTeacherByCourseId());
+  }
+
+
+
+
 }

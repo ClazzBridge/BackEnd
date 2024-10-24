@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/seat")
 public class SeatController {
@@ -36,6 +37,10 @@ public class SeatController {
   @Operation(summary = "멤버 등록", description = "특정 좌석에 멤버 등록")
   @PutMapping("/assign")
   public ResponseEntity<?> assignSeat(@RequestBody SeatUpdateDTO seatUpdateDTO) {
+
+    System.out.println("SeatUpdateDTO: " + seatUpdateDTO);
+    System.out.println("Assigning seat to member: " + seatUpdateDTO.getMemberId());
+
     Optional<SeatListDTO> result = seatService.assignSeatToMember(seatUpdateDTO); // seatDTO 전체를 전달
     return result.map(seat -> ResponseEntity.ok("좌석이 성공적으로 배정되었습니다."))
         .orElse(ResponseEntity.status(HttpStatus.CONFLICT)
@@ -68,6 +73,15 @@ public class SeatController {
   public ResponseEntity<List<SeatListDTO>> getSeatsByCourse(@PathVariable Long courseId) {
     List<SeatListDTO> seats = seatService.getSeatsByCourse(courseId);
     return ResponseEntity.ok(seats);
+  }
+
+  @Operation(summary = "특정 멤버의 좌석 상태 반환")
+  @GetMapping("/status/{memberId}")
+  public ResponseEntity<SeatListDTO> getSeatStatusByMemberId(@PathVariable String memberId) {
+    Optional<SeatListDTO> seatStatus = seatService.getSeatStatusByMemberId(memberId);
+    return seatStatus.map(ResponseEntity::ok)
+        .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(null));
   }
 }
 

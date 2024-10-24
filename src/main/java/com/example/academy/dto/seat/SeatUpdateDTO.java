@@ -8,13 +8,11 @@ import lombok.Setter;
 public class SeatUpdateDTO {
 
   private Long id;
-  private String seatNumber;
-private Long memberId;
-private Long courseId;
+  private Long memberId;
+  private Long courseId;
 
-public SeatUpdateDTO(Long id, String seatNumber, Long memberId, Long courseId) {
+public SeatUpdateDTO(Long id, Long memberId, Long courseId) {
   this.id = id;
-  this.seatNumber = seatNumber;
   this.memberId = memberId;
   this.courseId = courseId;
 }

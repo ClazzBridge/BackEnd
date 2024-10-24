@@ -1,6 +1,7 @@
 package com.example.academy.repository.mysql;
 
 import com.example.academy.domain.mysql.Course;
+import com.example.academy.domain.mysql.Member;
 import com.example.academy.domain.mysql.Seat;
 import java.util.List;
 import java.util.Optional;
@@ -14,13 +15,10 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
 
     Optional<Seat> findByMemberId(Long memberId);
 
-    List<Seat> findAllByCourse(Course course);
-
-    void deleteAllByCourse(Course course);
-
-    List<Seat> findAllByCourseOrderBySeatNumberAsc(Course course);
+    Optional<Seat> findByMember_MemberId(String memberId);
 
     List<Seat> findByCourse(Course course);
 
 
+    Optional<Seat> findByMember(Member member);
 }
