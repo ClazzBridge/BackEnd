@@ -15,8 +15,8 @@ public class AddVoteDTO {
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDateTime endDate;
 
-  @Schema(description = "강의 ID 번호", example = "2")
-  private Long courseId;
+//  @Schema(description = "강의 ID 번호", example = "2")
+//  private Long courseId;
 
   public AddVoteDTO(String title, String description, LocalDateTime startDate, LocalDateTime endDate) {
     this.title = title;

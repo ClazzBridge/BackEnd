@@ -49,8 +49,21 @@ public class VoteService {
       throw new PostBadRequestException("강사만 투표를 추가할 수 있습니다.");
     }
 
-    Course course = courseRepository.findById(addVoteDTO.getCourseId())
-        .orElseThrow(() -> new NotFoundException("해당 과정이 존재하지 않습니다."));
+    // 동인 코드 추가 시작
+    Course course;
+    List<Course> courses = courseRepository.findByInstructor(member);
+    if (courses.isEmpty()) {
+      throw new NotFoundException("담당 과정이 존재하지 않습니다.");
+    } else if (courses.size() != 1) {
+      throw new PostBadRequestException("강사가 2개 이상의 강의를 담당하고 있습니다.");
+    } else {
+      course = courses.get(0);
+    }
+
+    // 동인 코드 추가 종료
+
+    //Course course = courseRepository.findById(addVoteDTO.getCourseId())
+    //    .orElseThrow(() -> new NotFoundException("해당 과정이 존재하지 않습니다."));
 
     Vote vote = new Vote();
     vote.setCourse(course);
