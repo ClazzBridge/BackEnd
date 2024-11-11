@@ -55,6 +55,8 @@ public class MemberManageService {
     boolean isExistMember = memberRepository.existsByMemberId(memberId);
     boolean isExistEmail = memberRepository.existsByEmail(email);
     boolean isExistCourseTitle = courseRepository.existsByTitle(title);
+    Optional<Course> beforeCourse =  courseRepository.findByTitle(title);
+
 
     if (isExistMember || isExistEmail || !isExistCourseTitle) {
       String errorMessage = "";
@@ -180,8 +182,17 @@ public class MemberManageService {
       if (course.isPresent()) { // 코스 값이 존재하면 true
         List<Course> course1 = courseRepository.findByInstructor(member);
 
-        if (!course1.isEmpty()) { // 기존 강의가 존재하는 경우
-          Course beforeCourse = course1.get(0); // 기존 강사의 강의 정보
+
+        if (!course1.isEmpty() ) { // 기존 강의가 존재하는 경우
+          int index = 0;
+          for (Course course11 : course1) {
+            if(course11.getClassroom().getIsOccupied()){
+             break;
+            }
+            index++;
+          }
+
+          Course beforeCourse = course1.get(index); // 기존 강사의 강의 정보
           Course afterCourse = course.get(); // 입력한 강의 정보
 
           if (beforeCourse.getTitle().equals(afterCourse.getTitle())) {
@@ -198,15 +209,15 @@ public class MemberManageService {
           afterCourse.setInstructor(member);
           courseRepository.save(afterCourse);
         }
+
+
+
       } else {
         throw new RuntimeException("해당 과정명을 찾을 수 없습니다.");
       }
-
     }
-
     // 업데이트된 회원 정보 저장
     memberRepository.save(member);
-
     return ResponseEntity.status(HttpStatus.OK).body("회원 정보 업데이트 성공");
   }
 

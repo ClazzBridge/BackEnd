@@ -1,6 +1,7 @@
 package com.example.academy.service;
 
 
+import com.example.academy.domain.Classroom;
 import com.example.academy.domain.Course;
 import com.example.academy.domain.Member;
 import com.example.academy.domain.StudentCourse;
@@ -47,7 +48,6 @@ public class MemberListService {
       return courseTitle.get(0).getTitle();
     }
   }
-
   public GetDetailMemberDTO getMemberWithCourseInfo(Long memberId) {
     // Member 조회
     Member member = memberRepository.findById(memberId)
@@ -57,20 +57,26 @@ public class MemberListService {
     if (member.getMemberType().getType().equals("ROLE_STUDENT")) {
       // Member가 수강한 StudentCourse 조회
       StudentCourse studentCourse = studentCourseRepository.findByStudent(member);
-      courseTitle =
-          studentCourse.getCourse().getTitle() != null ? studentCourse.getCourse().getTitle() : "";
+      courseTitle = (studentCourse != null && studentCourse.getCourse().getTitle() != null)
+          ? studentCourse.getCourse().getTitle()
+          : "";
     } else if (member.getMemberType().getType().equals("ROLE_TEACHER")) {
+      // Instructor의 강의 중 점유된 강의만 선택
       List<Course> courses = courseRepository.findByInstructor(member);
       courseTitle = courses.stream()
-          .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
-          .map(Course -> Course.getTitle())  // Course 이름 가져오기
+          .filter(course -> {
+            Classroom classroom = course.getClassroom();
+            return classroom != null && classroom.getIsOccupied();
+          })
+          .findFirst()  // 점유된 강의 중 첫 번째 코스를 선택
+          .map(Course::getTitle)  // Course 이름 가져오기
           .orElse("");
     } else {
       // 멤버 타입이 STUDENT 또는 TEACHER가 아니면 예외 발생
       throw new UnsupportedOperationException("Unsupported member type for ID: " + memberId);
     }
 
-    // GetMemberDTO 생성 및 값 설정
+    // GetDetailMemberDTO 생성 및 값 설정
     GetDetailMemberDTO getDetailMemberDTO = new GetDetailMemberDTO(
         member.getId(),
         member.getMemberId(),
@@ -104,27 +110,29 @@ public class MemberListService {
   public List<GetMemberDTO> getAllMembersWithCourses() {
     List<Member> members = memberRepository.findAll(); // 전체 멤버 조회
     List<GetMemberDTO> memberDTOs = new ArrayList<>();
-    String courseTitle;
-    // 각 멤버에 대해 코스 정보 조회 및 DTO로 변환
     for (Member member : members) {
+      String courseTitle = "";
+
       if (member.getMemberType().getType().equals("ROLE_STUDENT")) {
         StudentCourse studentCourse = studentCourseRepository.findByStudent(member);
 
         // 수강 코스의 이름을 가져오거나, 없으면 빈 문자열 반환
-        courseTitle =
-            studentCourse.getCourse().getTitle() != null ? studentCourse.getCourse().getTitle()
-                : "";
-      } else if (member.getMemberType().getType().equals("ROLE_TEACHER")) {
-        List<Course> courses = courseRepository.findByInstructor(member);
+        courseTitle = (studentCourse != null && studentCourse.getCourse().getTitle() != null)
+            ? studentCourse.getCourse().getTitle()
+            : "";
 
-        // 첫 번째 수강 코스의 이름을 가져오거나, 없으면 빈 문자열 반환
-        courseTitle = courses.stream()
-            .findFirst()  // 여러 개일 경우 첫 번째 코스를 선택
-            .map(studentCourse -> studentCourse.getTitle())
-            .orElse("");
-      } else {
-        continue;
+      } else if (member.getMemberType().getType().equals("ROLE_TEACHER")) {
+        List<Course> courseList = courseRepository.findByInstructor(member);
+        for (Course course : courseList) {
+          Classroom classroom = course.getClassroom();
+          if (classroom != null && classroom.getIsOccupied()) {
+            System.out.println("======>" + classroom.getIsOccupied());
+            courseTitle = course.getTitle();
+            break;
+          }
+        }
       }
+
       // GetMemberDTO 생성 및 값 설정
       GetMemberDTO dto = new GetMemberDTO(
           member.getId(),
@@ -138,7 +146,6 @@ public class MemberListService {
           courseTitle
       );
 
-      // DTO 리스트에 추가
       memberDTOs.add(dto);
     }
 
